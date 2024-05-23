@@ -1,10 +1,11 @@
 import React from 'react'
+import Login from './components/Login'
 
 const App = () => {
   return (
-    <h1 className="text-3xl font-bold underline text-customOrange">
-      Hello GenSpark!
-    </h1>
+    <>
+      <Login />
+    </>
   )
 }
 
