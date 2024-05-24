@@ -1,7 +1,17 @@
 import React from 'react'
 import GoogleIcon from '../images/google-icon.png'
+import { signInWithPopup } from 'firebase/auth';
+import { auth, googleAuthProvider } from '../firebase/setup';
 
 const Signup = () => {
+    const googleSignIn = async () => {
+        try {
+            await signInWithPopup(auth, googleAuthProvider);
+        }
+        catch (err) {
+            console.error(err);
+        }
+    }
     return (
         <div className="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
 
@@ -19,7 +29,7 @@ const Signup = () => {
                                 Create Account
                             </button>
                             <div className='text-center'>or</div>
-                            <div className='mt-3 flex items-center text-center border border-spacing-1 rounded-lg p-3'>
+                            <div onClick={googleSignIn} className='mt-3 flex items-center text-center border border-spacing-1 rounded-lg p-3'>
                                 <img src={GoogleIcon} alt='Google Icon' className='w-7 h-7 ml-12' />
                                 <button className='ml-5'>Sign in with Google</button>
                             </div>
