@@ -53,14 +53,15 @@ const Login = () => {
 
                                 <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
                                     <h3 className="text-3xl font-semibold leading-6 text-gray-600" id="modal-title">Login</h3>
-                                    <div className='mt-12 ml-2'>
+                                    <div className='mt-12'>
                                         <PhoneInput
                                             country={'in'}
                                             value={phone}
                                             onChange={(phone) => setPhone("+" + phone)}
+                                            buttonStyle={{ backgroundColor: "white" }}
                                         />
                                     </div>
-                                    <button onClick={sendOtp} className="mt-5 mb-3 bg-rose-500 w-80 h-12 text-white py-2 px-4 rounded">
+                                    <button onClick={sendOtp} className="mt-5 mb-3 bg-rose-500 w-full h-12 text-white py-2 px-4 rounded">
                                         Send One Time Password
                                     </button>
                                     <div id="recaptcha"></div>
