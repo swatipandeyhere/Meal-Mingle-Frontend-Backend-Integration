@@ -5,9 +5,11 @@ import GoogleIcon from '../images/google-icon.png'
 import EmailIcon from '../images/email-icon.png'
 import { RecaptchaVerifier, signInWithPhoneNumber, signInWithPopup } from 'firebase/auth'
 import { auth, googleAuthProvider } from '../firebase/setup'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 const Login = () => {
+    const navigate = useNavigate();
+
     const [phone, setPhone] = useState("")
     const [user, setUser] = useState<any>(null);
     const [otp, setOtp] = useState("");
@@ -34,7 +36,9 @@ const Login = () => {
 
     const googleSignIn = async () => {
         try {
-            await signInWithPopup(auth, googleAuthProvider);
+            const data = await signInWithPopup(auth, googleAuthProvider);
+            auth.currentUser?.email && navigate('/main');
+            console.log(data);
         }
         catch (err) {
             console.error(err);

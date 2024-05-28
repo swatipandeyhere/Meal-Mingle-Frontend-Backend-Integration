@@ -32,7 +32,7 @@ const EmailLogin = () => {
                                 <h3 className="text-3xl font-semibold leading-6 text-gray-600" id="modal-title">Login</h3>
                                 <Link to='/'><div className='ml-60'>X</div></Link>
                             </div>
-                            <img src={EmailInboxIcon} className='w-24 h-24 mt-5 ml-28' />
+                            <img src={EmailInboxIcon} alt='Email Inbox Icon' className='w-24 h-24 mt-5 ml-28' />
                             <input onChange={(e) => setEmail(e.target.value)} className="outline-none border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" placeholder="Enter Email" required />
                             <input type='password' onChange={(e) => setPassword(e.target.value)} className="mt-5 outline-none border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" placeholder="Enter Password" required />
                             <button onClick={emailLogin} className="mt-5 mb-3 bg-rose-500 w-full h-12 text-white py-2 px-4 rounded-lg">
