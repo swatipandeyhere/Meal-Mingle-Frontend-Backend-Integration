@@ -1,15 +1,31 @@
-import React from 'react'
+import React, { useState } from 'react'
 import GoogleIcon from '../images/google-icon.png'
-import { signInWithPopup } from 'firebase/auth';
+import { createUserWithEmailAndPassword, onAuthStateChanged, sendEmailVerification, signInWithPopup } from 'firebase/auth';
 import { auth, googleAuthProvider } from '../firebase/setup';
+import { Link } from 'react-router-dom';
 
 const Signup = () => {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+
     const googleSignIn = async () => {
         try {
             await signInWithPopup(auth, googleAuthProvider);
         }
         catch (err) {
             console.error(err);
+        }
+    }
+
+    const emailSignUp = async () => {
+        try {
+            await createUserWithEmailAndPassword(auth, email, password);
+            onAuthStateChanged(auth, async (user: any) => {
+                await sendEmailVerification(user);
+            })
+        }
+        catch (err) {
+            console.log(err);
         }
     }
     return (
@@ -22,10 +38,13 @@ const Signup = () => {
 
                     <div className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-96 sm:max-w-lg">
                         <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
-                            <h3 className="text-3xl font-semibold leading-6 text-gray-600" id="modal-title">Sign Up</h3>
-                            <input className="mt-12 outline-none border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" placeholder="Enter Email" required />
-                            <input className="mt-5 outline-none border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" placeholder="Enter Password" required />
-                            <button className="mt-5 mb-3 bg-rose-500 w-full h-12 text-white py-2 px-4 rounded-lg">
+                            <div className='flex'>
+                                <h3 className="text-3xl font-semibold leading-6 text-gray-600" id="modal-title">Sign Up</h3>
+                                <Link to='/'><div className='ml-52'>X</div></Link>
+                            </div>
+                            <input onChange={(e) => setEmail(e.target.value)} className="mt-12 outline-none border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" placeholder="Enter Email" required />
+                            <input type='password' onChange={(e) => setPassword(e.target.value)} className="mt-5 outline-none border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" placeholder="Enter Password" required />
+                            <button onClick={emailSignUp} className="mt-5 mb-3 bg-rose-500 w-full h-12 text-white py-2 px-4 rounded-lg">
                                 Create Account
                             </button>
                             <div className='text-center'>or</div>
@@ -34,7 +53,7 @@ const Signup = () => {
                                 <button className='ml-5'>Sign in with Google</button>
                             </div>
                             <hr className='mt-4' />
-                            <div className='text-base mt-5'>Already have an account? <span className='text-red-500'>Log in</span></div>
+                            <div className='text-base mt-5'>Already have an account? <Link to='/login'><span className='text-red-500'>Log in</span></Link></div>
                         </div>
                     </div>
                 </div>

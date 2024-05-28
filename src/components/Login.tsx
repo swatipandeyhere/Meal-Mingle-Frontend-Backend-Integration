@@ -5,6 +5,7 @@ import GoogleIcon from '../images/google-icon.png'
 import EmailIcon from '../images/email-icon.png'
 import { RecaptchaVerifier, signInWithPhoneNumber, signInWithPopup } from 'firebase/auth'
 import { auth, googleAuthProvider } from '../firebase/setup'
+import { Link } from 'react-router-dom'
 
 const Login = () => {
     const [phone, setPhone] = useState("")
@@ -52,7 +53,10 @@ const Login = () => {
                             <div className="sm:flex sm:items-start">
 
                                 <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                                    <h3 className="text-3xl font-semibold leading-6 text-gray-600" id="modal-title">Login</h3>
+                                    <div className='flex '>
+                                        <h3 className="text-3xl font-semibold leading-6 text-gray-600" id="modal-title">Login</h3>
+                                        <Link to='/'><div className='ml-52'>X</div></Link>
+                                    </div>
                                     <div className='mt-12'>
                                         <PhoneInput
                                             country={'in'}
@@ -71,17 +75,18 @@ const Login = () => {
                                     </button>}
                                     {!phone && <div>
                                         <div className='text-center mb-3'>or</div>
-                                        <div className='flex items-center text-center border border-spacing-1 rounded-lg p-3'>
+                                        <Link to='/emailLogin'><div className='flex items-center text-center border border-spacing-1 rounded-lg p-3'>
                                             <img src={EmailIcon} alt='Email Icon' className='w-7 h-7 ml-12' />
                                             <button className='ml-5'>Continue with Email</button>
                                         </div>
+                                        </Link>
                                         <div onClick={googleSignIn} className='mt-5 flex items-center text-center border border-spacing-1 rounded-lg p-3'>
                                             <img src={GoogleIcon} alt='Google Icon' className='w-7 h-7 ml-12' />
                                             <button className='ml-5'>Continue with Google</button>
                                         </div>
                                     </div>}
                                     <hr className='mt-4' />
-                                    <div className='text-base mt-5'>New to MealMingle? <span className='text-red-500'>Create Account</span></div>
+                                    <div className='text-base mt-5'>New to MealMingle? <Link to='/signup'><span className='text-red-500'>Create Account</span></Link></div>
                                 </div>
                             </div>
                         </div>
