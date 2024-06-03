@@ -19,8 +19,12 @@ const Restaurant = (props: restaurantProp) => {
                         <div className="max-w-xs rounded-xl overflow-hidden shadow-sm mt-12">
                             <img className="w-full rounded-2xl h-60" src={require(`../images/${data.restaurantImage}`)} alt="Restaurant Image" />
                             <div className="py-4">
-                                <div className="font-semibold text-xl mb-2">{data.restaurantName}</div>
-                                <p className="text-gray-700 text-base">{data.restaurantRating}</p>
+                                <div className='flex justify-between items-center'>
+                                    <div className="font-semibold text-xl mb-2">{data.restaurantName}</div>
+                                    <div className={`text-white font-semibold text-base rounded-md p-1 ${data.restaurantRating < 4.5 ? `bg-green-600` : `bg-green-900`}`}>
+                                        {data.restaurantRating}
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </>
@@ -32,7 +36,7 @@ const Restaurant = (props: restaurantProp) => {
                         console.log(data);
                         return <>
                             <div className="max-w-xs rounded-xl overflow-hidden shadow-sm mt-12">
-                                <img className="w-full h-60 object-cover rounded-2xl" src={require(`../images/${data.restaurantImage}`)} alt="Restaurant Image" />
+                                <img className="w-full rounded-2xl h-60" src={require(`../images/${data.restaurantImage}`)} alt="Restaurant Image" />
                                 <div className="py-4">
                                     <div className='flex justify-between items-center'>
                                         <div className="font-semibold text-xl mb-2">{data.restaurantName}</div>
