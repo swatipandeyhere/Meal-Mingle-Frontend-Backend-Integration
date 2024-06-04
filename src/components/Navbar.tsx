@@ -9,7 +9,7 @@ import DropDownIcon from '../images/drop-down-icon.png'
 import LogoutIcon from '../images/logout-icon.png'
 
 interface cityProp {
-    city: any
+    city?: any
 }
 
 const Navbar = (props: cityProp) => {

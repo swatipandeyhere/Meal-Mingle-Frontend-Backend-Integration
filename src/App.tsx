@@ -8,6 +8,7 @@ import Main from './components/Main'
 import Menu from './components/Menu'
 import Order from './components/Order'
 import Payment from './components/Payment'
+import PaymentSuccessful from './components/PaymentSuccessful'
 
 const App = () => {
   return (
@@ -21,6 +22,7 @@ const App = () => {
         <Route path='/menu' element={<Menu />} />
         <Route path='/order' element={<Order />} />
         <Route path='/payment' element={<Payment />} />
+        <Route path="/payment-successful" element={<PaymentSuccessful />} />
       </Routes>
     </>
   )
