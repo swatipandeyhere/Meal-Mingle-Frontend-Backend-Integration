@@ -7,6 +7,7 @@ import EmailLogin from './components/EmailLogin'
 import Main from './components/Main'
 import Menu from './components/Menu'
 import Order from './components/Order'
+import Payment from './components/Payment'
 
 const App = () => {
   return (
@@ -19,6 +20,7 @@ const App = () => {
         <Route path='/main' element={<Main />} />
         <Route path='/menu' element={<Menu />} />
         <Route path='/order' element={<Order />} />
+        <Route path='/payment' element={<Payment />} />
       </Routes>
     </>
   )
