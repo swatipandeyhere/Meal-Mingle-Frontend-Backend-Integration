@@ -1,5 +1,5 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import Navbar from './Navbar';
 
 const Menu = () => {
@@ -21,6 +21,7 @@ const Menu = () => {
                                     <div className='font-semibold text-xl mb-2'>{item.restaurantItemName}</div>
                                     <p className='font-semibold text-base p-1'>₹{item.restaurantItemPrice}</p>
                                 </div>
+                                <Link to='/order' state={{ item: item, restaurant: data }} className='mt-2 inline-block px-4 py-2 bg-blue-500 text-white rounded'>Order Now</Link>
                             </div>
                         </div>
                     ))}

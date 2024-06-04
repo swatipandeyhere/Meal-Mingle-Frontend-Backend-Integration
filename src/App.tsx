@@ -6,6 +6,7 @@ import { Route, Routes } from 'react-router-dom'
 import EmailLogin from './components/EmailLogin'
 import Main from './components/Main'
 import Menu from './components/Menu'
+import Order from './components/Order'
 
 const App = () => {
   return (
@@ -17,6 +18,7 @@ const App = () => {
         <Route path='/emailLogin' element={<EmailLogin />} />
         <Route path='/main' element={<Main />} />
         <Route path='/menu' element={<Menu />} />
+        <Route path='/order' element={<Order />} />
       </Routes>
     </>
   )
