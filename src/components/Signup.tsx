@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import GoogleIcon from '../images/google-icon.png';
-import { createUserWithEmailAndPassword, onAuthStateChanged, sendEmailVerification, signInWithPopup } from 'firebase/auth';
-import { auth, googleAuthProvider } from '../firebase/setup';
+import { createUserWithEmailAndPassword, sendEmailVerification, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from 'firebase/auth';
+import { auth } from '../firebase/setup';
 import { Link } from 'react-router-dom';
 
 const Signup = () => {
@@ -9,25 +9,67 @@ const Signup = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [phone, setPhone] = useState("");
+    const [error, setError] = useState<string | null>(null);
 
     const googleSignIn = async () => {
         try {
-            await signInWithPopup(auth, googleAuthProvider);
+            const result = await signInWithPopup(auth, new GoogleAuthProvider());
+            const user = result.user;
+            const token = await user.getIdToken();
+
+            localStorage.setItem('jwtToken', token);
         } catch (err) {
             console.error(err);
+            setError((err as Error).message);
         }
-    }
+    };
 
     const emailSignUp = async () => {
         try {
-            await createUserWithEmailAndPassword(auth, email, password);
-            onAuthStateChanged(auth, async (user: any) => {
-                await sendEmailVerification(user);
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            await sendEmailVerification(user);
+
+            // Listen for auth state changes
+            onAuthStateChanged(auth, async (user) => {
+                if (user) {
+                    // Perform actions after sign-up
+                    // For example, you can redirect the user to a new page
+                    console.log('User signed up successfully:', user.uid);
+                }
             });
+
+            // Send user data to the backend
+            const response = await fetch('YOUR_BACKEND_API_ENDPOINT/signup', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    name,
+                    email,
+                    password,
+                    phone
+                })
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Failed to sign up');
+            }
+
+            const data = await response.json();
+            const { token } = data;
+
+            // Store token in local storage
+            localStorage.setItem('jwtToken', token);
+
         } catch (err) {
             console.log(err);
+            setError((err as Error).message);
         }
-    }
+    };
 
     return (
         <div className="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
@@ -40,6 +82,7 @@ const Signup = () => {
                                 <h3 className="text-3xl font-semibold leading-6 text-gray-600" id="modal-title">Sign Up</h3>
                                 <Link to='/'><div className='ml-52'>X</div></Link>
                             </div>
+                            {error && <div className="text-red-500 text-sm">{error}</div>}
                             <input onChange={(e) => setName(e.target.value)} className="mt-8 outline-none border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" placeholder="Enter Name" required />
                             <input onChange={(e) => setEmail(e.target.value)} className="mt-5 outline-none border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" placeholder="Enter Email" required />
                             <input type='password' onChange={(e) => setPassword(e.target.value)} className="mt-5 outline-none border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" placeholder="Enter Password" required />
