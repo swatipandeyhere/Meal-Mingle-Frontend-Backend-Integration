@@ -1,49 +1,67 @@
-import React, { useState } from 'react'
-import PhoneInput from 'react-phone-input-2'
-import 'react-phone-input-2/lib/style.css'
-import GoogleIcon from '../images/google-icon.png'
-import EmailIcon from '../images/email-icon.png'
-import { RecaptchaVerifier, signInWithPhoneNumber, signInWithPopup } from 'firebase/auth'
-import { auth, googleAuthProvider } from '../firebase/setup'
-import { Link, useNavigate } from 'react-router-dom'
+import React, { useState } from 'react';
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
+import GoogleIcon from '../images/google-icon.png';
+import EmailIcon from '../images/email-icon.png';
+import { RecaptchaVerifier, signInWithPhoneNumber, signInWithPopup } from 'firebase/auth';
+import { auth, googleAuthProvider } from '../firebase/setup';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Login = () => {
     const navigate = useNavigate();
 
-    const [phone, setPhone] = useState("")
-    const [user, setUser] = useState<any>(null);
+    const [phone, setPhone] = useState("");
     const [otp, setOtp] = useState("");
+    const [confirmationResult, setConfirmationResult] = useState<any>(null);
+    const [error, setError] = useState<string | null>(null);
 
     const sendOtp = async () => {
         try {
             const recaptcha = new RecaptchaVerifier(auth, "recaptcha", {});
             const confirmationResult = await signInWithPhoneNumber(auth, phone, recaptcha);
-            setUser(confirmationResult);
-        }
-        catch (err) {
+            setConfirmationResult(confirmationResult);
+        } catch (err: any) {
             console.error(err);
+            setError(err.message);
         }
-    }
+    };
 
     const verifyOtp = async () => {
         try {
-            await user.confirm(otp);
-        }
-        catch (err) {
+            if (!confirmationResult) throw new Error("Confirmation result not found.");
+            await confirmationResult.confirm(otp);
+            const user = auth.currentUser;
+            if (user) {
+                const token = await user.getIdToken();
+                localStorage.setItem("jwtToken", token);
+                navigate("/main");
+            } else {
+                setError("User not authenticated.");
+            }
+        } catch (err: any) {
             console.error(err);
+            setError(err.message);
         }
-    }
+    };
 
     const googleSignIn = async () => {
         try {
             const data = await signInWithPopup(auth, googleAuthProvider);
-            auth.currentUser?.email && navigate('/main');
+            const user = auth.currentUser;
+            if (user) {
+                const token = await user.getIdToken();
+                localStorage.setItem("jwtToken", token);
+                navigate("/main");
+            } else {
+                setError("User not authenticated.");
+            }
             console.log(data);
-        }
-        catch (err) {
+        } catch (err: any) {
             console.error(err);
+            setError(err.message);
         }
-    }
+    };
+
     return (
         <div className="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
             <div className="fixed inset-0 bg-black bg-opacity-85 transition-opacity"></div>
@@ -93,7 +111,7 @@ const Login = () => {
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default Login
+export default Login;
