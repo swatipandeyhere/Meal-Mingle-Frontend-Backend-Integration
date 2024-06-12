@@ -31,16 +31,13 @@ const Signup = () => {
 
             await sendEmailVerification(user);
 
-            // Listen for auth state changes
             onAuthStateChanged(auth, async (user) => {
                 if (user) {
-                    // Perform actions after sign-up
-                    // For example, you can redirect the user to a new page
                     console.log('User signed up successfully:', user.uid);
                 }
             });
 
-            // Send user data to the backend
+           
             const response = await fetch('YOUR_BACKEND_API_ENDPOINT/signup', {
                 method: 'POST',
                 headers: {
@@ -62,7 +59,6 @@ const Signup = () => {
             const data = await response.json();
             const { token } = data;
 
-            // Store token in local storage
             localStorage.setItem('jwtToken', token);
 
         } catch (err) {

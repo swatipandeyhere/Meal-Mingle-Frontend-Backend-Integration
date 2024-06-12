@@ -1,31 +1,42 @@
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import EmailInboxIcon from '../images/email-inbox-icon.png';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
 import { auth } from '../firebase/setup';
-import EmailInboxIcon from '../images/email-inbox-icon.png'
 
 const EmailLogin = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [error, setError] = useState<string | null>(null);
 
     const emailLogin = async () => {
         try {
-            const data = await signInWithEmailAndPassword(auth, email, password);
-            console.log(data);
-        }
-        catch (err) {
-            console.log(err);
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+            const response = await fetch('YOUR_BACKEND_AUTH_ENDPOINT', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, password }),
+            });
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || "An error occurred during login.");
+            }
+            const { token } = await response.json();
+            localStorage.setItem("jwtToken", token);
+        } catch (err: any) {
+            console.error(err);
+            setError(err.message || "An unknown error occurred during login.");
         }
     }
 
     return (
         <div className="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-
             <div className="fixed inset-0 bg-black bg-opacity-85 transition-opacity"></div>
-
             <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
                 <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-
                     <div className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-96 sm:max-w-lg">
                         <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
                             <div className='flex'>
@@ -38,6 +49,7 @@ const EmailLogin = () => {
                             <button onClick={emailLogin} className="mt-5 mb-3 bg-rose-500 w-full h-12 text-white py-2 px-4 rounded-lg">
                                 Login with Email
                             </button>
+                            {error && <div className="text-red-500 mt-2">{error}</div>}
                             <hr className='mt-4' />
                             <div className='text-base mt-5'>Already have an account? <Link to='/login'><span className='text-red-500'>Log in</span></Link></div>
                         </div>
@@ -45,7 +57,7 @@ const EmailLogin = () => {
                 </div>
             </div>
         </div>
-    )
+    );
 }
 
-export default EmailLogin
+export default EmailLogin;
