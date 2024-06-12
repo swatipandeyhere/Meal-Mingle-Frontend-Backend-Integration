@@ -1,35 +1,37 @@
-import React, { useEffect, useState } from 'react'
-import SearchIcon from '../images/search-icon.png'
-import Avatar from 'react-avatar'
-import { auth } from '../firebase/setup'
-import { onAuthStateChanged, signOut } from 'firebase/auth'
-import { Link } from 'react-router-dom'
-import Location from '../images/location.png'
-import DropDownIcon from '../images/drop-down-icon.png'
-import LogoutIcon from '../images/logout-icon.png'
+import React, { useEffect, useState } from 'react';
+import SearchIcon from '../images/search-icon.png';
+import Avatar from 'react-avatar';
+import { auth } from '../firebase/setup';
+import { onAuthStateChanged, signOut } from 'firebase/auth';
+import { Link } from 'react-router-dom';
+import Location from '../images/location.png';
+import DropDownIcon from '../images/drop-down-icon.png';
+import LogoutIcon from '../images/logout-icon.png';
+import ShoppingCartIcon from '../images/shopping-cart-icon.png';
+import { useCart } from '../context/CartContext';
 
 interface cityProp {
-    city?: any
+    city?: any;
 }
 
 const Navbar = (props: cityProp) => {
     const [authStore, setAuthStore] = useState<any>([]);
+    const { cart } = useCart();
 
     useEffect(() => {
         onAuthStateChanged(auth, (user) => {
             setAuthStore(user);
             console.log(user);
-        })
-    }, [auth])
+        });
+    }, [auth]);
 
     const logout = async () => {
         try {
             await signOut(auth);
-        }
-        catch (err) {
+        } catch (err) {
             console.error(err);
         }
-    }
+    };
 
     return (
         <div className='flex'>
@@ -49,10 +51,11 @@ const Navbar = (props: cityProp) => {
                 <div className='ml-2'>{authStore?.displayName?.substring(0, authStore?.displayName.indexOf(' ')) ?? authStore?.email?.substring(0, authStore?.email.indexOf('@'))}</div>
                 {!auth.currentUser?.email && <Link to='/login'><div className='text-gray-600 text-lg cursor-pointer ml-20'>Log In</div></Link>}
                 {!auth.currentUser?.email && <Link to='/signup'><div className='text-gray-600 text-lg ml-5 cursor-pointer'>Sign Up</div></Link>}
+                <Link to='/cart'><img src={ShoppingCartIcon} alt='Shopping Cart Icon' className='ml-4 shadow-lg p-2 rounded-xl text-gray-600 cursor-pointer w-10 h-10' /></Link> {/* Add link to the cart page */}
                 {auth.currentUser && <img onClick={logout} src={LogoutIcon} alt='Logout Icon' className='ml-4 shadow-lg p-2 rounded-xl text-gray-600 cursor-pointer w-10 h-10' />}
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default Navbar
+export default Navbar;
