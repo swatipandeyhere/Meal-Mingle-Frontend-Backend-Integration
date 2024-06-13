@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import EmailInboxIcon from '../images/email-inbox-icon.png';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase/setup';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const EmailLogin = () => {
+    const navigate = useNavigate();
+
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState<string | null>(null);
@@ -22,18 +26,24 @@ const EmailLogin = () => {
             });
             if (!response.ok) {
                 const errorData = await response.json();
-                throw new Error(errorData.message || "An error occurred during login.");
+                throw new Error(errorData.message || "An Error Occurred during Login");
             }
             const { token } = await response.json();
             localStorage.setItem("jwtToken", token);
+            toast.success('Logged In with Email Successfully!');
+            setTimeout(() => {
+                navigate("/main");
+            }, 2000);
         } catch (err: any) {
             console.error(err);
-            setError(err.message || "An unknown error occurred during login.");
+            setError(err.message || "An Unknown Error Occurred during Login");
+            toast.error(err.message || "An Unknown Error Occurred during Login");
         }
     }
 
     return (
         <div className="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+            <ToastContainer />
             <div className="fixed inset-0 bg-black bg-opacity-85 transition-opacity"></div>
             <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
                 <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
