@@ -75,9 +75,9 @@ const Navbar = (props: cityProp) => {
                             <div className='text-gray-600 text-lg ml-5 cursor-pointer'>Sign Up</div>
                         </Link>
                     )}
-                    <Link to='/cart'>
+                    {auth.currentUser&& (<Link to='/cart'>
                         <img src={ShoppingCartIcon} alt='Shopping Cart Icon' className='ml-4 shadow-lg p-2 rounded-xl text-gray-600 cursor-pointer w-10 h-10' />
-                    </Link>
+                    </Link>)}
                     {auth.currentUser && (
                         <img onClick={logout} src={LogoutIcon} alt='Logout Icon' className='ml-4 shadow-lg p-2 rounded-xl text-gray-600 cursor-pointer w-10 h-10' />
                     )}
