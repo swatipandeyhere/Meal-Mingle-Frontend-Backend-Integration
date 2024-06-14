@@ -14,13 +14,15 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
 
 interface cityProp {
-    city?: any;
+    city?: string;
+    onSearch?: (query: string) => void;
 }
 
-const Navbar = (props: cityProp) => {
+const Navbar = ({ city, onSearch }: cityProp) => {
     const [authStore, setAuthStore] = useState<any>({});
     const { cart } = useCart();
     const navigate = useNavigate();
+    const [searchQuery, setSearchQuery] = useState('');
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -42,6 +44,13 @@ const Navbar = (props: cityProp) => {
         }
     };
 
+    const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchQuery(e.target.value);
+        if (onSearch) {
+            onSearch(e.target.value);
+        }
+    };
+
     return (
         <>
             <ToastContainer />
@@ -49,11 +58,12 @@ const Navbar = (props: cityProp) => {
                 <h1 className='text-3xl font-extrabold italic ml-20'>MealMingle</h1>
                 <div className='ml-6 shadow-lg flex items-center border border-gray-300 w-7/12 rounded-lg p-3 h-12'>
                     <img src={Location} alt='Location Icon' className='w-7 h-7 ml-2' />
-                    <input className="outline-none text-gray-900 text-sm block w-40 p-2.5" placeholder={props.city ?? 'Location'} required />
+                    <input className="outline-none text-gray-900 text-sm block w-40 p-2.5" placeholder={city ?? 'Location'} required />
                     <img src={DropDownIcon} alt='Drop Down Icon' className='w-5 h-5 ml-5' />
                     <div className='ml-3 text-gray-400'>|</div>
                     <img src={SearchIcon} alt='Search Icon' className='w-6 h-6 ml-5' />
-                    <input className="outline-none text-gray-900 text-sm block w-96 p-2.5" placeholder="Search for Restaurant, Cuisine or a Dish" required />
+                    <input className="outline-none text-gray-900 text-sm block w-96 p-2.5" placeholder="Search for Restaurant" value={searchQuery}
+                        onChange={handleSearchChange} required />
                 </div>
                 <div className='flex items-center'>
                     {authStore?.photoURL ? (
@@ -75,9 +85,11 @@ const Navbar = (props: cityProp) => {
                             <div className='text-gray-600 text-lg ml-5 cursor-pointer'>Sign Up</div>
                         </Link>
                     )}
-                    {auth.currentUser&& (<Link to='/cart'>
-                        <img src={ShoppingCartIcon} alt='Shopping Cart Icon' className='ml-4 shadow-lg p-2 rounded-xl text-gray-600 cursor-pointer w-10 h-10' />
-                    </Link>)}
+                    {auth.currentUser && (
+                        <Link to='/cart'>
+                            <img src={ShoppingCartIcon} alt='Shopping Cart Icon' className='ml-4 shadow-lg p-2 rounded-xl text-gray-600 cursor-pointer w-10 h-10' />
+                        </Link>
+                    )}
                     {auth.currentUser && (
                         <img onClick={logout} src={LogoutIcon} alt='Logout Icon' className='ml-4 shadow-lg p-2 rounded-xl text-gray-600 cursor-pointer w-10 h-10' />
                     )}
