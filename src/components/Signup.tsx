@@ -21,9 +21,11 @@ const Signup = () => {
             const user = result.user;
             const token = await user.getIdToken();
 
-            localStorage.setItem('jwtToken', token);
+            localStorage.setItem('signup_googleSignIn', token);
             toast.success('Signed In with Google Successfully!');
-            navigate('/main');
+            setTimeout(() => {
+                navigate('/main');
+            }, 2000);
         } catch (err: any) {
             console.error(err);
             toast.error('Failed to Sign In with Google!');
@@ -125,7 +127,7 @@ const Signup = () => {
             // const data = await response.json();
             // const { token } = data;
 
-            // localStorage.setItem('jwtToken', token);
+            // localStorage.setItem('signup_emailSignUp', token);
 
             // Poll for email verification
             const intervalId = setInterval(async () => {

@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
+import { RecaptchaVerifier, signInWithPhoneNumber, signInWithPopup } from 'firebase/auth';
+import { auth, googleAuthProvider } from '../firebase/setup';
+import { Link, useNavigate } from 'react-router-dom';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
 import GoogleIcon from '../images/google-icon.png';
 import EmailIcon from '../images/email-icon.png';
-import { RecaptchaVerifier, signInWithPhoneNumber, signInWithPopup } from 'firebase/auth';
-import { auth, googleAuthProvider } from '../firebase/setup';
-import { Link, useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -25,8 +25,7 @@ const Login = () => {
             toast.success('OTP Sent Successfully!');
         } catch (err: any) {
             console.error(err);
-            setError(err.message);
-            toast.error(err.message);
+            toast.error('Failed to Send OTP!');
         }
     };
 
@@ -37,19 +36,17 @@ const Login = () => {
             const user = auth.currentUser;
             if (user) {
                 const token = await user.getIdToken();
-                localStorage.setItem("jwtToken", token);
+                localStorage.setItem("login_otp", token);
                 toast.success('Logged In with OTP Successfully!');
                 setTimeout(() => {
                     navigate("/main");
                 }, 2000);
             } else {
-                setError("User Not Authenticated");
-                toast.error('User Not Authenticated');
+                toast.error('User Authentication Failed!');
             }
         } catch (err: any) {
             console.error(err);
-            setError(err.message);
-            toast.error(err.message);
+            toast.error('Failed to Verify OTP!');
         }
     };
 
@@ -59,19 +56,17 @@ const Login = () => {
             const user = auth.currentUser;
             if (user) {
                 const token = await user.getIdToken();
-                localStorage.setItem("jwtToken", token);
+                localStorage.setItem("login_googleSignIn", token);
                 toast.success('Logged In with Google Successfully!');
                 setTimeout(() => {
                     navigate("/main");
                 }, 2000);
             } else {
-                setError("User Not Authenticated");
-                toast.error('User Not Authenticated');
+                toast.error('User Authentication Failed!');
             }
         } catch (err: any) {
             console.error(err);
-            setError(err.message);
-            toast.error(err.message);
+            toast.error('Failed to Sign In with Google!');
         }
     };
 
