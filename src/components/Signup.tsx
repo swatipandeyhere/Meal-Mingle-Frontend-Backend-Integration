@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { createUserWithEmailAndPassword, sendEmailVerification, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../firebase/setup';
 import { Link, useNavigate } from 'react-router-dom';
 import GoogleIcon from '../images/google-icon.png';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { parsePhoneNumberFromString } from 'libphonenumber-js';
 
 const Signup = () => {
     const navigate = useNavigate();
@@ -22,18 +23,73 @@ const Signup = () => {
 
             localStorage.setItem('jwtToken', token);
             toast.success('Signed In with Google Successfully!');
-            setTimeout(() => {
-                navigate('/main');
-            }, 2000);
-        } catch (err) {
+            navigate('/main');
+        } catch (err: any) {
             console.error(err);
-            setError((err as Error).message);
-            toast.error((err as Error).message);
+            toast.error('Failed to Sign In with Google!');
         }
     };
 
+    const validateEmail = (email: string) => {
+        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return re.test(String(email).toLowerCase());
+    };
+
+    const validatePassword = (password: string) => {
+        return password.length >= 6;
+    };
+
+    const validatePhoneNumber = (phone: string) => {
+        const phoneNumber = parsePhoneNumberFromString(phone, 'IN');
+        return phoneNumber && phoneNumber.isValid();
+    };
+
+    const checkPhoneNumberExists = async (phone: string) => {
+        // Simulate check since backend is not running
+        // Replace this with actual backend API call
+        // const response = await fetch('YOUR_BACKEND_API_ENDPOINT/checkPhoneNumber', {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json'
+        //     },
+        //     body: JSON.stringify({ phone })
+        // });
+
+        // const data = await response.json();
+        // return data.exists;
+
+        // For simulation purposes
+        return false;
+    };
+
     const emailSignUp = async () => {
+        if (!name.trim()) {
+            toast.error('Name is Required');
+            return;
+        }
+
+        if (!validateEmail(email)) {
+            toast.error('Invalid Email Format');
+            return;
+        }
+
+        if (!validatePassword(password)) {
+            toast.error('Password must be at least 6 characters long!');
+            return;
+        }
+
+        if (!validatePhoneNumber(phone)) {
+            toast.error('Invalid Phone Number');
+            return;
+        }
+
         try {
+            const phoneExists = await checkPhoneNumberExists(phone);
+            if (phoneExists) {
+                toast.error('Phone Number is Already in Use!');
+                return;
+            }
+
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
 
@@ -46,33 +102,55 @@ const Signup = () => {
                 }
             });
 
-            const response = await fetch('YOUR_BACKEND_API_ENDPOINT/signup', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    name,
-                    email,
-                    password,
-                    phone
-                })
-            });
+            // Simulate backend API call since backend is not running
+            // Commented out the actual fetch call
+            // const response = await fetch('YOUR_BACKEND_API_ENDPOINT/signup', {
+            //     method: 'POST',
+            //     headers: {
+            //         'Content-Type': 'application/json'
+            //     },
+            //     body: JSON.stringify({
+            //         name,
+            //         email,
+            //         password,
+            //         phone
+            //     })
+            // });
 
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.message || 'Failed to Sign Up');
-            }
+            // if (!response.ok) {
+            //     const errorData = await response.json();
+            //     throw new Error(errorData.message || 'Failed to Sign Up');
+            // }
 
-            const data = await response.json();
-            const { token } = data;
+            // const data = await response.json();
+            // const { token } = data;
 
-            localStorage.setItem('jwtToken', token);
+            // localStorage.setItem('jwtToken', token);
 
-        } catch (err) {
+            // Poll for email verification
+            const intervalId = setInterval(async () => {
+                const user = auth.currentUser;
+                if (user) {
+                    await user.reload();
+                    if (user.emailVerified) {
+                        clearInterval(intervalId);
+                        toast.success('Email Verified! Redirecting to Login page.');
+                        setTimeout(() => {
+                            navigate('/login');
+                        }, 3000); // 3 seconds delay before navigating to login page
+                    }
+                }
+            }, 2000);
+
+        } catch (err: any) {
             console.error(err);
-            setError((err as Error).message);
-            toast.error((err as Error).message);
+            if (err.code === 'auth/email-already-in-use') {
+                toast.error('Email Address is Already in Use!');
+            } else if (err.code === 'auth/invalid-email') {
+                toast.error('Invalid Email Format');
+            } else {
+                toast.error('Failed to Sign Up. Please try again later.');
+            }
         }
     };
 
