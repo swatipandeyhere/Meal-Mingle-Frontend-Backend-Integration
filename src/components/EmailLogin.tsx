@@ -17,26 +17,34 @@ const EmailLogin = () => {
         try {
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
-            const response = await fetch('YOUR_BACKEND_AUTH_ENDPOINT', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ email, password }),
-            });
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.message || "An Error Occurred during Login");
-            }
-            const { token } = await response.json();
-            localStorage.setItem("jwtToken", token);
+
+            // Simulate backend API call since backend is not running
+            // Instead of actual fetch call, we'll handle success directly
+            // const response = await fetch('YOUR_BACKEND_AUTH_ENDPOINT', {
+            //     method: 'POST',
+            //     headers: {
+            //         'Content-Type': 'application/json',
+            //     },
+            //     body: JSON.stringify({ email, password }),
+            // });
+
+            // if (!response.ok) {
+            //     const errorData = await response.json();
+            //     throw new Error(errorData.message || "An Error Occurred during Login");
+            // }
+
+            // Simulated success case
+            // const { token } = await response.json();
+            // localStorage.setItem("emailLogin", token);
+            const simulatedToken = "jwt-token-from-backend-upon-email-login";
+            localStorage.setItem("emailLogin", simulatedToken);
+
             toast.success('Logged In with Email Successfully!');
             setTimeout(() => {
                 navigate("/main");
             }, 2000);
         } catch (err: any) {
             console.error(err);
-            setError(err.message || "An Unknown Error Occurred during Login");
             toast.error(err.message || "An Unknown Error Occurred during Login");
         }
     }

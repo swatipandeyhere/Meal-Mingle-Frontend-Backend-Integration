@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { createUserWithEmailAndPassword, sendEmailVerification, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../firebase/setup';
 import { Link, useNavigate } from 'react-router-dom';
@@ -104,31 +104,6 @@ const Signup = () => {
                 }
             });
 
-            // Simulate backend API call since backend is not running
-            // Commented out the actual fetch call
-            // const response = await fetch('YOUR_BACKEND_API_ENDPOINT/signup', {
-            //     method: 'POST',
-            //     headers: {
-            //         'Content-Type': 'application/json'
-            //     },
-            //     body: JSON.stringify({
-            //         name,
-            //         email,
-            //         password,
-            //         phone
-            //     })
-            // });
-
-            // if (!response.ok) {
-            //     const errorData = await response.json();
-            //     throw new Error(errorData.message || 'Failed to Sign Up');
-            // }
-
-            // const data = await response.json();
-            // const { token } = data;
-
-            // localStorage.setItem('signup_emailSignUp', token);
-
             // Poll for email verification
             const intervalId = setInterval(async () => {
                 const user = auth.currentUser;
@@ -136,6 +111,32 @@ const Signup = () => {
                     await user.reload();
                     if (user.emailVerified) {
                         clearInterval(intervalId);
+                        // Simulate backend API call since backend is not running
+                        // Commented out the actual fetch call
+                        // const response = await fetch('YOUR_BACKEND_API_ENDPOINT/signup', {
+                        //     method: 'POST',
+                        //     headers: {
+                        //         'Content-Type': 'application/json'
+                        //     },
+                        //     body: JSON.stringify({
+                        //         name,
+                        //         email,
+                        //         password,
+                        //         phone
+                        //     })
+                        // });
+
+                        // if (!response.ok) {
+                        //     const errorData = await response.json();
+                        //     throw new Error(errorData.message || 'Failed to Sign Up');
+                        // }
+
+                        // const data = await response.json();
+                        // const { token } = data;
+
+                        // localStorage.setItem('signup_emailSignUp', token);
+                        const simulatedToken = "jwt-token-from-backend-upon-email-sign-up";
+                        localStorage.setItem('signup_emailSignUp', simulatedToken);
                         toast.success('Email Verified! Redirecting to Login page.');
                         setTimeout(() => {
                             navigate('/login');
