@@ -31,7 +31,7 @@ const App = () => {
           <Route path='/payment' element={<Payment />} />
           <Route path="/payment-successful" element={<PaymentSuccessful />} />
           <Route path="/category/:categoryName" element={<RestaurantsByCategory />} />
-          <Route path="/category-menu/:restaurantId" element={<CategoryMenu />} />
+          <Route path="/category/:categoryName/menu" element={<CategoryMenu />} />
         </Routes>
       </CartProvider>
     </AuthProvider>

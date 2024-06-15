@@ -42,6 +42,7 @@ const Navbar = ({ city, onSearch }: cityProp) => {
         } catch (err) {
             console.error(err);
         }
+        localStorage.clear();
     };
 
     const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {

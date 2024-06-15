@@ -11,7 +11,7 @@ const RestaurantsByCategory = () => {
 
     const handleRestaurantClick = (restaurant: any) => {
         if (isAuthenticated()) {
-            navigate(`/category-menu/${restaurant.restaurantId}`, { state: { data: restaurant, category: categoryName } });
+            navigate(`/category/${categoryName}/menu`, { state: { data: restaurant, category: categoryName } });
         } else {
             navigate('/login');
         }
