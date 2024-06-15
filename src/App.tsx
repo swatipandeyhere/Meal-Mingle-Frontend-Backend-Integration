@@ -11,30 +11,27 @@ import Order from './components/Order';
 import Payment from './components/Payment';
 import PaymentSuccessful from './components/PaymentSuccessful';
 import Cart from './components/Cart';
-import { AuthProvider } from './context/authContext';
 import RestaurantsByCategory from './components/RestaurantsByCategory';
 import CategoryMenu from './components/CategoryMenu';
 
 const App = () => {
   return (
-    <AuthProvider>
-      <CartProvider>
-        <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path='/signup' element={<Signup />} />
-          <Route path='/login' element={<Login />} />
-          <Route path='/emailLogin' element={<EmailLogin />} />
-          <Route path='/main' element={<Main />} />
-          <Route path='/menu' element={<Menu />} />
-          <Route path='/cart' element={<Cart />} />
-          <Route path='/order' element={<Order />} />
-          <Route path='/payment' element={<Payment />} />
-          <Route path="/payment-successful" element={<PaymentSuccessful />} />
-          <Route path="/category/:categoryName" element={<RestaurantsByCategory />} />
-          <Route path="/category/:categoryName/menu" element={<CategoryMenu />} />
-        </Routes>
-      </CartProvider>
-    </AuthProvider>
+    <CartProvider>
+      <Routes>
+        <Route path='/' element={<Home />} />
+        <Route path='/signup' element={<Signup />} />
+        <Route path='/login' element={<Login />} />
+        <Route path='/emailLogin' element={<EmailLogin />} />
+        <Route path='/main' element={<Main />} />
+        <Route path='/menu' element={<Menu />} />
+        <Route path='/cart' element={<Cart />} />
+        <Route path='/order' element={<Order />} />
+        <Route path='/payment' element={<Payment />} />
+        <Route path="/payment-successful" element={<PaymentSuccessful />} />
+        <Route path="/category/:categoryName" element={<RestaurantsByCategory />} />
+        <Route path="/category/:categoryName/menu" element={<CategoryMenu />} />
+      </Routes>
+    </CartProvider>
   );
 };
 
