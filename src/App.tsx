@@ -13,6 +13,7 @@ import PaymentSuccessful from './components/PaymentSuccessful';
 import Cart from './components/Cart';
 import { AuthProvider } from './context/authContext';
 import RestaurantsByCategory from './components/RestaurantsByCategory';
+import CategoryMenu from './components/CategoryMenu';
 
 const App = () => {
   return (
@@ -30,6 +31,7 @@ const App = () => {
           <Route path='/payment' element={<Payment />} />
           <Route path="/payment-successful" element={<PaymentSuccessful />} />
           <Route path="/category/:categoryName" element={<RestaurantsByCategory />} />
+          <Route path="/category-menu/:restaurantId" element={<CategoryMenu />} />
         </Routes>
       </CartProvider>
     </AuthProvider>
