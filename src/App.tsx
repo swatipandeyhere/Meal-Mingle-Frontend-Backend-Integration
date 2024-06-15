@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import { CartProvider } from './context/CartContext';
 import Login from './components/Login';
 import Signup from './components/Signup';
@@ -12,6 +12,7 @@ import Payment from './components/Payment';
 import PaymentSuccessful from './components/PaymentSuccessful';
 import Cart from './components/Cart';
 import { AuthProvider } from './context/authContext';
+import RestaurantsByCategory from './components/RestaurantsByCategory';
 
 const App = () => {
   return (
@@ -28,10 +29,10 @@ const App = () => {
           <Route path='/order' element={<Order />} />
           <Route path='/payment' element={<Payment />} />
           <Route path="/payment-successful" element={<PaymentSuccessful />} />
+          <Route path="/category/:categoryName" element={<RestaurantsByCategory />} />
         </Routes>
       </CartProvider>
     </AuthProvider>
-
   );
 };
 

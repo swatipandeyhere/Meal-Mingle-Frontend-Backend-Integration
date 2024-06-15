@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -17,19 +18,25 @@ import Salad from '../images/menu-8.png';
 import Biryani from '../images/menu-9.png';
 import Fish from '../images/menu-10.png';
 
+const dishes = [
+    { name: 'Pizza', image: Pizza },
+    { name: 'Burger', image: Burger },
+    { name: 'Noodles', image: Noodles },
+    { name: 'Pasta', image: Pasta },
+    { name: 'Sandwich', image: Sandwich },
+    { name: 'Thali', image: Thali },
+    { name: 'Dessert', image: Dessert },
+    { name: 'Salad', image: Salad },
+    { name: 'Biryani', image: Biryani },
+    { name: 'Fish', image: Fish },
+];
+
 const Menubar: React.FC = () => {
-    const dishes = [
-        { name: 'Pizza', image: Pizza },
-        { name: 'Burger', image: Burger },
-        { name: 'Noodles', image: Noodles },
-        { name: 'Pasta', image: Pasta },
-        { name: 'Sandwich', image: Sandwich },
-        { name: 'Thali', image: Thali },
-        { name: 'Dessert', image: Dessert },
-        { name: 'Salad', image: Salad },
-        { name: 'Biryani', image: Biryani },
-        { name: 'Fish', image: Fish },
-    ];
+    const navigate = useNavigate();
+
+    const handleCategoryClick = (categoryName: string) => {
+        navigate(`/category/${categoryName}`);
+    };
 
     const settings = {
         dots: false,
@@ -48,7 +55,7 @@ const Menubar: React.FC = () => {
             <div className='text-3xl'>Uniting You with Delicious Moments</div>
             <Slider {...settings} className='mt-5'>
                 {dishes.map((dish, index) => (
-                    <div key={index} className='text-center px-2'>
+                    <div key={index} className='text-center px-2 cursor-pointer' onClick={() => handleCategoryClick(dish.name)}>
                         <img src={dish.image} alt={dish.name} className='rounded-full w-40 h-40 mx-auto' />
                         <p className='mt-2'>{dish.name}</p>
                     </div>
