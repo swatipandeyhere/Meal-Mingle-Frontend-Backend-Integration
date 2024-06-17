@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import Navbar from './Navbar';
 import { useCart, CartItem } from '../context/CartContext';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Menu = () => {
@@ -26,7 +26,6 @@ const Menu = () => {
 
     return (
         <>
-            <ToastContainer />
             <Navbar city={data.restaurantAddress.city} />
             <div className='p-4 pl-20'>
                 <h1 className='font-semibold text-3xl mb-4'>Explore the Menu of {data.restaurantName}</h1>
@@ -58,6 +57,6 @@ const Menu = () => {
             </div>
         </>
     );
-}
+};
 
 export default Menu;
