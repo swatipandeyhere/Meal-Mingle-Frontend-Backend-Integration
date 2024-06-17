@@ -1,6 +1,4 @@
 import React, { createContext, useState, useContext, ReactNode } from 'react';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
 export interface CartItem {
     id: string;
@@ -17,6 +15,7 @@ interface CartContextType {
     removeFromCart: (itemId: string) => void;
     clearCart: () => void;
     updateQuantity: (itemId: string, newQuantity: number) => void;
+    getTotalQuantity: () => number;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -58,8 +57,12 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
         setCart(updatedCart);
     };
 
+    const getTotalQuantity = () => {
+        return cart.reduce((total, item) => total + item.quantity, 0);
+    };
+
     return (
-        <CartContext.Provider value={{ cart, addToCart, removeFromCart, clearCart, updateQuantity }}>
+        <CartContext.Provider value={{ cart, addToCart, removeFromCart, clearCart, updateQuantity, getTotalQuantity }}>
             {children}
         </CartContext.Provider>
     );

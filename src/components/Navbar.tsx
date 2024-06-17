@@ -20,7 +20,7 @@ interface cityProp {
 
 const Navbar = ({ city, onSearch }: cityProp) => {
     const [authStore, setAuthStore] = useState<any>({});
-    const { cart } = useCart();
+    const { cart, getTotalQuantity } = useCart();
     const navigate = useNavigate();
     const [searchQuery, setSearchQuery] = useState('');
 
@@ -87,8 +87,13 @@ const Navbar = ({ city, onSearch }: cityProp) => {
                         </Link>
                     )}
                     {auth.currentUser && (
-                        <Link to='/cart'>
+                        <Link to='/cart' className='relative'>
                             <img src={ShoppingCartIcon} alt='Shopping Cart Icon' className='ml-4 shadow-lg p-2 rounded-xl text-gray-600 cursor-pointer w-10 h-10' />
+                            {getTotalQuantity() > 0 && (
+                                <span className='absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full'>
+                                    {getTotalQuantity()}
+                                </span>
+                            )}
                         </Link>
                     )}
                     {auth.currentUser && (
