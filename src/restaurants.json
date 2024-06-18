@@ -11,14 +11,19 @@
         "restaurantRating": 3.6,
         "restaurantDiscount": 12,
         "restaurantAvailability": true,
-        "restaurantImage": "restaurant_1.png",
+        "restaurantImageUrl": "restaurant_1.png",
+        "restaurantOperationDays": "Mon-Fri",
+        "restaurantOperationHours": "10:00AM-11:00PM",
+        "restaurantPhoneNumber": 7978654356,
         "restaurantItems": [
             {
                 "restaurantItemId": "1_1",
                 "restaurantItemName": "Margherita Pizza",
                 "restaurantItemPrice": 390,
                 "restaurantItemCategory": "Pizza",
-                "restaurantItemImageUrl": "restaurant_1_menu_1.png"
+                "restaurantItemImageUrl": "restaurant_1_menu_1.png",
+                "restaurantItemCuisineType": "North Indian",
+                "restaurantItemVeg": true
             }
         ]
     },
@@ -34,21 +39,28 @@
         "restaurantRating": 4.7,
         "restaurantDiscount": 15,
         "restaurantAvailability": true,
-        "restaurantImage": "restaurant_2.png",
+        "restaurantImageUrl": "restaurant_2.png",
+        "restaurantOperationDays": "Mon-Wed",
+        "restaurantOperationHours": "09:00AM-06:00PM",
+        "restaurantPhoneNumber": 8978654367,
         "restaurantItems": [
             {
                 "restaurantItemId": "2_1",
                 "restaurantItemName": "Paneer Tikka Burger",
                 "restaurantItemPrice": 400,
                 "restaurantItemCategory": "Burger",
-                "restaurantItemImageUrl": "restaurant_2_menu_1.png"
+                "restaurantItemImageUrl": "restaurant_2_menu_1.png",
+                "restaurantItemCuisineType": "North Indian",
+                "restaurantItemVeg": true
             },
             {
                 "restaurantItemId": "2_2",
                 "restaurantItemName": "Punjabi Chilli Garlic Noodles",
                 "restaurantItemPrice": 350,
                 "restaurantItemCategory": "Noodles",
-                "restaurantItemImageUrl": "restaurant_2_menu_2.png"
+                "restaurantItemImageUrl": "restaurant_2_menu_2.png",
+                "restaurantItemCuisineType": "North Indian",
+                "restaurantItemVeg": true
             }
         ]
     },
@@ -64,28 +76,37 @@
         "restaurantRating": 4.5,
         "restaurantDiscount": 10,
         "restaurantAvailability": true,
-        "restaurantImage": "restaurant_3.png",
+        "restaurantImageUrl": "restaurant_3.png",
+        "restaurantOperationDays": "Mon-Thu",
+        "restaurantOperationHours": "11:00AM-11:00PM",
+        "restaurantPhoneNumber": 6956654340,
         "restaurantItems": [
             {
                 "restaurantItemId": "3_1",
                 "restaurantItemName": "Veg Biryani",
                 "restaurantItemPrice": 200,
                 "restaurantItemCategory": "Biryani",
-                "restaurantItemImageUrl": "restaurant_3_menu_1.png"
+                "restaurantItemImageUrl": "restaurant_3_menu_1.png",
+                "restaurantItemCuisineType": "South Indian",
+                "restaurantItemVeg": true
             },
             {
                 "restaurantItemId": "3_2",
                 "restaurantItemName": "Veg Sandwich",
                 "restaurantItemPrice": 150,
                 "restaurantItemCategory": "Sandwich",
-                "restaurantItemImageUrl": "restaurant_3_menu_2.png"
+                "restaurantItemImageUrl": "restaurant_3_menu_2.png",
+                "restaurantItemCuisineType": "South Indian",
+                "restaurantItemVeg": true
             },
             {
                 "restaurantItemId": "3_3",
                 "restaurantItemName": "Southern Spice Thali",
                 "restaurantItemPrice": 100,
                 "restaurantItemCategory": "Thali",
-                "restaurantItemImageUrl": "restaurant_3_menu_3.png"
+                "restaurantItemImageUrl": "restaurant_3_menu_3.png",
+                "restaurantItemCuisineType": "South Indian",
+                "restaurantItemVeg": true
             }
         ]
     },
@@ -101,28 +122,37 @@
         "restaurantRating": 4.3,
         "restaurantDiscount": 20,
         "restaurantAvailability": true,
-        "restaurantImage": "restaurant_4.png",
+        "restaurantImageUrl": "restaurant_4.png",
+        "restaurantOperationDays": "Mon-Sat",
+        "restaurantOperationHours": "08:00AM-04:00PM",
+        "restaurantPhoneNumber": 7956678345,
         "restaurantItems": [
             {
                 "restaurantItemId": "4_1",
                 "restaurantItemName": "Veg Biryani",
                 "restaurantItemPrice": 300,
                 "restaurantItemCategory": "Biryani",
-                "restaurantItemImageUrl": "restaurant_4_menu_1.png"
+                "restaurantItemImageUrl": "restaurant_4_menu_1.png",
+                "restaurantItemCuisineType": "South Indian",
+                "restaurantItemVeg": true
             },
             {
                 "restaurantItemId": "4_2",
                 "restaurantItemName": "Aloo Gobi",
                 "restaurantItemPrice": 250,
                 "restaurantItemCategory": "Thali",
-                "restaurantItemImageUrl": "restaurant_4_menu_2.png"
+                "restaurantItemImageUrl": "restaurant_4_menu_2.png",
+                "restaurantItemCuisineType": "North Indian",
+                "restaurantItemVeg": true
             },
             {
                 "restaurantItemId": "4_3",
                 "restaurantItemName": "Harvest Bowl Salad",
                 "restaurantItemPrice": 200,
                 "restaurantItemCategory": "Salad",
-                "restaurantItemImageUrl": "restaurant_4_menu_3.png"
+                "restaurantItemImageUrl": "restaurant_4_menu_3.png",
+                "restaurantItemCuisineType": "South Indian",
+                "restaurantItemVeg": true
             }
         ]
     },
@@ -138,21 +168,28 @@
         "restaurantRating": 4.6,
         "restaurantDiscount": 18,
         "restaurantAvailability": true,
-        "restaurantImage": "restaurant_5.png",
+        "restaurantImageUrl": "restaurant_5.png",
+        "restaurantOperationDays": "Mon-Sat",
+        "restaurantOperationHours": "10:00AM-06:00PM",
+        "restaurantPhoneNumber": 8706721345,
         "restaurantItems": [
             {
                 "restaurantItemId": "5_1",
                 "restaurantItemName": "Gatte ki Sabzi",
                 "restaurantItemPrice": 280,
                 "restaurantItemCategory": "Thali",
-                "restaurantItemImageUrl": "restaurant_5_menu_1.png"
+                "restaurantItemImageUrl": "restaurant_5_menu_1.png",
+                "restaurantItemCuisineType": "North Indian",
+                "restaurantItemVeg": true
             },
             {
                 "restaurantItemId": "5_2",
                 "restaurantItemName": "Ghevar",
                 "restaurantItemPrice": 220,
                 "restaurantItemCategory": "Dessert",
-                "restaurantItemImageUrl": "restaurant_5_menu_2.png"
+                "restaurantItemImageUrl": "restaurant_5_menu_2.png",
+                "restaurantItemCuisineType": "North Indian",
+                "restaurantItemVeg": true
             }
         ]
     }

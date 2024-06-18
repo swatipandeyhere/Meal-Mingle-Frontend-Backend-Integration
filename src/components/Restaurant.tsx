@@ -21,7 +21,7 @@ const Restaurant = (props: restaurantProp) => {
                         {isAuthenticated() ? (
                             <Link to='/menu' state={{ data: data }}>
                                 <div className="max-w-xs rounded-xl overflow-hidden shadow-sm mt-12">
-                                    <img className="w-full rounded-2xl h-60" src={require(`../images/${data.restaurantImage}`)} alt="Restaurant Image" />
+                                    <img className="w-full rounded-2xl h-60" src={require(`../images/${data.restaurantImageUrl}`)} alt="Restaurant Image" />
                                     <div className="py-4">
                                         <div className='flex justify-between items-center'>
                                             <div className="font-semibold text-xl mb-2">{data.restaurantName}</div>
@@ -33,7 +33,7 @@ const Restaurant = (props: restaurantProp) => {
                                 </div>
                             </Link>) : (<Link to='/login' state={{ data: data }}>
                                 <div className="max-w-xs rounded-xl overflow-hidden shadow-sm mt-12">
-                                    <img className="w-full rounded-2xl h-60" src={require(`../images/${data.restaurantImage}`)} alt="Restaurant Image" />
+                                    <img className="w-full rounded-2xl h-60" src={require(`../images/${data.restaurantImageUrl}`)} alt="Restaurant Image" />
                                     <div className="py-4">
                                         <div className='flex justify-between items-center'>
                                             <div className="font-semibold text-xl mb-2">{data.restaurantName}</div>
@@ -54,7 +54,7 @@ const Restaurant = (props: restaurantProp) => {
                         return <>
                             <Link to='/menu' state={{ data: data }}>
                                 <div className="max-w-xs rounded-xl overflow-hidden shadow-sm mt-12">
-                                    <img className="w-full rounded-2xl h-60" src={require(`../images/${data.restaurantImage}`)} alt="Restaurant Image" />
+                                    <img className="w-full rounded-2xl h-60" src={require(`../images/${data.restaurantImageUrl}`)} alt="Restaurant Image" />
                                     <div className="py-4">
                                         <div className='flex justify-between items-center'>
                                             <div className="font-semibold text-xl mb-2">{data.restaurantName}</div>

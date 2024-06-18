@@ -36,7 +36,7 @@ const RestaurantsByCategory = () => {
                         >
                             <img
                                 className='w-full rounded-2xl h-60 object-cover'
-                                src={require(`../images/${restaurant.restaurantImage}`)}
+                                src={require(`../images/${restaurant.restaurantImageUrl}`)}
                                 alt={restaurant.restaurantName}
                             />
                             <div className='py-4'>
