@@ -1,16 +1,53 @@
-import React, { useState } from 'react';
-import Navbar from './Navbar';
-import Restaurant from './Restaurant';
+import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import RestaurantData from '../restaurants.json';
 import Menubar from './Menubar';
+import Navbar from './Navbar';
+import Filters from './Filters';
+import Restaurant from './Restaurant';
 
 const Main = () => {
   const location = useLocation();
   const [filteredRestaurants, setFilteredRestaurants] = useState(RestaurantData);
 
+  useEffect(() => {
+    applyFilters(new URLSearchParams(location.search));
+  }, [location.search]);
+
+  const applyFilters = (params: URLSearchParams) => {
+    let filtered = RestaurantData;
+
+    if (params.get('pureVeg')) {
+      filtered = filtered.filter(restaurant =>
+        restaurant.restaurantItems.every(item => item.restaurantItemVeg)
+      );
+    }
+
+    if (params.get('rating')) {
+      filtered = filtered.filter(restaurant =>
+        restaurant.restaurantRating >= 4.0
+      );
+    }
+
+    if (params.get('offers')) {
+      filtered = filtered.filter(restaurant =>
+        restaurant.restaurantDiscount > 0
+      );
+    }
+
+    if (params.get('cuisine')) {
+      filtered = filtered.filter(restaurant =>
+        restaurant.restaurantItems.some(item =>
+          item.restaurantItemCuisineType === params.get('cuisine')
+        )
+      );
+    }
+
+    setFilteredRestaurants(filtered);
+  };
+
   const handleSearch = (query: string) => {
-    const filtered = RestaurantData.filter((restaurant) =>
+    const filtered = RestaurantData.filter(restaurant =>
       restaurant.restaurantName.toLowerCase().startsWith(query.toLowerCase())
     );
     setFilteredRestaurants(filtered);
@@ -19,6 +56,7 @@ const Main = () => {
   return (
     <div>
       <Navbar city={location.state?.city} onSearch={handleSearch} />
+      <Filters applyFilters={applyFilters} />
       <Menubar />
       <Restaurant restaurant={filteredRestaurants} city={location.state?.city} />
     </div>
