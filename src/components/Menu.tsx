@@ -8,13 +8,15 @@ import 'react-toastify/dist/ReactToastify.css';
 const Menu = () => {
     const location = useLocation();
     const { data } = location.state;
-    const { addToCart } = useCart();
+    const { addToCart, checkIfSameRestaurant } = useCart();
     const [quantities, setQuantities] = useState<{ [key: string]: number }>({});
 
     const handleAddToCart = (item: CartItem) => {
         const quantity = quantities[item.restaurantItemId] || 1;
-        addToCart(item, quantity);
-        toast.success(`${item.restaurantItemName} added to Cart!`);
+        const success = addToCart(item, quantity);
+        if (success) {
+            toast.success(`${item.restaurantItemName} added to Cart!`);
+        }
     };
 
     const handleQuantityChange = (itemId: string, quantity: number) => {

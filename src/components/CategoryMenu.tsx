@@ -13,8 +13,10 @@ const CategoryMenu = () => {
 
     const handleAddToCart = (item: CartItem) => {
         const quantity = quantities[item.restaurantItemId] || 1;
-        addToCart(item, quantity);
-        toast.success(`${item.restaurantItemName} added to Cart!`);
+        const success = addToCart(item, quantity);
+        if (success) {
+            toast.success(`${item.restaurantItemName} added to Cart!`);
+        }
     };
 
     const handleQuantityChange = (itemId: string, quantity: number) => {
@@ -59,6 +61,6 @@ const CategoryMenu = () => {
             </div>
         </>
     );
-}
+};
 
 export default CategoryMenu;

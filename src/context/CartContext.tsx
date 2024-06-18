@@ -7,27 +7,35 @@ export interface CartItem {
     restaurantItemPrice: number;
     restaurantItemImageUrl: string;
     quantity: number;
+    restaurantItemCategory: string;
 }
 
 interface CartContextType {
     cart: CartItem[];
-    addToCart: (item: CartItem, quantity: number) => void;
+    addToCart: (item: CartItem, quantity: number) => boolean;
     removeFromCart: (itemId: string) => void;
     clearCart: () => void;
     updateQuantity: (itemId: string, newQuantity: number) => void;
     getTotalQuantity: () => number;
+    checkIfSameRestaurant: (newRestaurantItemId: string) => boolean;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
-interface CartProviderProps {
-    children: ReactNode;
-}
-
-export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
+export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const [cart, setCart] = useState<CartItem[]>([]);
 
-    const addToCart = (item: CartItem, quantity: number) => {
+    const addToCart = (item: CartItem, quantity: number): boolean => {
+        if (!checkIfSameRestaurant(item.restaurantItemId)) {
+            const confirmReset = window.confirm(`Your Cart contains items from another restaurant. Would you like to reset your cart for adding items from this restaurant?`);
+            if (confirmReset) {
+                clearCart();
+                setCart([{ ...item, id: `${item.restaurantItemId}-${Date.now()}`, quantity }]);
+                return true;
+            }
+            return false;
+        }
+
         const existingItemIndex = cart.findIndex((cartItem) => cartItem.restaurantItemId === item.restaurantItemId);
 
         if (existingItemIndex !== -1) {
@@ -37,6 +45,7 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
         } else {
             setCart([...cart, { ...item, id: `${item.restaurantItemId}-${Date.now()}`, quantity }]);
         }
+        return true;
     };
 
     const removeFromCart = (itemId: string) => {
@@ -61,8 +70,21 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
         return cart.reduce((total, item) => total + item.quantity, 0);
     };
 
+    const checkIfSameRestaurant = (newRestaurantItemId: string) => {
+        if (cart.length === 0) {
+            return true;
+        }
+
+        const newRestaurantId = newRestaurantItemId.split('_')[0];
+
+        return cart.every(item => {
+            const currentRestaurantId = item.restaurantItemId.split('_')[0];
+            return currentRestaurantId === newRestaurantId;
+        });
+    };
+
     return (
-        <CartContext.Provider value={{ cart, addToCart, removeFromCart, clearCart, updateQuantity, getTotalQuantity }}>
+        <CartContext.Provider value={{ cart, addToCart, removeFromCart, clearCart, updateQuantity, getTotalQuantity, checkIfSameRestaurant }}>
             {children}
         </CartContext.Provider>
     );
