@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 import RestaurantData from '../restaurants.json';
 import Menubar from './Menubar';
 import Navbar from './Navbar';
-import Filters from './Filters';
+import RestaurantFilters from './RestaurantFilters';
 import Restaurant from './Restaurant';
 
 const Main = () => {
@@ -11,17 +11,11 @@ const Main = () => {
   const [filteredRestaurants, setFilteredRestaurants] = useState(RestaurantData);
 
   useEffect(() => {
-    applyFilters(new URLSearchParams(location.search));
+    applyRestaurantFilters(new URLSearchParams(location.search));
   }, [location.search]);
 
-  const applyFilters = (params: URLSearchParams) => {
+  const applyRestaurantFilters = (params: URLSearchParams) => {
     let filtered = RestaurantData;
-
-    if (params.get('pureVeg')) {
-      filtered = filtered.filter(restaurant =>
-        restaurant.restaurantItems.every(item => item.restaurantItemVeg)
-      );
-    }
 
     if (params.get('rating')) {
       filtered = filtered.filter(restaurant =>
@@ -32,14 +26,6 @@ const Main = () => {
     if (params.get('offers')) {
       filtered = filtered.filter(restaurant =>
         restaurant.restaurantDiscount > 0
-      );
-    }
-
-    if (params.get('cuisine')) {
-      filtered = filtered.filter(restaurant =>
-        restaurant.restaurantItems.some(item =>
-          item.restaurantItemCuisineType === params.get('cuisine')
-        )
       );
     }
 
@@ -56,7 +42,7 @@ const Main = () => {
   return (
     <div>
       <Navbar city={location.state?.city} onSearch={handleSearch} />
-      <Filters applyFilters={applyFilters} />
+      <RestaurantFilters applyRestaurantFilters={applyRestaurantFilters} />
       <Menubar />
       <Restaurant restaurant={filteredRestaurants} city={location.state?.city} />
     </div>
