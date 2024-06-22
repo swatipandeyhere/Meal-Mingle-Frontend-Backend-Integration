@@ -1,5 +1,4 @@
 import React from 'react'
-import Dish1 from '../images/dish-1.png'
 import { Link } from 'react-router-dom'
 import { isAuthenticated } from '../utils/authUtils';
 
@@ -18,32 +17,19 @@ const Restaurant = (props: restaurantProp) => {
                 {props.restaurant.filter((data: any) => data.restaurantAddress.city.includes(props.city)).map((data: any) => {
                     console.log(data);
                     return <>
-                        {isAuthenticated() ? (
-                            <Link to='/menu' state={{ data: data }}>
-                                <div className="max-w-xs rounded-xl overflow-hidden shadow-sm mt-12">
-                                    <img className="w-full rounded-2xl h-60" src={require(`../images/${data.restaurantImageUrl}`)} alt="Restaurant Image" />
-                                    <div className="py-4">
-                                        <div className='flex justify-between items-center'>
-                                            <div className="font-semibold text-xl mb-2">{data.restaurantName}</div>
-                                            <div className={`text-white font-semibold text-base rounded-md p-1 ${data.restaurantRating < 4.5 ? `bg-green-600` : `bg-green-900`}`}>
-                                                {data.restaurantRating}
-                                            </div>
+                        <Link to={isAuthenticated() ? '/menu' : '/login'} state={{ data: data }}>
+                            <div className="max-w-xs rounded-xl overflow-hidden shadow-sm mt-12">
+                                <img className="w-full rounded-2xl h-60" src={require(`../images/${data.restaurantImageUrl}`)} alt="Restaurant Image" />
+                                <div className="py-4">
+                                    <div className='flex justify-between items-center'>
+                                        <div className="font-semibold text-xl mb-2">{data.restaurantName}</div>
+                                        <div className={`text-white font-semibold text-base rounded-md p-1 ${data.restaurantRating < 4.5 ? `bg-green-600` : `bg-green-900`}`}>
+                                            {data.restaurantRating}
                                         </div>
                                     </div>
                                 </div>
-                            </Link>) : (<Link to='/login' state={{ data: data }}>
-                                <div className="max-w-xs rounded-xl overflow-hidden shadow-sm mt-12">
-                                    <img className="w-full rounded-2xl h-60" src={require(`../images/${data.restaurantImageUrl}`)} alt="Restaurant Image" />
-                                    <div className="py-4">
-                                        <div className='flex justify-between items-center'>
-                                            <div className="font-semibold text-xl mb-2">{data.restaurantName}</div>
-                                            <div className={`text-white font-semibold text-base rounded-md p-1 ${data.restaurantRating < 4.5 ? `bg-green-600` : `bg-green-900`}`}>
-                                                {data.restaurantRating}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </Link>)}
+                            </div>
+                        </Link>
                     </>
                 })}
             </div>
@@ -52,7 +38,7 @@ const Restaurant = (props: restaurantProp) => {
                     {props.restaurant.map((data: any) => {
                         console.log(data);
                         return <>
-                            <Link to='/menu' state={{ data: data }}>
+                            <Link to={isAuthenticated() ? '/menu' : '/login'} state={{ data: data }}>
                                 <div className="max-w-xs rounded-xl overflow-hidden shadow-sm mt-12">
                                     <img className="w-full rounded-2xl h-60" src={require(`../images/${data.restaurantImageUrl}`)} alt="Restaurant Image" />
                                     <div className="py-4">
