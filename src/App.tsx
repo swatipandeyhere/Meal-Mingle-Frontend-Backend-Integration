@@ -13,6 +13,7 @@ import PaymentSuccessful from './components/PaymentSuccessful';
 import Cart from './components/Cart';
 import RestaurantsByCategory from './components/RestaurantsByCategory';
 import CategoryMenu from './components/CategoryMenu';
+import RestaurantsByFilter from './components/RestaurantsByFilter';
 
 const App = () => {
   return (
@@ -30,6 +31,7 @@ const App = () => {
         <Route path="/payment-successful" element={<PaymentSuccessful />} />
         <Route path="/category/:categoryName" element={<RestaurantsByCategory />} />
         <Route path="/category/:categoryName/menu" element={<CategoryMenu />} />
+        <Route path="/restaurants/filter" element={<RestaurantsByFilter />} />
       </Routes>
     </CartProvider>
   );

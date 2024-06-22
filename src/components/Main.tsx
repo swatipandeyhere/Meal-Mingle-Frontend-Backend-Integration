@@ -9,6 +9,10 @@ import Restaurant from './Restaurant';
 const Main = () => {
   const location = useLocation();
   const [filteredRestaurants, setFilteredRestaurants] = useState(RestaurantData);
+  const [restaurantFilters, setRestaurantFilters] = useState({
+    rating: false,
+    offers: false,
+  });
 
   useEffect(() => {
     applyRestaurantFilters(new URLSearchParams(location.search));
@@ -16,19 +20,23 @@ const Main = () => {
 
   const applyRestaurantFilters = (params: URLSearchParams) => {
     let filtered = RestaurantData;
+    let appliedRestaurantFilters = { rating: false, offers: false };
 
     if (params.get('rating')) {
       filtered = filtered.filter(restaurant =>
         restaurant.restaurantRating >= 4.0
       );
+      appliedRestaurantFilters = { ...appliedRestaurantFilters, rating: true };
     }
 
     if (params.get('offers')) {
       filtered = filtered.filter(restaurant =>
         restaurant.restaurantDiscount > 0
       );
+      appliedRestaurantFilters = { ...appliedRestaurantFilters, offers: true };
     }
 
+    setRestaurantFilters(appliedRestaurantFilters);
     setFilteredRestaurants(filtered);
   };
 
@@ -42,7 +50,7 @@ const Main = () => {
   return (
     <div>
       <Navbar city={location.state?.city} onSearch={handleSearch} />
-      <RestaurantFilters applyRestaurantFilters={applyRestaurantFilters} />
+      <RestaurantFilters applyRestaurantFilters={applyRestaurantFilters} restaurantFilters={restaurantFilters} />
       <Menubar />
       <Restaurant restaurant={filteredRestaurants} city={location.state?.city} />
     </div>
