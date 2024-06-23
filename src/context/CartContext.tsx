@@ -40,7 +40,12 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
         if (existingItemIndex !== -1) {
             const updatedCart = [...cart];
-            updatedCart[existingItemIndex].quantity += quantity;
+            const newQuantity = updatedCart[existingItemIndex].quantity + quantity;
+            if (newQuantity > 10) {
+                alert('You cannot Add more than 10 Qty of the Same Item.');
+                return false;
+            }
+            updatedCart[existingItemIndex].quantity = newQuantity;
             setCart(updatedCart);
         } else {
             setCart([...cart, { ...item, id: `${item.restaurantItemId}-${Date.now()}`, quantity }]);
@@ -57,6 +62,10 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     };
 
     const updateQuantity = (itemId: string, newQuantity: number) => {
+        if (newQuantity > 10) {
+            alert('You cannot Add more than 10 Qty of the Same Item.');
+            return;
+        }
         const updatedCart = cart.map(item => {
             if (item.id === itemId) {
                 return { ...item, quantity: newQuantity };
