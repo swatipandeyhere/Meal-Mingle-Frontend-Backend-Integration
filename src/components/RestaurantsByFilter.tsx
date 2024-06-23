@@ -35,7 +35,7 @@ const RestaurantsByFilter = () => {
 
         if (params.get('offers')) {
             filtered = filtered.filter(restaurant =>
-                restaurant.restaurantDiscount > 0
+                restaurant.restaurantDiscountPercentage > 0
             );
             setRestaurantFilters(prevRestaurantFilters => ({ ...prevRestaurantFilters, offers: true }));
             shouldRedirect = false;

@@ -31,7 +31,7 @@ const Main = () => {
 
     if (params.get('offers')) {
       filtered = filtered.filter(restaurant =>
-        restaurant.restaurantDiscount > 0
+        restaurant.restaurantDiscountPercentage > 0
       );
       appliedRestaurantFilters = { ...appliedRestaurantFilters, offers: true };
     }
