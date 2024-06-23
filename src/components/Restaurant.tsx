@@ -56,8 +56,13 @@ const Restaurant = (props: restaurantProp) => {
                         const isOpen = isRestaurantOpen(data.restaurantOperationDays, data.restaurantOperationHours);
                         return (
                             <Link key={data.restaurantId} to={isAuthenticated() ? '/menu' : '/login'} state={{ data: data }}>
-                                <div className="max-w-xs rounded-xl overflow-hidden shadow-sm mt-12">
+                                <div className="relative max-w-xs rounded-xl overflow-hidden shadow-sm mt-12">
                                     <img className={`w-full rounded-2xl h-60 ${!isOpen && 'filter grayscale'}`} src={require(`../images/${data.restaurantImageUrl}`)} alt="Restaurant Image" />
+                                    {data.restaurantOfferPhrase !== "0% OFF ABOVE 0" && (
+                                        <div className="absolute top-2 left-2 bg-blue-500 text-white font-semibold py-1 px-2 rounded-md">
+                                            {data.restaurantOfferPhrase}
+                                        </div>
+                                    )}
                                     <div className="py-4">
                                         <div className='flex justify-between items-center'>
                                             <div className="font-semibold text-xl mb-2">
@@ -83,8 +88,13 @@ const Restaurant = (props: restaurantProp) => {
                         const isOpen = isRestaurantOpen(data.restaurantOperationDays, data.restaurantOperationHours);
                         return (
                             <Link key={data.restaurantId} to={isAuthenticated() ? '/menu' : '/login'} state={{ data: data }}>
-                                <div className="max-w-xs rounded-xl overflow-hidden shadow-sm mt-12">
+                                <div className="relative max-w-xs rounded-xl overflow-hidden shadow-sm mt-12">
                                     <img className={`w-full rounded-2xl h-60 ${!isOpen && 'filter grayscale'}`} src={require(`../images/${data.restaurantImageUrl}`)} alt="Restaurant Image" />
+                                    {data.restaurantOfferPhrase !== "0% OFF ABOVE 0" && (
+                                        <div className="absolute top-2 left-2 bg-blue-500 text-white font-semibold py-1 px-2 rounded-md">
+                                            {data.restaurantOfferPhrase}
+                                        </div>
+                                    )}
                                     <div className="py-4">
                                         <div className='flex justify-between items-center'>
                                             <div className="font-semibold text-xl mb-2">
