@@ -9,10 +9,12 @@
             "country": "India"
         },
         "restaurantRating": 3.6,
-        "restaurantDiscount": 12,
+        "restaurantMinimumOrderAmount": 3500,
+        "restaurantDiscountPercentage": 5,
+        "restaurantOfferPhrase": "5% OFF ABOVE 3500",
         "restaurantAvailability": true,
         "restaurantImageUrl": "restaurant_1.png",
-        "restaurantOperationDays": "Mon-Fri",
+        "restaurantOperationDays": "Mon-Sun",
         "restaurantOperationHours": "10:00AM-11:00PM",
         "restaurantPhoneNumber": 7978654356,
         "restaurantItems": [
@@ -37,7 +39,9 @@
             "country": "India"
         },
         "restaurantRating": 4.7,
-        "restaurantDiscount": 15,
+        "restaurantMinimumOrderAmount": 6500,
+        "restaurantDiscountPercentage": 15,
+        "restaurantOfferPhrase": "15% OFF ABOVE 6500",
         "restaurantAvailability": true,
         "restaurantImageUrl": "restaurant_2.png",
         "restaurantOperationDays": "Mon-Wed",
@@ -74,7 +78,9 @@
             "country": "India"
         },
         "restaurantRating": 4.5,
-        "restaurantDiscount": 10,
+        "restaurantMinimumOrderAmount": 0,
+        "restaurantDiscountPercentage": 0,
+        "restaurantOfferPhrase": "0% OFF ABOVE 0",
         "restaurantAvailability": true,
         "restaurantImageUrl": "restaurant_3.png",
         "restaurantOperationDays": "Mon-Thu",
@@ -120,7 +126,9 @@
             "country": "India"
         },
         "restaurantRating": 4.3,
-        "restaurantDiscount": 20,
+        "restaurantMinimumOrderAmount": 5500,
+        "restaurantDiscountPercentage": 20,
+        "restaurantOfferPhrase": "20% OFF ABOVE 5500",
         "restaurantAvailability": true,
         "restaurantImageUrl": "restaurant_4.png",
         "restaurantOperationDays": "Mon-Sat",
@@ -166,7 +174,9 @@
             "country": "India"
         },
         "restaurantRating": 4.6,
-        "restaurantDiscount": 18,
+        "restaurantMinimumOrderAmount": 0,
+        "restaurantDiscountPercentage": 0,
+        "restaurantOfferPhrase": "0% OFF ABOVE 0",
         "restaurantAvailability": true,
         "restaurantImageUrl": "restaurant_5.png",
         "restaurantOperationDays": "Mon-Sat",
