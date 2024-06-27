@@ -9,7 +9,7 @@ import Main from './components/Main';
 import Menu from './components/Menu';
 import Order from './components/Order';
 import Payment from './components/Payment';
-import PaymentSuccessful from './components/PaymentSuccessful';
+import PaymentSuccess from './components/PaymentSuccess';
 import Cart from './components/Cart';
 import RestaurantsByCategory from './components/RestaurantsByCategory';
 import CategoryMenu from './components/CategoryMenu';
@@ -28,7 +28,7 @@ const App = () => {
         <Route path='/cart' element={<Cart />} />
         <Route path='/order' element={<Order />} />
         <Route path='/payment' element={<Payment />} />
-        <Route path="/payment-successful" element={<PaymentSuccessful />} />
+        <Route path="/payment-success" element={<PaymentSuccess />} />
         <Route path="/category/:categoryName" element={<RestaurantsByCategory />} />
         <Route path="/category/:categoryName/menu" element={<CategoryMenu />} />
         <Route path="/restaurants/filter" element={<RestaurantsByFilter />} />

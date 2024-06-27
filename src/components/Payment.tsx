@@ -114,7 +114,7 @@ const Payment = () => {
         localStorage.setItem('orders', JSON.stringify(orders));
 
         setTimeout(() => {
-            navigate('/payment-successful');
+            navigate('/payment-success');
         }, 2000);
     };
 
