@@ -1,11 +1,12 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Navbar from './Navbar';
 import { useCart, CartItem } from '../context/CartContext';
 import restaurants from '../restaurants.json';
 
 const Cart = () => {
     const { cart, removeFromCart, clearCart, updateQuantity } = useCart();
+    const navigate = useNavigate();
 
     const calculateTotalPrice = () => {
         return cart.reduce((total, item) => total + (item.restaurantItemPrice * item.quantity), 0);
@@ -39,9 +40,21 @@ const Cart = () => {
         discountAmount = calculatedDiscountAmount;
     }
 
+    const proceedToPayment = () => {
+        if (cart.length > 0 && restaurant) {
+            navigate('/payment', {
+                state: {
+                    items: cart,
+                    restaurant,
+                    totalPrice: discountedPrice
+                }
+            });
+        }
+    };
+
     return (
         <>
-            <Navbar city="Your Cart" />
+            <Navbar city="Location" />
             <div className='p-4 pl-20'>
                 <h1 className='font-semibold text-3xl mb-4'>Your Cart</h1>
                 {cart.length === 0 ? (
@@ -53,10 +66,11 @@ const Cart = () => {
                                 <div key={item.id} className='max-w-xs rounded-xl overflow-hidden shadow-sm'>
                                     <img className='w-full rounded-2xl h-60 object-cover' src={require(`../images/${item.restaurantItemImageUrl}`)} alt={item.restaurantItemName} />
                                     <div className='py-4'>
-                                        <div className='font-semibold text-xl mb-2'>{item.restaurantItemName}</div>
-                                        <p className='font-semibold text-base p-1'>₹{item.restaurantItemPrice}</p>
-                                        <div className='flex items-center'>
-                                            <span className='mr-2'>Qty:</span>
+                                        <div className='flex justify-between items-center'>
+                                            <div className='font-semibold text-xl mb-2'>{item.restaurantItemName}</div>
+                                            <p className='font-semibold text-base p-1'>₹{item.restaurantItemPrice}</p>
+                                        </div>
+                                        <div className='flex justify-between items-center mt-2'>
                                             <select
                                                 value={item.quantity}
                                                 onChange={(e) => updateQuantity(item.id, parseInt(e.target.value))}
@@ -66,13 +80,13 @@ const Cart = () => {
                                                     <option key={index + 1} value={index + 1}>{index + 1}</option>
                                                 ))}
                                             </select>
-                                            <button onClick={() => removeFromCart(item.id)} className='ml-2 px-4 py-2 bg-red-500 text-white rounded'>Remove</button>
+                                            <button onClick={() => removeFromCart(item.id)} className='inline-block px-2 py-2 bg-red-500 text-white rounded'>Remove</button>
                                         </div>
                                     </div>
                                 </div>
                             ))}
                         </div>
-                        <div className='mt-4'>
+                        <div className='mt-5'>
                             <p className='font-semibold'>Total Price: ₹{totalPrice}</p>
                             {restaurant && restaurant.restaurantDiscountPercentage > 0 && totalPrice > restaurant.restaurantMinimumOrderAmount && (
                                 <>
@@ -81,10 +95,8 @@ const Cart = () => {
                                     <p className='font-semibold'>Discounted Price: ₹{discountedPrice.toFixed(2)}</p>
                                 </>
                             )}
-                            <button onClick={clearCart} className='mr-4 px-4 py-2 bg-red-500 text-white rounded'>Clear Cart</button>
-                            <Link to='/payment'>
-                                <button className='px-4 py-2 bg-green-500 text-white rounded'>Proceed to Payment</button>
-                            </Link>
+                            <button onClick={clearCart} className='mr-4 mt-5 px-4 py-2 bg-red-500 text-white rounded'>Clear Cart</button>
+                            <button onClick={proceedToPayment} className='px-4 py-2 bg-green-500 text-white rounded'>Proceed to Payment</button>
                         </div>
                     </div>
                 )}

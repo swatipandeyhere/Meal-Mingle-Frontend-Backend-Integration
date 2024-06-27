@@ -1,14 +1,52 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Navbar from './Navbar';
+import { CartItem } from '../context/CartContext';
+
+interface Restaurant {
+    restaurantId: string;
+    restaurantName: string;
+    restaurantAddress: {
+        streetNumber: string;
+        streetName: string;
+        city: string;
+        country: string;
+    };
+    restaurantRating: number;
+    restaurantMinimumOrderAmount: number;
+    restaurantDiscountPercentage: number;
+    restaurantOfferPhrase: string;
+    restaurantAvailability: boolean;
+    restaurantImageUrl: string;
+    restaurantOperationDays: string;
+    restaurantOperationHours: string;
+    restaurantPhoneNumber: number;
+    restaurantItems: {
+        restaurantItemId: string;
+        restaurantItemName: string;
+        restaurantItemPrice: number;
+        restaurantItemCategory: string;
+        restaurantItemImageUrl: string;
+        restaurantItemCuisineType: string;
+        restaurantItemVeg: boolean;
+    }[];
+}
+
+interface PaymentState {
+    items: CartItem[];
+    restaurant: Restaurant;
+    totalPrice: number;
+    discountedPrice: number;
+    discountAmount: number;
+}
 
 const Payment = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const { state } = location;
-    const item = state?.item;
-    const restaurant = state?.restaurant;
-    const quantity = state?.quantity;
+    const { items, restaurant, totalPrice, discountedPrice, discountAmount } = state as PaymentState;
+
+    const finalPrice = discountAmount > 0 ? discountedPrice : totalPrice;
 
     const [paymentDetails, setPaymentDetails] = useState({
         cardNumber: '',
@@ -45,9 +83,7 @@ const Payment = () => {
         const [month, year] = paymentDetails.expiryDate.split('/');
         const monthNumber = parseInt(month);
         const yearNumber = parseInt(year);
-        // Get last two digits of Current Year
         const currentYear = new Date().getFullYear() % 100;
-        // getMonth returns 0-Indexed Month
         const currentMonth = new Date().getMonth() + 1;
 
         if (monthNumber < 1 || monthNumber > 12) {
@@ -65,6 +101,18 @@ const Payment = () => {
             return;
         }
 
+        const order = {
+            id: Date.now().toString(),
+            items,
+            totalAmount: finalPrice,
+            orderDate: new Date().toLocaleString()
+        };
+
+        const savedOrders = localStorage.getItem('orders');
+        const orders = savedOrders ? JSON.parse(savedOrders) : [];
+        orders.push(order);
+        localStorage.setItem('orders', JSON.stringify(orders));
+
         setTimeout(() => {
             navigate('/payment-successful');
         }, 2000);
@@ -75,28 +123,40 @@ const Payment = () => {
             <Navbar city={restaurant?.restaurantAddress.city} />
             <div className='p-4 pl-20'>
                 <h1 className='font-semibold text-3xl mb-4'>Payment Details</h1>
-                <div className='max-w-xs rounded-xl overflow-hidden shadow-sm mt-12'>
-                    <img className='w-full rounded-2xl h-60 object-cover' src={item && require(`../images/${item.restaurantItemImageUrl}`)} alt={item?.restaurantItemName} />
-                    <div className='py-4'>
-                        <div className='font-semibold text-xl mb-2'>{item?.restaurantItemName}</div>
-                        <p className='font-semibold text-base p-1'>Quantity: {quantity}</p>
-                        <p className='font-semibold text-base p-1'>Total Price: ₹{item?.restaurantItemPrice * quantity}</p>
-                    </div>
+                <div className='grid grid-cols-3 gap-4'>
+                    {items.map((item, index) => (
+                        <div key={index} className='max-w-xs rounded-xl overflow-hidden shadow-sm'>
+                            <img className='w-full rounded-2xl h-60 object-cover' src={require(`../images/${item.restaurantItemImageUrl}`)} alt={item.restaurantItemName} />
+                            <div className='py-4'>
+                                <div className='flex justify-between'>
+                                    <div className='font-semibold text-xl mb-2'>{item.restaurantItemName}</div>
+                                    <p className='font-semibold text-base p-1'>₹{item.restaurantItemPrice}</p>
+                                </div>
+                                <div className='mt-2 flex justify-between'>
+                                    <p className='font-semibold text-base'>Quantity: {item.quantity}</p>
+                                    <p className='font-semibold text-base'>Total Price: ₹{item.restaurantItemPrice * item.quantity}</p>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+                <div className='font-semibold text-base p-1 mt-4'>
+                    Final Price: ₹{finalPrice}
                 </div>
                 <form onSubmit={handleSubmit} className='mt-4'>
-                    <label>
+                    <label className='block mb-2 mr-10'>
                         Card Number:
-                        <input type='text' name='cardNumber' value={paymentDetails.cardNumber} onChange={handleInputChange} />
+                        <input type='text' name='cardNumber' value={paymentDetails.cardNumber} onChange={handleInputChange} className='w-full mt-1 p-2 border border-gray-300 rounded' />
                     </label>
-                    <label>
+                    <label className='block mb-2 mr-10'>
                         Expiry Date:
-                        <input type='text' name='expiryDate' value={paymentDetails.expiryDate} onChange={handleInputChange} placeholder="MM/YY" />
+                        <input type='text' name='expiryDate' value={paymentDetails.expiryDate} onChange={handleInputChange} placeholder="MM/YY" className='w-full mt-1 p-2 border border-gray-300 rounded' />
                     </label>
-                    <label>
+                    <label className='block mb-4 mr-10'>
                         CVV:
-                        <input type='text' name='cvv' value={paymentDetails.cvv} onChange={handleInputChange} />
+                        <input type='text' name='cvv' value={paymentDetails.cvv} onChange={handleInputChange} className='w-full mt-1 p-2 border border-gray-300 rounded' />
                     </label>
-                    <button type='submit' className='mt-2 px-4 py-2 bg-blue-500 text-white rounded'>Pay Now</button>
+                    <button type='submit' className='px-4 py-2 bg-blue-500 text-white rounded'>Pay Now</button>
                 </form>
             </div>
         </>
