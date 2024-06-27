@@ -18,6 +18,7 @@ interface CartContextType {
     updateQuantity: (itemId: string, newQuantity: number) => void;
     getTotalQuantity: () => number;
     checkIfSameRestaurant: (newRestaurantItemId: string) => boolean;
+    placeOrder: () => void;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -92,8 +93,12 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         });
     };
 
+    const placeOrder = () => {
+        clearCart();
+    };
+
     return (
-        <CartContext.Provider value={{ cart, addToCart, removeFromCart, clearCart, updateQuantity, getTotalQuantity, checkIfSameRestaurant }}>
+        <CartContext.Provider value={{ cart, addToCart, removeFromCart, clearCart, updateQuantity, getTotalQuantity, checkIfSameRestaurant, placeOrder }}>
             {children}
         </CartContext.Provider>
     );

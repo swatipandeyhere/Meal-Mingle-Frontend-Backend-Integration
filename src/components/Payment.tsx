@@ -1,7 +1,7 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Navbar from './Navbar';
-import { CartItem } from '../context/CartContext';
+import { CartItem, useCart } from '../context/CartContext';
 
 interface Restaurant {
     restaurantId: string;
@@ -45,6 +45,7 @@ const Payment = () => {
     const navigate = useNavigate();
     const { state } = location;
     const { items, restaurant, totalPrice, discountedPrice, discountAmount } = state as PaymentState;
+    const { cart, placeOrder } = useCart();
 
     const finalPrice = discountAmount > 0 ? discountedPrice : totalPrice;
 
@@ -112,6 +113,7 @@ const Payment = () => {
         const orders = savedOrders ? JSON.parse(savedOrders) : [];
         orders.push(order);
         localStorage.setItem('orders', JSON.stringify(orders));
+        placeOrder();
 
         setTimeout(() => {
             navigate('/payment-success');
