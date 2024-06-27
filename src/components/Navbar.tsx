@@ -57,7 +57,7 @@ const Navbar = ({ city, onSearch }: cityProp) => {
             <ToastContainer />
             <div className='flex'>
                 <h1 className='text-3xl font-extrabold italic ml-20'>MealMingle</h1>
-                <div className='ml-6 shadow-lg flex items-center border border-gray-300 w-7/12 rounded-lg p-3 h-12'>
+                <div className='ml-6 shadow-lg flex items-center border border-gray-300 w-6/12 rounded-lg p-3 h-12'>
                     <img src={Location} alt='Location Icon' className='w-7 h-7 ml-2' />
                     <input className="outline-none text-gray-900 text-sm block w-40 p-2.5" placeholder={city ?? 'Location'} required />
                     <img src={DropDownIcon} alt='Drop Down Icon' className='w-5 h-5 ml-5' />
@@ -97,7 +97,12 @@ const Navbar = ({ city, onSearch }: cityProp) => {
                         </Link>
                     )}
                     {auth.currentUser && (
-                        <img onClick={logout} src={LogoutIcon} alt='Logout Icon' className='ml-4 shadow-lg p-2 rounded-xl text-gray-600 cursor-pointer w-10 h-10' />
+                        <Link to='/order-history' className='relative'>
+                            <div className='ml-6 shadow-lg p-2 rounded-xl text-black cursor-pointer w-15 h-15'>My Orders</div>
+                        </Link>
+                    )}
+                    {auth.currentUser && (
+                        <img onClick={logout} src={LogoutIcon} alt='Logout Icon' className='ml-6 shadow-lg p-2 rounded-xl text-gray-600 cursor-pointer w-10 h-10' />
                     )}
                 </div>
             </div>

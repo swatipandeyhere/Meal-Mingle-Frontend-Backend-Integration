@@ -132,7 +132,7 @@
         "restaurantAvailability": true,
         "restaurantImageUrl": "restaurant_4.png",
         "restaurantOperationDays": "Mon-Sat",
-        "restaurantOperationHours": "08:00AM-04:00PM",
+        "restaurantOperationHours": "01:00AM-04:00PM",
         "restaurantPhoneNumber": 7956678345,
         "restaurantItems": [
             {

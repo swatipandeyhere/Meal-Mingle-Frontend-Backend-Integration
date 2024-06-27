@@ -14,6 +14,7 @@ import Cart from './components/Cart';
 import RestaurantsByCategory from './components/RestaurantsByCategory';
 import CategoryMenu from './components/CategoryMenu';
 import RestaurantsByFilter from './components/RestaurantsByFilter';
+import MyOrders from './components/MyOrders';
 
 const App = () => {
   return (
@@ -32,6 +33,7 @@ const App = () => {
         <Route path="/category/:categoryName" element={<RestaurantsByCategory />} />
         <Route path="/category/:categoryName/menu" element={<CategoryMenu />} />
         <Route path="/restaurants/filter" element={<RestaurantsByFilter />} />
+        <Route path="/order-history" element={<MyOrders />} />
       </Routes>
     </CartProvider>
   );
