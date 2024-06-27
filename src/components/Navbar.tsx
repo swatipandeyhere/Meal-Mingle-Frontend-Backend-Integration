@@ -56,7 +56,7 @@ const Navbar = ({ city, onSearch }: cityProp) => {
         <>
             <ToastContainer />
             <div className='flex'>
-                <h1 className='text-3xl font-extrabold italic ml-20'>MealMingle</h1>
+                <Link to='/main'><h1 className='text-3xl font-extrabold italic ml-20'>MealMingle</h1></Link>
                 <div className='ml-6 shadow-lg flex items-center border border-gray-300 w-6/12 rounded-lg p-3 h-12'>
                     <img src={Location} alt='Location Icon' className='w-7 h-7 ml-2' />
                     <input className="outline-none text-gray-900 text-sm block w-40 p-2.5" placeholder={city ?? 'Location'} required />
