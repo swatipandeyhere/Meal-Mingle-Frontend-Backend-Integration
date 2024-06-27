@@ -4,6 +4,44 @@ import Navbar from './Navbar';
 import RestaurantData from '../restaurants.json';
 import Menubar from './Menubar';
 import { isAuthenticated } from '../utils/authUtils';
+import { FaBan } from 'react-icons/fa';
+
+const isRestaurantOpen = (operationDays: string, operationHours: string) => {
+    const daysMap: { [key: string]: number } = {
+        'Sun': 0,
+        'Mon': 1,
+        'Tue': 2,
+        'Wed': 3,
+        'Thu': 4,
+        'Fri': 5,
+        'Sat': 6
+    };
+
+    const currentDate = new Date();
+    const currentDay = currentDate.getDay();
+    const currentTime = currentDate.getHours() * 60 + currentDate.getMinutes();
+
+    const [startDay, endDay] = operationDays.split('-');
+    const startDayIndex = daysMap[startDay];
+    const endDayIndex = daysMap[endDay];
+
+    const withinOperatingDays = startDayIndex <= endDayIndex
+        ? currentDay >= startDayIndex && currentDay <= endDayIndex
+        : currentDay >= startDayIndex || currentDay <= endDayIndex;
+
+    if (!withinOperatingDays) {
+        return false;
+    }
+
+    const [startTime, endTime] = operationHours.split('-').map(time => {
+        const [hours, minutes] = time.replace('AM', '').replace('PM', '').split(':').map(Number);
+        const isPM = time.includes('PM');
+        const totalMinutes = (isPM ? hours + 12 : hours) * 60 + minutes;
+        return totalMinutes;
+    });
+
+    return currentTime >= startTime && currentTime <= endTime;
+}
 
 const RestaurantsByCategory = () => {
     const { categoryName } = useParams();
@@ -26,29 +64,46 @@ const RestaurantsByCategory = () => {
             <Navbar />
             <Menubar />
             <div className='p-4 pl-20'>
-                <h1 className='font-semibold text-3xl mb-4'>Restaurants Serving {categoryName}</h1>
-                <div className='grid grid-cols-3'>
-                    {filteredRestaurants.map((restaurant) => (
-                        <div
-                            key={restaurant.restaurantId}
-                            className='max-w-xs rounded-xl overflow-hidden shadow-sm mt-12 cursor-pointer'
-                            onClick={() => handleRestaurantClick(restaurant)}
-                        >
-                            <img
-                                className='w-full rounded-2xl h-60 object-cover'
-                                src={require(`../images/${restaurant.restaurantImageUrl}`)}
-                                alt={restaurant.restaurantName}
-                            />
-                            <div className='py-4'>
-                                <div className='flex justify-between items-center'>
-                                    <div className='font-semibold text-xl mb-2'>{restaurant.restaurantName}</div>
-                                    <div className={`text-white font-semibold text-base rounded-md p-1 ${restaurant.restaurantRating < 4.5 ? 'bg-green-600' : 'bg-green-900'}`}>
-                                        {restaurant.restaurantRating}
+                <h1 className='font-semibold text-3xl'>Restaurants Serving {categoryName}</h1>
+                <div className='grid grid-cols-3 gap-4'>
+                    {filteredRestaurants.map((restaurant) => {
+                        const isOpen = isRestaurantOpen(restaurant.restaurantOperationDays, restaurant.restaurantOperationHours);
+                        return (
+                            <div key={restaurant.restaurantId} className="relative max-w-xs rounded-xl overflow-hidden shadow-sm mt-12 cursor-pointer" onClick={() => handleRestaurantClick(restaurant)}>
+                                {isOpen ? (
+                                    <img className={`w-full rounded-2xl h-60`} src={require(`../images/${restaurant.restaurantImageUrl}`)} alt="Restaurant Image" />
+                                ) : (
+                                    <img className={`w-full rounded-2xl h-60 filter grayscale`} src={require(`../images/${restaurant.restaurantImageUrl}`)} alt="Restaurant Image" />
+                                )}
+                                {restaurant.restaurantOfferPhrase !== "0% OFF ABOVE 0" && (
+                                    <div className="absolute top-2 left-2 bg-blue-500 text-white font-semibold py-1 px-2 rounded-md">
+                                        {restaurant.restaurantOfferPhrase}
+                                    </div>
+                                )}
+                                <div className="py-4">
+                                    <div className='flex justify-between items-center'>
+                                        <div className="font-semibold text-xl mb-2">
+                                            {restaurant.restaurantName}
+                                            <div className="text-sm text-gray-600">{restaurant.restaurantAddress.streetNumber}, {restaurant.restaurantAddress.streetName}, {restaurant.restaurantAddress.city}</div>
+                                        </div>
+                                        <div className={`text-white font-semibold text-base rounded-md p-1 ${restaurant.restaurantRating < 4.5 ? `bg-green-600` : `bg-green-900`}`}>
+                                            {restaurant.restaurantRating}
+                                        </div>
+                                    </div>
+                                    <div className={`font-semibold text-sm ${isOpen ? 'text-green-500' : 'text-red-500'}`}>
+                                        {isOpen ? 'Open' : 'Closed'}
                                     </div>
                                 </div>
+                                {!isOpen && (
+                                    <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                                        <div className="w-16 h-16 rounded-full flex items-center justify-center">
+                                            <FaBan className="text-white text-3xl" />
+                                        </div>
+                                    </div>
+                                )}
                             </div>
-                        </div>
-                    ))}
+                        );
+                    })}
                 </div>
             </div>
         </>
