@@ -7,12 +7,11 @@ import Home from './components/Home';
 import EmailLogin from './components/EmailLogin';
 import Main from './components/Main';
 import Menu from './components/Menu';
-import Order from './components/Order';
 import Payment from './components/Payment';
 import PaymentSuccess from './components/PaymentSuccess';
 import Cart from './components/Cart';
 import RestaurantsByCategory from './components/RestaurantsByCategory';
-import CategoryMenu from './components/CategoryMenu';
+import RestaurantsByCategoryMenu from './components/RestaurantsByCategoryMenu';
 import RestaurantsByFilter from './components/RestaurantsByFilter';
 import MyOrders from './components/MyOrders';
 
@@ -27,11 +26,10 @@ const App = () => {
         <Route path='/main' element={<Main />} />
         <Route path='/menu' element={<Menu />} />
         <Route path='/cart' element={<Cart />} />
-        <Route path='/order' element={<Order />} />
         <Route path='/payment' element={<Payment />} />
         <Route path="/payment-success" element={<PaymentSuccess />} />
         <Route path="/category/:categoryName" element={<RestaurantsByCategory />} />
-        <Route path="/category/:categoryName/menu" element={<CategoryMenu />} />
+        <Route path="/category/:categoryName/menu" element={<RestaurantsByCategoryMenu />} />
         <Route path="/restaurants/filter" element={<RestaurantsByFilter />} />
         <Route path="/order-history" element={<MyOrders />} />
       </Routes>
