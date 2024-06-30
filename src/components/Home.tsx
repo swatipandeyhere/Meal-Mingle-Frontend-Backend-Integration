@@ -26,6 +26,11 @@ const Home = () => {
             >
                 {!isAuthenticated() && (
                     <div style={{ position: 'absolute', top: '40px', right: '20px' }}>
+                        <Link to='/partner-with-us'>
+                            <button className='text-base px-4 py-2 text-white rounded-md border border-gray-300 mr-10'>
+                                Add Restaurant
+                            </button>
+                        </Link>
                         <Link to='/login'>
                             <button className='text-base px-4 py-2 text-white rounded-md border border-gray-300 mr-10'>
                                 Log In

@@ -14,6 +14,7 @@ import RestaurantsByCategory from './components/RestaurantsByCategory';
 import RestaurantsByCategoryMenu from './components/RestaurantsByCategoryMenu';
 import RestaurantsByFilter from './components/RestaurantsByFilter';
 import MyOrders from './components/MyOrders';
+import PartnerWithUs from './components/PartnerWithUs';
 
 const App = () => {
   return (
@@ -32,6 +33,7 @@ const App = () => {
         <Route path="/category/:categoryName/menu" element={<RestaurantsByCategoryMenu />} />
         <Route path="/restaurants/filter" element={<RestaurantsByFilter />} />
         <Route path="/order-history" element={<MyOrders />} />
+        <Route path="/partner-with-us" element={<PartnerWithUs />} />
       </Routes>
     </CartProvider>
   );
