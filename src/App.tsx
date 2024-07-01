@@ -16,6 +16,7 @@ import RestaurantsByFilter from './components/RestaurantsByFilter';
 import MyOrders from './components/MyOrders';
 import PartnerWithUs from './components/PartnerWithUs';
 import AdminSignup from './components/AdminSignup';
+import AdminLogin from './components/AdminLogin';
 
 const App = () => {
   return (
@@ -36,6 +37,7 @@ const App = () => {
         <Route path="/order-history" element={<MyOrders />} />
         <Route path="/partner-with-us" element={<PartnerWithUs />} />
         <Route path='/admin/signup' element={<AdminSignup />} />
+        <Route path='/admin/login' element={<AdminLogin />} />
       </Routes>
     </CartProvider>
   );
