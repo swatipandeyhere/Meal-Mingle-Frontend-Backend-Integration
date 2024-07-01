@@ -4,6 +4,7 @@ export const isAuthenticated = (): boolean => {
     const loginOtp = localStorage.getItem('login_otp');
     const loginGoogleSignIn = localStorage.getItem('login_googleSignIn');
     const emailLogin = localStorage.getItem('emailLogin');
+    const token = localStorage.getItem('token');
 
-    return !!(signupGoogleSignIn || signupEmailSignUp || loginOtp || loginGoogleSignIn || emailLogin);
+    return !!(signupGoogleSignIn || signupEmailSignUp || loginOtp || loginGoogleSignIn || emailLogin || token);
 };

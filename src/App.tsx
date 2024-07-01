@@ -15,6 +15,7 @@ import RestaurantsByCategoryMenu from './components/RestaurantsByCategoryMenu';
 import RestaurantsByFilter from './components/RestaurantsByFilter';
 import MyOrders from './components/MyOrders';
 import PartnerWithUs from './components/PartnerWithUs';
+import AdminSignup from './components/AdminSignup';
 
 const App = () => {
   return (
@@ -34,6 +35,7 @@ const App = () => {
         <Route path="/restaurants/filter" element={<RestaurantsByFilter />} />
         <Route path="/order-history" element={<MyOrders />} />
         <Route path="/partner-with-us" element={<PartnerWithUs />} />
+        <Route path='/admin/signup' element={<AdminSignup />} />
       </Routes>
     </CartProvider>
   );
