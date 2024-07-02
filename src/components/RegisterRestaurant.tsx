@@ -286,11 +286,6 @@ const RegisterRestaurant: React.FC<RegisterRestaurantProps> = ({ onSubmit }) => 
     return (
         <>
             <AdminNavbar />
-            <ToastContainer
-                toastStyle={{
-                    marginTop: '3rem',
-                }}
-            />
             <div className="flex justify-center items-center min-h-screen">
                 <div className="w-full max-w-2xl p-6 bg-white rounded-lg shadow-md relative">
                     <div className="absolute top-0 right-0 m-4">
