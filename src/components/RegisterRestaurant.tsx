@@ -28,7 +28,6 @@ interface RestaurantData {
     restaurantRating: number;
     restaurantMinimumOrderAmount: number;
     restaurantDiscountPercentage: number;
-    restaurantOfferPhrase: string;
     restaurantAvailability: boolean;
     restaurantImageUrl: string;
     restaurantOperationDays: string;
@@ -54,7 +53,6 @@ const RegisterRestaurant: React.FC<RegisterRestaurantProps> = ({ onSubmit }) => 
         restaurantRating: 0,
         restaurantMinimumOrderAmount: 0,
         restaurantDiscountPercentage: 0,
-        restaurantOfferPhrase: '',
         restaurantAvailability: true,
         restaurantImageUrl: '',
         restaurantOperationDays: '',
@@ -102,7 +100,7 @@ const RegisterRestaurant: React.FC<RegisterRestaurantProps> = ({ onSubmit }) => 
 
         const newRestaurantData: RestaurantData = {
             ...restaurantData,
-            restaurantId: Math.random().toString(36).substr(2, 9),
+            restaurantId: Math.floor(10 + Math.random() * 90).toString(),
         };
 
         const storedRestaurants = JSON.parse(localStorage.getItem('restaurants') || '[]');
