@@ -18,6 +18,7 @@ import PartnerWithUs from './components/PartnerWithUs';
 import AdminSignup from './components/AdminSignup';
 import AdminLogin from './components/AdminLogin';
 import AdminEmailLogin from './components/AdminEmailLogin';
+import RegisterRestaurant from './components/RegisterRestaurant';
 
 const App = () => {
   return (
@@ -40,6 +41,7 @@ const App = () => {
         <Route path='/admin/signup' element={<AdminSignup />} />
         <Route path='/admin/login' element={<AdminLogin />} />
         <Route path='/admin/emailLogin' element={<AdminEmailLogin />} />
+        <Route path="/register-restaurant" element={<RegisterRestaurant />} />
       </Routes>
     </CartProvider>
   );
