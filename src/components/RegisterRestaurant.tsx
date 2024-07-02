@@ -112,7 +112,7 @@ const RegisterRestaurant: React.FC<RegisterRestaurantProps> = ({ onSubmit }) => 
         if (onSubmit) onSubmit();
         toast.success('Restaurant Added Successfully!');
         setTimeout(() => {
-            navigate('/view-your-restaurants');
+            navigate('/view-admin-restaurants');
         }, 2000);
     };
 

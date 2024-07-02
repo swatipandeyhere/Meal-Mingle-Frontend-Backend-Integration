@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { CartProvider } from './context/CartContext';
 import Login from './components/Login';
@@ -19,8 +19,16 @@ import AdminSignup from './components/AdminSignup';
 import AdminLogin from './components/AdminLogin';
 import AdminEmailLogin from './components/AdminEmailLogin';
 import RegisterRestaurant from './components/RegisterRestaurant';
+import ViewAdminRestaurants from './components/ViewAdminRestaurants';
 
 const App = () => {
+  const [restaurants, setRestaurants] = useState<any[]>([]);
+
+  useEffect(() => {
+    const storedRestaurants = JSON.parse(localStorage.getItem('restaurants') || '[]');
+    setRestaurants(storedRestaurants);
+  }, []);
+
   return (
     <CartProvider>
       <Routes>
@@ -42,6 +50,7 @@ const App = () => {
         <Route path='/admin/login' element={<AdminLogin />} />
         <Route path='/admin/emailLogin' element={<AdminEmailLogin />} />
         <Route path="/register-restaurant" element={<RegisterRestaurant />} />
+        <Route path="/view-admin-restaurants" element={<ViewAdminRestaurants restaurant={restaurants} />} />
       </Routes>
     </CartProvider>
   );
