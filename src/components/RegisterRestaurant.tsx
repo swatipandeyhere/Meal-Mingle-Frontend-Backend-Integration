@@ -76,7 +76,14 @@ const RegisterRestaurant: React.FC<RegisterRestaurantProps> = ({ onSubmit }) => 
                 },
             }));
         } else {
-            setRestaurantData({ ...restaurantData, [name]: value });
+            if (name === 'restaurantMinimumOrderAmount' || name === 'restaurantDiscountPercentage') {
+                const numericValue = parseFloat(value);
+                if (numericValue >= 0) {
+                    setRestaurantData({ ...restaurantData, [name]: numericValue });
+                }
+            } else {
+                setRestaurantData({ ...restaurantData, [name]: value });
+            }
         }
     };
 
