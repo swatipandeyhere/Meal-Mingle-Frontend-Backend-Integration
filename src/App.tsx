@@ -29,6 +29,12 @@ const App = () => {
     setRestaurants(storedRestaurants);
   }, []);
 
+  const handleDelete = (id: string) => {
+    const updatedRestaurants = restaurants.filter(r => r.restaurantId !== id);
+    setRestaurants(updatedRestaurants);
+    localStorage.setItem('restaurants', JSON.stringify(updatedRestaurants));
+  };
+
   return (
     <CartProvider>
       <Routes>
@@ -50,7 +56,7 @@ const App = () => {
         <Route path='/admin/login' element={<AdminLogin />} />
         <Route path='/admin/emailLogin' element={<AdminEmailLogin />} />
         <Route path="/register-restaurant" element={<RegisterRestaurant />} />
-        <Route path="/view-admin-restaurants" element={<ViewAdminRestaurants restaurant={restaurants} />} />
+        <Route path="/view-admin-restaurants" element={<ViewAdminRestaurants restaurants={restaurants} onDelete={handleDelete} />} />
       </Routes>
     </CartProvider>
   );
