@@ -15,7 +15,7 @@ const PartnerWithUs = () => {
 
     const handleViewRestaurantsClick = () => {
         if (isAuthenticated()) {
-            navigate('/view-your-restaurants');
+            navigate('/view-admin-restaurants');
         } else {
             navigate('/admin/login');
         }
