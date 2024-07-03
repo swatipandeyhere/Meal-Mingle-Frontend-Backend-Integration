@@ -1,7 +1,7 @@
 import React from 'react';
 import AdminNavbar from './AdminNavbar';
-import { useNavigate } from 'react-router-dom';
-import { toast, ToastContainer } from 'react-toastify';
+import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 interface Address {
@@ -35,7 +35,7 @@ interface RestaurantData {
 }
 
 interface RestaurantProp {
-    restaurants: any[]
+    restaurants: RestaurantData[];
     onDelete: (id: string) => void;
 }
 
@@ -51,14 +51,23 @@ const ViewAdminRestaurants: React.FC<RestaurantProp> = ({ restaurants, onDelete 
         toast.success('Restaurant Deleted Successfully!');
     };
 
+    const handleClick = () => {
+        const bankDetails = localStorage.getItem(`bankDetails`);
+        if (!bankDetails) {
+            navigate(`/admin/enter-bank-details`);
+        } else {
+            navigate(`/register-restaurant-item`);
+        }
+    };
+
     return (
         <>
             <AdminNavbar />
             <div className='p-4 pl-20'>
                 <div className='grid grid-cols-3 gap-4'>
                     {restaurants.map((data) => (
-                        <div key={data.restaurantId} className="relative max-w-xs rounded-xl overflow-hidden shadow-sm mt-12">
-                            <img className={`w-full rounded-2xl h-60`} src={data.restaurantImageUrl} alt="Restaurant Image" />
+                        <div className="relative max-w-xs rounded-xl overflow-hidden shadow-sm mt-12 cursor-pointer">
+                            <img className={`w-full rounded-2xl h-60`} src={data.restaurantImageUrl} alt="Restaurant Image" onClick={() => handleClick()} />
                             {data.restaurantDiscountPercentage > 0 && (
                                 <div className="absolute top-2 left-2 bg-blue-500 text-white font-semibold py-1 px-2 rounded-md">
                                     {`${data.restaurantDiscountPercentage}% OFF ABOVE ${data.restaurantMinimumOrderAmount}`}
