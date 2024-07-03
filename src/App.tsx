@@ -20,6 +20,7 @@ import AdminLogin from './components/AdminLogin';
 import AdminEmailLogin from './components/AdminEmailLogin';
 import RegisterRestaurant from './components/RegisterRestaurant';
 import ViewAdminRestaurants from './components/ViewAdminRestaurants';
+import UpdateRestaurant from './components/UpdateRestaurant';
 
 const App = () => {
   const [restaurants, setRestaurants] = useState<any[]>([]);
@@ -57,6 +58,7 @@ const App = () => {
         <Route path='/admin/emailLogin' element={<AdminEmailLogin />} />
         <Route path="/register-restaurant" element={<RegisterRestaurant />} />
         <Route path="/view-admin-restaurants" element={<ViewAdminRestaurants restaurants={restaurants} onDelete={handleDelete} />} />
+        <Route path="/update-restaurant/:id" element={<UpdateRestaurant />} />
       </Routes>
     </CartProvider>
   );
