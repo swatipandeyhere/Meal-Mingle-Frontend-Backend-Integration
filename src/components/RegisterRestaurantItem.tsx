@@ -59,6 +59,7 @@ const RegisterRestaurantItem: React.FC<RegisterRestaurantItemProps> = ({ onSubmi
     };
 
     const [restaurantItem, setRestaurantItem] = useState<RestaurantItem>(initialRestaurantItem);
+    const [errors, setErrors] = useState<string[]>([]);
     const navigate = useNavigate();
 
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -82,6 +83,11 @@ const RegisterRestaurantItem: React.FC<RegisterRestaurantItemProps> = ({ onSubmi
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
+        const isValid = validateForm();
+        if (!isValid) {
+            return;
+        }
 
         const updatedRestaurant = {
             ...restaurant,
@@ -117,6 +123,54 @@ const RegisterRestaurantItem: React.FC<RegisterRestaurantItemProps> = ({ onSubmi
     const handleClose = () => {
         navigate('/view-admin-restaurants');
     };
+
+    const validateForm = () => {
+        let isValid = true;
+        const errors: string[] = [];
+
+        // Item Name
+        if (!restaurantItem.restaurantItemName.trim()) {
+            errors.push('Item Name is Required.');
+            isValid = false;
+        } else if (/^\d+$/.test(restaurantItem.restaurantItemName.trim())) {
+            errors.push('Item Name must be a String, not a Number.');
+            isValid = false;
+        } else if (restaurantItem.restaurantItemName.trim().length < 5 || restaurantItem.restaurantItemName.trim().length > 20) {
+            errors.push('Item Name must be between 5 to 20 Characters long.');
+            isValid = false;
+        }
+
+        // Price (INR)
+        if (restaurantItem.restaurantItemPrice <= 0) {
+            errors.push('Price must be greater than 0.');
+            isValid = false;
+        }
+
+        // Category
+        if (!restaurantItem.restaurantItemCategory.trim()) {
+            errors.push('Category is Required.');
+            isValid = false;
+        }
+
+        // Cuisine Type
+        if (!restaurantItem.restaurantItemCuisineType.trim()) {
+            errors.push('Cuisine Type is Required.');
+            isValid = false;
+        }
+
+        // Image URL
+        if (!restaurantItem.restaurantItemImageUrl.trim()) {
+            errors.push('Image URL is Required.');
+            isValid = false;
+        }
+
+        setErrors(errors);
+        if (errors.length > 0) {
+            toast.error(errors[0]);
+        }
+
+        return isValid;
+    }
 
     return (
         <>
@@ -159,7 +213,6 @@ const RegisterRestaurantItem: React.FC<RegisterRestaurantItemProps> = ({ onSubmi
                                     value={restaurantItem.restaurantItemName}
                                     onChange={handleChange}
                                     className="form-input mt-1 block w-full rounded-md shadow-sm border h-10"
-                                    required
                                 />
                             </div>
                         </div>
@@ -174,7 +227,6 @@ const RegisterRestaurantItem: React.FC<RegisterRestaurantItemProps> = ({ onSubmi
                                     value={restaurantItem.restaurantItemPrice}
                                     onChange={handleChange}
                                     className="form-input mt-1 block w-full rounded-md shadow-sm border h-10"
-                                    required
                                 />
                             </div>
                             <div className="col-span-1">
@@ -186,7 +238,6 @@ const RegisterRestaurantItem: React.FC<RegisterRestaurantItemProps> = ({ onSubmi
                                     value={restaurantItem.restaurantItemCategory}
                                     onChange={handleChange}
                                     className="form-select mt-1 block w-full rounded-md shadow-sm border h-10"
-                                    required
                                 >
                                     <option value="">Select a Category</option>
                                     {categories.map(category => (
@@ -205,7 +256,6 @@ const RegisterRestaurantItem: React.FC<RegisterRestaurantItemProps> = ({ onSubmi
                                     value={restaurantItem.restaurantItemCuisineType}
                                     onChange={handleChange}
                                     className="form-select mt-1 block w-full rounded-md shadow-sm border h-10"
-                                    required
                                 >
                                     <option value="">Select a Cuisine Type</option>
                                     {cuisineTypes.map(cuisine => (
@@ -239,7 +289,6 @@ const RegisterRestaurantItem: React.FC<RegisterRestaurantItemProps> = ({ onSubmi
                                 value={restaurantItem.restaurantItemImageUrl}
                                 onChange={handleChange}
                                 className="form-input mt-1 block w-full rounded-md shadow-sm border h-10"
-                                required
                             />
                         </div>
                         <button
