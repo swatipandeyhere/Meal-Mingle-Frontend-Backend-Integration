@@ -1,6 +1,6 @@
 import React from 'react';
 import AdminNavbar from './AdminNavbar';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -51,14 +51,27 @@ const ViewAdminRestaurants: React.FC<RestaurantProp> = ({ restaurants, onDelete 
         toast.success('Restaurant Deleted Successfully!');
     };
 
-    const handleClick = () => {
+    const handleClick = (restaurantId: string) => {
         const bankDetails = localStorage.getItem(`bankDetails`);
         if (!bankDetails) {
-            navigate(`/admin/enter-bank-details`);
+            navigate(`/admin/enter-bank-details/${restaurantId}`, {
+                state: { nextPage: `/view-admin-restaurant-items/${restaurantId}` }
+            });
         } else {
-            navigate(`/register-restaurant-item`);
+            navigate(`/view-admin-restaurant-items/${restaurantId}`);
         }
     };
+
+    const handleAddMenu = (restaurantId: string) => {
+        const bankDetails = localStorage.getItem(`bankDetails`);
+        if (!bankDetails) {
+            navigate(`/admin/enter-bank-details/${restaurantId}`, {
+                state: { nextPage: `/register-restaurant-item/${restaurantId}` }
+            });
+        } else {
+            navigate(`/register-restaurant-item/${restaurantId}`);
+        }
+    }
 
     return (
         <>
@@ -67,7 +80,7 @@ const ViewAdminRestaurants: React.FC<RestaurantProp> = ({ restaurants, onDelete 
                 <div className='grid grid-cols-3 gap-4'>
                     {restaurants.map((data) => (
                         <div className="relative max-w-xs rounded-xl overflow-hidden shadow-sm mt-12 cursor-pointer">
-                            <img className={`w-full rounded-2xl h-60`} src={data.restaurantImageUrl} alt="Restaurant Image" onClick={() => handleClick()} />
+                            <img className={`w-full rounded-2xl h-60`} src={data.restaurantImageUrl} alt="Restaurant Image" onClick={() => handleClick(data.restaurantId)} />
                             {data.restaurantDiscountPercentage > 0 && (
                                 <div className="absolute top-2 left-2 bg-blue-500 text-white font-semibold py-1 px-2 rounded-md">
                                     {`${data.restaurantDiscountPercentage}% OFF ABOVE ${data.restaurantMinimumOrderAmount}`}
@@ -84,6 +97,12 @@ const ViewAdminRestaurants: React.FC<RestaurantProp> = ({ restaurants, onDelete 
                                     </div>
                                 </div>
                                 <div className="flex justify-between mt-4">
+                                    <button
+                                        onClick={() => handleAddMenu(data.restaurantId)}
+                                        className="inline-block px-2 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition duration-300"
+                                    >
+                                        Add Menu
+                                    </button>
                                     <button
                                         onClick={() => handleUpdate(data.restaurantId)}
                                         className="inline-block px-2 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-300"

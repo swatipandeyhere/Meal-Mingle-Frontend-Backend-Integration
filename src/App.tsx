@@ -60,7 +60,7 @@ const App = () => {
         <Route path="/register-restaurant" element={<RegisterRestaurant />} />
         <Route path="/view-admin-restaurants" element={<ViewAdminRestaurants restaurants={restaurants} onDelete={handleDelete} />} />
         <Route path="/update-restaurant/:id" element={<UpdateRestaurant />} />
-        <Route path='/admin/enter-bank-details' element={<RestaurantBankDetails />} />
+        <Route path="/admin/enter-bank-details/:restaurantId" element={<RestaurantBankDetails />} />
       </Routes>
     </CartProvider>
   );

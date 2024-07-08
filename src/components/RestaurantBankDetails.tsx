@@ -1,5 +1,5 @@
 import React, { useState, FormEvent, ChangeEvent } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import AdminNavbar from './AdminNavbar';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -16,6 +16,9 @@ interface BankDetails {
 
 const RestaurantBankDetails: React.FC = () => {
     const navigate = useNavigate();
+    const { restaurantId } = useParams<{ restaurantId: string }>();
+    const location = useLocation();
+    const nextPage = location.state?.nextPage || '/view-admin-restaurants';
 
     const initialBankDetails: BankDetails = {
         accountNumber: '',
@@ -47,7 +50,7 @@ const RestaurantBankDetails: React.FC = () => {
 
         toast.success('Bank Details Saved Successfully!');
         setTimeout(() => {
-            navigate('/register-restaurant-item');
+            navigate(nextPage);
         }, 2000);
     };
 
