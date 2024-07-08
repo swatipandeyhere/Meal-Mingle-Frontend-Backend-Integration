@@ -23,6 +23,7 @@ import ViewAdminRestaurants from './components/ViewAdminRestaurants';
 import UpdateRestaurant from './components/UpdateRestaurant';
 import RestaurantBankDetails from './components/RestaurantBankDetails';
 import RegisterRestaurantItem from './components/RegisterRestaurantItem';
+import ViewAdminRestaurantItems from './components/ViewAdminRestaurantItems';
 
 const App = () => {
   const [restaurants, setRestaurants] = useState<any[]>([]);
@@ -63,6 +64,7 @@ const App = () => {
         <Route path="/update-restaurant/:id" element={<UpdateRestaurant />} />
         <Route path="/admin/enter-bank-details/:restaurantId" element={<RestaurantBankDetails />} />
         <Route path="/register-restaurant-item/:restaurantId" element={<RegisterRestaurantItem />} />
+        <Route path="/view-admin-restaurant-items/:restaurantId" element={<ViewAdminRestaurantItems />} />
       </Routes>
     </CartProvider>
   );
