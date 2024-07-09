@@ -52,6 +52,7 @@ const ViewAdminRestaurantItems: React.FC = () => {
         <>
             <AdminNavbar />
             <div className='p-4 pl-20'>
+                <h1 className='font-semibold text-3xl mb-4'>Explore the Menu of {restaurant.restaurantName}</h1>
                 <div className='grid grid-cols-3 gap-4'>
                     {restaurantItems.map((item: RestaurantItem) => (
                         <div key={item.restaurantItemId} className="relative max-w-xs rounded-xl overflow-hidden shadow-sm mt-12 cursor-pointer">
