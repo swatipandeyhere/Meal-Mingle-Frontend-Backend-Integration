@@ -77,6 +77,7 @@ const ViewAdminRestaurants: React.FC<RestaurantProp> = ({ restaurants, onDelete 
         <>
             <AdminNavbar />
             <div className='p-4 pl-20'>
+                <h1 className='font-semibold text-3xl mb-4'>Explore All Your Registered Restaurants</h1>
                 <div className='grid grid-cols-3 gap-4'>
                     {restaurants.map((data) => (
                         <div className="relative max-w-xs rounded-xl overflow-hidden shadow-sm mt-12 cursor-pointer">
