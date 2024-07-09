@@ -60,6 +60,11 @@ const AdminNavbar = () => {
                             <div className='text-gray-600 text-lg cursor-pointer mr-40'>Sign Up</div>
                         </Link>
                     )}
+                    {localStorage.getItem('bankDetails') && (
+                        <Link to='/view-admin-bank-details' className='relative'>
+                            <div className='mr-12 shadow-lg p-2 rounded-xl text-black cursor-pointer w-15 h-15'>Bank Account Summary</div>
+                        </Link>
+                    )}
                     {auth.currentUser && (
                         <div>
                             <img onClick={logout} src={LogoutIcon} alt='Logout Icon' className='shadow-lg p-2 rounded-xl text-gray-600 cursor-pointer w-10 h-10 mr-20' />
