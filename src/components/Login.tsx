@@ -36,7 +36,7 @@ const Login = () => {
             const user = auth.currentUser;
             if (user) {
                 const token = await user.getIdToken();
-                localStorage.setItem("login_otp", token);
+                localStorage.setItem("token", token);
                 toast.success('Logged In with OTP Successfully!');
                 setTimeout(() => {
                     navigate("/main");
@@ -56,7 +56,7 @@ const Login = () => {
             const user = auth.currentUser;
             if (user) {
                 const token = await user.getIdToken();
-                localStorage.setItem("login_googleSignIn", token);
+                localStorage.setItem("token", token);
                 toast.success('Logged In with Google Successfully!');
                 setTimeout(() => {
                     navigate("/main");

@@ -21,7 +21,7 @@ const Signup = () => {
             const user = result.user;
             const token = await user.getIdToken();
 
-            localStorage.setItem('signup_googleSignIn', token);
+            localStorage.setItem('token', token);
             toast.success('Signed In with Google Successfully!');
             setTimeout(() => {
                 navigate('/main');
@@ -134,9 +134,9 @@ const Signup = () => {
                         // const data = await response.json();
                         // const { token } = data;
 
-                        // localStorage.setItem('signup_emailSignUp', token);
+                        // localStorage.setItem('token', token);
                         const simulatedToken = "jwt-token-from-backend-upon-email-sign-up";
-                        localStorage.setItem('signup_emailSignUp', simulatedToken);
+                        localStorage.setItem('token', simulatedToken);
                         toast.success('Email Verified! Redirecting to Login page.');
                         setTimeout(() => {
                             navigate('/login');

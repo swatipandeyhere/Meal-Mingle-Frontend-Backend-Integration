@@ -35,9 +35,9 @@ const EmailLogin = () => {
 
             // Simulated success case
             // const { token } = await response.json();
-            // localStorage.setItem("emailLogin", token);
+            // localStorage.setItem("token", token);
             const simulatedToken = "jwt-token-from-backend-upon-email-login";
-            localStorage.setItem("emailLogin", simulatedToken);
+            localStorage.setItem("token", simulatedToken);
 
             toast.success('Logged In with Email Successfully!');
             setTimeout(() => {
