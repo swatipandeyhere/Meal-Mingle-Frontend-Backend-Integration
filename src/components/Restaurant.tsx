@@ -45,53 +45,60 @@ const isRestaurantOpen = (operationDays: string, operationHours: string) => {
     return currentTime >= startTime && currentTime <= endTime;
 }
 
-const Restaurant = (props: RestaurantProp) => {
+const getOfferPhrase = (minOrderAmt: number, discountPercentage: number) => {
+    return `${discountPercentage}% OFF ABOVE ₹${minOrderAmt}`;
+};
+
+const Restaurant: React.FC<RestaurantProp> = ({ restaurant, city }) => {
     return (
         <div className='p-4 pl-20'>
             <div className='font-semibold text-3xl'>
-                {props.city ? `Best Food in ${props.city}` : 'Best Food in Location'}
+                {city ? `Best Food in ${city}` : 'Best Food in Location'}
             </div>
             <div className='grid grid-cols-3 gap-4'>
-                {props.restaurant.filter((data: any) => !props.city || data.restaurantAddress.city.includes(props.city)).map((data: any) => {
-                    const isOpen = isRestaurantOpen(data.restaurantOperationDays, data.restaurantOperationHours);
-                    return (
-                        <div key={data.restaurantId} className="relative max-w-xs rounded-xl overflow-hidden shadow-sm mt-12">
-                            {isOpen ? (
-                                <Link to={isAuthenticated() ? '/menu' : '/login'} state={{ data: data }}>
-                                    <img className={`w-full rounded-2xl h-60`} src={require(`../images/${data.restaurantImageUrl}`)} alt="Restaurant Image" />
-                                </Link>
-                            ) : (
-                                <img className={`w-full rounded-2xl h-60 filter grayscale`} src={require(`../images/${data.restaurantImageUrl}`)} alt="Restaurant Image" />
-                            )}
-                            {data.restaurantOfferPhrase !== "0% OFF ABOVE 0" && (
-                                <div className="absolute top-2 left-2 bg-blue-500 text-white font-semibold py-1 px-2 rounded-md">
-                                    {data.restaurantOfferPhrase}
-                                </div>
-                            )}
-                            <div className="py-4">
-                                <div className='flex justify-between items-center'>
-                                    <div className="font-semibold text-xl mb-2">
-                                        {data.restaurantName}
-                                        <div className="text-sm text-gray-600">{data.restaurantAddress.streetNumber}, {data.restaurantAddress.streetName}, {data.restaurantAddress.city}</div>
+                {restaurant
+                    .filter((data: any) => !city || data.restaurantAddress.city.includes(city))
+                    .map((data: any) => {
+                        const isOpen = isRestaurantOpen(data.restaurantOperationDays, data.restaurantOperationHours);
+                        const offerPhrase = getOfferPhrase(data.restaurantMinimumOrderAmount, data.restaurantDiscountPercentage);
+                        return (
+                            <div key={data.restaurantId} className="relative max-w-xs rounded-xl overflow-hidden shadow-sm mt-12">
+                                {isOpen ? (
+                                    <Link to={isAuthenticated() ? '/menu' : '/login'} state={{ data: data }}>
+                                        <img className={`w-full rounded-2xl h-60`} src={require(`../images/${data.restaurantImageUrl}`)} alt="Restaurant Image" />
+                                    </Link>
+                                ) : (
+                                    <img className={`w-full rounded-2xl h-60 filter grayscale`} src={require(`../images/${data.restaurantImageUrl}`)} alt="Restaurant Image" />
+                                )}
+                                {data.restaurantDiscountPercentage > 0 && (
+                                    <div className="absolute top-2 left-2 bg-blue-500 text-white font-semibold py-1 px-2 rounded-md">
+                                        {offerPhrase}
                                     </div>
-                                    <div className={`text-white font-semibold text-base rounded-md p-1 ${data.restaurantRating < 4.5 ? `bg-green-600` : `bg-green-900`}`}>
-                                        {data.restaurantRating}
+                                )}
+                                <div className="py-4">
+                                    <div className='flex justify-between items-center'>
+                                        <div className="font-semibold text-xl mb-2">
+                                            {data.restaurantName}
+                                            <div className="text-sm text-gray-600">{data.restaurantAddress.streetNumber}, {data.restaurantAddress.streetName}, {data.restaurantAddress.city}</div>
+                                        </div>
+                                        <div className={`text-white font-semibold text-base rounded-md p-1 ${data.restaurantRating < 4.5 ? `bg-green-600` : `bg-green-900`}`}>
+                                            {data.restaurantRating}
+                                        </div>
+                                    </div>
+                                    <div className={`font-semibold text-sm ${isOpen ? 'text-green-500' : 'text-red-500'}`}>
+                                        {isOpen ? 'Open' : 'Closed'}
                                     </div>
                                 </div>
-                                <div className={`font-semibold text-sm ${isOpen ? 'text-green-500' : 'text-red-500'}`}>
-                                    {isOpen ? 'Open' : 'Closed'}
-                                </div>
+                                {!isOpen && (
+                                    <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                                        <div className="w-16 h-16 rounded-full flex items-center justify-center">
+                                            <FaBan className="text-white text-3xl" />
+                                        </div>
+                                    </div>
+                                )}
                             </div>
-                            {!isOpen && (
-                                <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-                                    <div className="w-16 h-16 rounded-full flex items-center justify-center">
-                                        <FaBan className="text-white text-3xl" />
-                                    </div>
-                                </div>
-                            )}
-                        </div>
-                    );
-                })}
+                        );
+                    })}
             </div>
         </div>
     );

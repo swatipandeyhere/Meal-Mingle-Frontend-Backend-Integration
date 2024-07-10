@@ -43,6 +43,10 @@ const isRestaurantOpen = (operationDays: string, operationHours: string) => {
     return currentTime >= startTime && currentTime <= endTime;
 }
 
+const getOfferPhrase = (minOrderAmt: number, discountPercentage: number) => {
+    return `${discountPercentage}% OFF ABOVE ₹${minOrderAmt}`;
+};
+
 const RestaurantsByCategory = () => {
     const { categoryName } = useParams();
     const navigate = useNavigate();
@@ -68,6 +72,7 @@ const RestaurantsByCategory = () => {
                 <div className='grid grid-cols-3 gap-4'>
                     {filteredRestaurants.map((restaurant) => {
                         const isOpen = isRestaurantOpen(restaurant.restaurantOperationDays, restaurant.restaurantOperationHours);
+                        const offerPhrase = getOfferPhrase(restaurant.restaurantMinimumOrderAmount, restaurant.restaurantDiscountPercentage);
                         return (
                             <div key={restaurant.restaurantId} className="relative max-w-xs rounded-xl overflow-hidden shadow-sm mt-12 cursor-pointer" onClick={() => handleRestaurantClick(restaurant)}>
                                 {isOpen ? (
@@ -75,9 +80,9 @@ const RestaurantsByCategory = () => {
                                 ) : (
                                     <img className={`w-full rounded-2xl h-60 filter grayscale`} src={require(`../images/${restaurant.restaurantImageUrl}`)} alt="Restaurant Image" />
                                 )}
-                                {restaurant.restaurantOfferPhrase !== "0% OFF ABOVE 0" && (
+                                {restaurant.restaurantDiscountPercentage > 0 && (
                                     <div className="absolute top-2 left-2 bg-blue-500 text-white font-semibold py-1 px-2 rounded-md">
-                                        {restaurant.restaurantOfferPhrase}
+                                        {offerPhrase}
                                     </div>
                                 )}
                                 <div className="py-4">

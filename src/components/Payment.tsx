@@ -15,7 +15,6 @@ interface Restaurant {
     restaurantRating: number;
     restaurantMinimumOrderAmount: number;
     restaurantDiscountPercentage: number;
-    restaurantOfferPhrase: string;
     restaurantAvailability: boolean;
     restaurantImageUrl: string;
     restaurantOperationDays: string;
