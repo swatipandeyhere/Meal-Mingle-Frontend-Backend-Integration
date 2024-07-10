@@ -69,47 +69,53 @@ const RestaurantsByCategory = () => {
             <Menubar />
             <div className='p-4 pl-20'>
                 <h1 className='font-semibold text-3xl'>Restaurants Serving {categoryName}</h1>
-                <div className='grid grid-cols-3 gap-4'>
-                    {filteredRestaurants.map((restaurant) => {
-                        const isOpen = isRestaurantOpen(restaurant.restaurantOperationDays, restaurant.restaurantOperationHours);
-                        const offerPhrase = getOfferPhrase(restaurant.restaurantMinimumOrderAmount, restaurant.restaurantDiscountPercentage);
-                        return (
-                            <div key={restaurant.restaurantId} className="relative max-w-xs rounded-xl overflow-hidden shadow-sm mt-12 cursor-pointer" onClick={() => handleRestaurantClick(restaurant)}>
-                                {isOpen ? (
-                                    <img className={`w-full rounded-2xl h-60`} src={require(`../images/${restaurant.restaurantImageUrl}`)} alt="Restaurant Image" />
-                                ) : (
-                                    <img className={`w-full rounded-2xl h-60 filter grayscale`} src={require(`../images/${restaurant.restaurantImageUrl}`)} alt="Restaurant Image" />
-                                )}
-                                {restaurant.restaurantDiscountPercentage > 0 && (
-                                    <div className="absolute top-2 left-2 bg-blue-500 text-white font-semibold py-1 px-2 rounded-md">
-                                        {offerPhrase}
-                                    </div>
-                                )}
-                                <div className="py-4">
-                                    <div className='flex justify-between items-center'>
-                                        <div className="font-semibold text-xl mb-2">
-                                            {restaurant.restaurantName}
-                                            <div className="text-sm text-gray-600">{restaurant.restaurantAddress.streetNumber}, {restaurant.restaurantAddress.streetName}, {restaurant.restaurantAddress.city}</div>
+                {filteredRestaurants.length > 0 ? (
+                    <div className='grid grid-cols-3 gap-4'>
+                        {filteredRestaurants.map((restaurant) => {
+                            const isOpen = isRestaurantOpen(restaurant.restaurantOperationDays, restaurant.restaurantOperationHours);
+                            const offerPhrase = getOfferPhrase(restaurant.restaurantMinimumOrderAmount, restaurant.restaurantDiscountPercentage);
+                            return (
+                                <div key={restaurant.restaurantId} className="relative max-w-xs rounded-xl overflow-hidden shadow-sm mt-12 cursor-pointer" onClick={() => handleRestaurantClick(restaurant)}>
+                                    {isOpen ? (
+                                        <img className={`w-full rounded-2xl h-60`} src={require(`../images/${restaurant.restaurantImageUrl}`)} alt="Restaurant Image" />
+                                    ) : (
+                                        <img className={`w-full rounded-2xl h-60 filter grayscale`} src={require(`../images/${restaurant.restaurantImageUrl}`)} alt="Restaurant Image" />
+                                    )}
+                                    {restaurant.restaurantDiscountPercentage > 0 && (
+                                        <div className="absolute top-2 left-2 bg-blue-500 text-white font-semibold py-1 px-2 rounded-md">
+                                            {offerPhrase}
                                         </div>
-                                        <div className={`text-white font-semibold text-base rounded-md p-1 ${restaurant.restaurantRating < 4.5 ? `bg-green-600` : `bg-green-900`}`}>
-                                            {restaurant.restaurantRating}
+                                    )}
+                                    <div className="py-4">
+                                        <div className='flex justify-between items-center'>
+                                            <div className="font-semibold text-xl mb-2">
+                                                {restaurant.restaurantName}
+                                                <div className="text-sm text-gray-600">{restaurant.restaurantAddress.streetNumber}, {restaurant.restaurantAddress.streetName}, {restaurant.restaurantAddress.city}</div>
+                                            </div>
+                                            <div className={`text-white font-semibold text-base rounded-md p-1 ${restaurant.restaurantRating < 4.5 ? `bg-green-600` : `bg-green-900`}`}>
+                                                {restaurant.restaurantRating}
+                                            </div>
+                                        </div>
+                                        <div className={`font-semibold text-sm ${isOpen ? 'text-green-500' : 'text-red-500'}`}>
+                                            {isOpen ? 'Open' : 'Closed'}
                                         </div>
                                     </div>
-                                    <div className={`font-semibold text-sm ${isOpen ? 'text-green-500' : 'text-red-500'}`}>
-                                        {isOpen ? 'Open' : 'Closed'}
-                                    </div>
+                                    {!isOpen && (
+                                        <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                                            <div className="w-16 h-16 rounded-full flex items-center justify-center">
+                                                <FaBan className="text-white text-3xl" />
+                                            </div>
+                                        </div>
+                                    )}
                                 </div>
-                                {!isOpen && (
-                                    <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-                                        <div className="w-16 h-16 rounded-full flex items-center justify-center">
-                                            <FaBan className="text-white text-3xl" />
-                                        </div>
-                                    </div>
-                                )}
-                            </div>
-                        );
-                    })}
-                </div>
+                            );
+                        })}
+                    </div>
+                ) : (
+                    <div className="text-center text-xl mt-24">
+                        No Restaurants are serving {categoryName} at the moment!
+                    </div>
+                )}
             </div>
         </>
     );
