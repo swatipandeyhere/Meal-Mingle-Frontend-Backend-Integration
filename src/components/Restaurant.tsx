@@ -99,6 +99,11 @@ const Restaurant: React.FC<RestaurantProp> = ({ restaurant, city }) => {
                             </div>
                         );
                     })}
+                {restaurant.length === 0 && (
+                    <div className="text-center col-span-3 text-xl mt-24">
+                        No Restaurants Found!
+                    </div>
+                )}
             </div>
         </div>
     );
