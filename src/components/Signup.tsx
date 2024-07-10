@@ -95,8 +95,7 @@ const Signup = () => {
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
 
-            await sendEmailVerification(user);
-            toast.success('Signed Up Successfully! Please Verify your Email.');
+            toast.success('Signed Up Successfully! Redirecting to Login page.');
 
             onAuthStateChanged(auth, async (user) => {
                 if (user) {
@@ -104,48 +103,37 @@ const Signup = () => {
                 }
             });
 
-            // Poll for email verification
-            const intervalId = setInterval(async () => {
-                const user = auth.currentUser;
-                if (user) {
-                    await user.reload();
-                    if (user.emailVerified) {
-                        clearInterval(intervalId);
-                        // Simulate backend API call since backend is not running
-                        // Commented out the actual fetch call
-                        // const response = await fetch('YOUR_BACKEND_API_ENDPOINT/signup', {
-                        //     method: 'POST',
-                        //     headers: {
-                        //         'Content-Type': 'application/json'
-                        //     },
-                        //     body: JSON.stringify({
-                        //         name,
-                        //         email,
-                        //         password,
-                        //         phone
-                        //     })
-                        // });
+            // Simulate backend API call since backend is not running
+            // Commented out the actual fetch call
+            // const response = await fetch('YOUR_BACKEND_API_ENDPOINT/signup', {
+            //     method: 'POST',
+            //     headers: {
+            //         'Content-Type': 'application/json'
+            //     },
+            //     body: JSON.stringify({
+            //         name,
+            //         email,
+            //         password,
+            //         phone
+            //     })
+            // });
 
-                        // if (!response.ok) {
-                        //     const errorData = await response.json();
-                        //     throw new Error(errorData.message || 'Failed to Sign Up');
-                        // }
+            // if (!response.ok) {
+            //     const errorData = await response.json();
+            //     throw new Error(errorData.message || 'Failed to Sign Up');
+            // }
 
-                        // const data = await response.json();
-                        // const { token } = data;
+            // const data = await response.json();
+            // const { token } = data;
 
-                        // localStorage.setItem('token', token);
-                        const simulatedToken = "jwt-token-from-backend-upon-email-sign-up";
-                        localStorage.setItem('token', simulatedToken);
-                        toast.success('Email Verified! Redirecting to Login page.');
-                        setTimeout(() => {
-                            navigate('/login');
-                        }, 3000); // 3 seconds delay before navigating to login page
-                    }
-                }
-            }, 2000);
-
-        } catch (err: any) {
+            // localStorage.setItem('token', token);
+            const simulatedToken = "jwt-token-from-backend-upon-email-sign-up";
+            localStorage.setItem('token', simulatedToken);
+            setTimeout(() => {
+                navigate('/login');
+            }, 3000);
+        }
+        catch (err: any) {
             console.error(err);
             if (err.code === 'auth/email-already-in-use') {
                 toast.error('Email Address is Already in Use!');
