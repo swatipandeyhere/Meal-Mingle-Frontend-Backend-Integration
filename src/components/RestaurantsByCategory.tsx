@@ -52,10 +52,12 @@ const RestaurantsByCategory = () => {
     const navigate = useNavigate();
 
     const handleRestaurantClick = (restaurant: any) => {
-        if (isAuthenticated()) {
-            navigate(`/category/${categoryName}/menu`, { state: { data: restaurant, category: categoryName } });
-        } else {
-            navigate('/login');
+        if (isRestaurantOpen(restaurant.restaurantOperationDays, restaurant.restaurantOperationHours)) {
+            if (isAuthenticated()) {
+                navigate(`/category/${categoryName}/menu`, { state: { data: restaurant, category: categoryName } });
+            } else {
+                navigate('/login');
+            }
         }
     };
 
