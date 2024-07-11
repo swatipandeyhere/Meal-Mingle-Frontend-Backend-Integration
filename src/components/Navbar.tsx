@@ -20,7 +20,7 @@ interface cityProp {
 
 const Navbar = ({ city, onSearch }: cityProp) => {
     const [authStore, setAuthStore] = useState<any>({});
-    const { cart, getTotalQuantity } = useCart();
+    const { cart, getTotalQuantity, clearCart } = useCart();
     const navigate = useNavigate();
     const [searchQuery, setSearchQuery] = useState('');
 
@@ -36,6 +36,7 @@ const Navbar = ({ city, onSearch }: cityProp) => {
         try {
             await signOut(auth);
             toast.success('Logged Out Successfully!');
+            clearCart();
             setTimeout(() => {
                 navigate('/');
             }, 2000);
