@@ -51,7 +51,11 @@ const Payment = () => {
     const [paymentDetails, setPaymentDetails] = useState({
         cardNumber: '',
         expiryDate: '',
-        cvv: ''
+        cvv: '',
+        streetNumber: '',
+        streetName: '',
+        city: '',
+        country: 'India'
     });
 
     const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -66,15 +70,17 @@ const Payment = () => {
         event.preventDefault();
 
         if (!paymentDetails.cardNumber.trim() || !paymentDetails.expiryDate.trim() || !paymentDetails.cvv.trim()) {
-            alert('Please fill in all payment details.');
+            alert('Please fill in all the details.');
             return;
         }
 
+        // Card Number
         if (paymentDetails.cardNumber.length !== 16 || !/^\d+$/.test(paymentDetails.cardNumber)) {
             alert('Invalid card number. Please enter a 16-digit numeric card number.');
             return;
         }
 
+        // Expiry Date
         if (paymentDetails.expiryDate.length !== 5 || !/^\d{2}\/\d{2}$/.test(paymentDetails.expiryDate)) {
             alert('Invalid expiry date. Please enter a valid date in the format MM/YY.');
             return;
@@ -96,8 +102,47 @@ const Payment = () => {
             return;
         }
 
+        // CVV
         if (paymentDetails.cvv.length !== 3 || !/^\d+$/.test(paymentDetails.cvv)) {
             alert('Invalid CVV. Please enter a 3-digit numeric CVV.');
+            return;
+        }
+
+        // Street Number
+        if (!paymentDetails.streetNumber.trim()) {
+            alert('Street Number is Required.');
+            return;
+        }
+        else if (isNaN(Number(paymentDetails.streetNumber))) {
+            alert('Street Number must be a Number, not a String.');
+            return;
+        }
+
+        // Street Name
+        if (!paymentDetails.streetName.trim()) {
+            alert('Street Name is Required.');
+            return;
+        }
+        else if (/^\d+$/.test(paymentDetails.streetName.trim())) {
+            alert('Street Name must be a String, not a Number.');
+            return;
+        }
+        else if (paymentDetails.streetName.trim().length < 5 || paymentDetails.streetName.trim().length > 30) {
+            alert('Street Name must be between 5 to 30 Characters long.');
+            return;
+        }
+
+        // City
+        if (!paymentDetails.city.trim()) {
+            alert('City is Required.');
+            return;
+        }
+        else if (/^\d+$/.test(paymentDetails.city.trim())) {
+            alert('City must be a String, not a Number.');
+            return;
+        }
+        else if (paymentDetails.city.trim().length < 3 || paymentDetails.city.trim().length > 30) {
+            alert('City must be between 3 to 30 Characters long.');
             return;
         }
 
@@ -105,6 +150,12 @@ const Payment = () => {
             id: Date.now().toString(),
             items,
             totalAmount: finalPrice,
+            shippingAddress: {
+                streetNumber: paymentDetails.streetNumber,
+                streetName: paymentDetails.streetName,
+                city: paymentDetails.city,
+                country: paymentDetails.country
+            },
             orderDate: new Date().toLocaleString()
         };
 
@@ -156,6 +207,22 @@ const Payment = () => {
                     <label className='block mb-4 mr-10'>
                         CVV:
                         <input type='text' name='cvv' value={paymentDetails.cvv} onChange={handleInputChange} className='w-full mt-1 p-2 border border-gray-300 rounded' />
+                    </label>
+                    <label className='block mb-2 mr-10'>
+                        Street Number:
+                        <input type='text' name='streetNumber' value={paymentDetails.streetNumber} onChange={handleInputChange} className='w-full mt-1 p-2 border border-gray-300 rounded' />
+                    </label>
+                    <label className='block mb-2 mr-10'>
+                        Street Name:
+                        <input type='text' name='streetName' value={paymentDetails.streetName} onChange={handleInputChange} className='w-full mt-1 p-2 border border-gray-300 rounded' />
+                    </label>
+                    <label className='block mb-2 mr-10'>
+                        City:
+                        <input type='text' name='city' value={paymentDetails.city} onChange={handleInputChange} className='w-full mt-1 p-2 border border-gray-300 rounded' />
+                    </label>
+                    <label className='block mb-4 mr-10'>
+                        Country:
+                        <input type='text' name='country' value={paymentDetails.country} className='w-full mt-1 p-2 border border-gray-300 rounded' disabled />
                     </label>
                     <button type='submit' className='px-4 py-2 bg-blue-500 text-white rounded'>Pay Now</button>
                 </form>
