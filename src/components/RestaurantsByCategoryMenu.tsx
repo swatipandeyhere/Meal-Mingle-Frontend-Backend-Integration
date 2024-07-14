@@ -5,7 +5,7 @@ import { useCart, CartItem } from '../context/CartContext';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const CategoryMenu = () => {
+const RestaurantsByCategoryMenu = () => {
     const location = useLocation();
     const { data, category } = location.state;
     const { addToCart } = useCart();
@@ -63,4 +63,4 @@ const CategoryMenu = () => {
     );
 };
 
-export default CategoryMenu;
+export default RestaurantsByCategoryMenu;
