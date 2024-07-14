@@ -39,7 +39,7 @@ const Login = () => {
                 localStorage.setItem("token", token);
                 toast.success('Logged In with OTP Successfully!');
                 setTimeout(() => {
-                    navigate("/main");
+                    navigate("/");
                 }, 2000);
             } else {
                 toast.error('User Authentication Failed!');
@@ -59,7 +59,7 @@ const Login = () => {
                 localStorage.setItem("token", token);
                 toast.success('Logged In with Google Successfully!');
                 setTimeout(() => {
-                    navigate("/main");
+                    navigate("/");
                 }, 2000);
             } else {
                 toast.error('User Authentication Failed!');

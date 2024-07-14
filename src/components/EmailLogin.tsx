@@ -41,7 +41,7 @@ const EmailLogin = () => {
 
             toast.success('Logged In with Email Successfully!');
             setTimeout(() => {
-                navigate("/main");
+                navigate("/");
             }, 2000);
         } catch (err: any) {
             console.error(err);
