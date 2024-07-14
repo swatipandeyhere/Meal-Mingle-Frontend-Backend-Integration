@@ -42,7 +42,8 @@ const Main = () => {
 
   const handleSearch = (query: string) => {
     const filtered = RestaurantData.filter(restaurant =>
-      restaurant.restaurantName.toLowerCase().startsWith(query.toLowerCase())
+      restaurant.restaurantName.toLowerCase().startsWith(query.toLowerCase()) &&
+      (!location.state?.city || restaurant.restaurantAddress.city.toLowerCase() === location.state.city.toLowerCase())
     );
     setFilteredRestaurants(filtered);
   };
