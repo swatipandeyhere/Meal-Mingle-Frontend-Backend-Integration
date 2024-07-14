@@ -9,12 +9,20 @@ interface OrderItem {
     restaurantItemImageUrl: string;
 }
 
+interface ShippingAddress {
+    streetNumber: string;
+    streetName: string;
+    city: string;
+    country: string;
+}
+
 interface Order {
     id: string;
     items: OrderItem[];
     totalAmount: number;
     orderDate: string;
-    status: 'Pending' | 'Confirmed' | 'Preparing' | 'Ready' | 'Delivered' | 'Cancelled';
+    status: 'Pending' | 'Confirmed' | 'Preparing' | 'Ready' | 'Delivered';
+    shippingAddress: ShippingAddress;
 }
 
 const MyOrders = () => {
@@ -51,6 +59,9 @@ const MyOrders = () => {
                                 <h2 className='text-xl font-semibold mb-2'>Order ID: {order.id}</h2>
                                 <p className='text-gray-600 mb-2'>Order Date: {order.orderDate}</p>
                                 <p className='text-gray-600 mb-2'>Status: {order.status}</p>
+                                <div className='text-gray-600 mb-2'>
+                                    Shipping Address: {order.shippingAddress.streetNumber}, {order.shippingAddress.streetName}, {order.shippingAddress.city}, {order.shippingAddress.country}
+                                </div>
                                 <div className='space-y-2'>
                                     {order.items.map((item, index) => (
                                         <div key={index} className='flex justify-between items-center p-2 border-b'>
