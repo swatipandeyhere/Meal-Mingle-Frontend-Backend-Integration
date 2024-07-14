@@ -15,23 +15,6 @@ const Signup = () => {
     const [phone, setPhone] = useState("");
     const [error, setError] = useState<string | null>(null);
 
-    const googleSignIn = async () => {
-        try {
-            const result = await signInWithPopup(auth, new GoogleAuthProvider());
-            const user = result.user;
-            const token = await user.getIdToken();
-
-            localStorage.setItem('token', token);
-            toast.success('Signed In with Google Successfully!');
-            setTimeout(() => {
-                navigate('/main');
-            }, 2000);
-        } catch (err: any) {
-            console.error(err);
-            toast.error('Failed to Sign In with Google!');
-        }
-    };
-
     const validateEmail = (email: string) => {
         const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return re.test(String(email).toLowerCase());
@@ -166,11 +149,6 @@ const Signup = () => {
                                 <button onClick={emailSignUp} className="mt-5 mb-3 bg-rose-500 w-full h-12 text-white py-2 px-4 rounded-lg">
                                     Create Account
                                 </button>
-                                <div className='text-center'>or</div>
-                                <div onClick={googleSignIn} className='mt-3 flex items-center text-center border border-spacing-1 rounded-lg p-3'>
-                                    <img src={GoogleIcon} alt='Google Icon' className='w-7 h-7 ml-12' />
-                                    <button className='ml-5'>Sign in with Google</button>
-                                </div>
                                 <hr className='mt-4' />
                                 <div className='text-base mt-5'>Already have an account? <Link to='/login'><span className='text-red-500'>Log in</span></Link></div>
                             </div>
