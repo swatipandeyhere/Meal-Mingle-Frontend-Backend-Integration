@@ -65,7 +65,7 @@ const RegisterRestaurant: React.FC<RegisterRestaurantProps> = ({ onSubmit }) => 
     const [errors, setErrors] = useState<string[]>([]);
     const navigate = useNavigate();
 
-    const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
         if (name.includes('.')) {
             const [parent, child] = name.split('.');
@@ -165,14 +165,6 @@ const RegisterRestaurant: React.FC<RegisterRestaurantProps> = ({ onSubmit }) => 
         // City
         if (!restaurantData.restaurantAddress.city.trim()) {
             errors.push('City is Required.');
-            isValid = false;
-        }
-        else if (/^\d+$/.test(restaurantData.restaurantAddress.city.trim())) {
-            errors.push('City must be a String, not a Number.');
-            isValid = false;
-        }
-        else if (restaurantData.restaurantAddress.city.trim().length < 3 || restaurantData.restaurantAddress.city.trim().length > 30) {
-            errors.push('City must be between 3 to 30 Characters long.');
             isValid = false;
         }
 
@@ -281,6 +273,14 @@ const RegisterRestaurant: React.FC<RegisterRestaurantProps> = ({ onSubmit }) => 
         return isValid;
     };
 
+    const cityOptions = [
+        'Delhi',
+        'Mumbai',
+        'Chennai',
+        'Bangalore',
+        'Jaipur'
+    ];
+
     return (
         <>
             <AdminNavbar />
@@ -356,13 +356,20 @@ const RegisterRestaurant: React.FC<RegisterRestaurantProps> = ({ onSubmit }) => 
                                 <label className="block text-base font-medium text-gray-700">
                                     City
                                 </label>
-                                <input
-                                    type="text"
+                                <select
+                                    id="city"
                                     name="restaurantAddress.city"
                                     value={restaurantData.restaurantAddress.city}
                                     onChange={handleChange}
-                                    className="form-input mt-1 block w-full rounded-md shadow-sm border h-10"
-                                />
+                                    className="form-select mt-1 block w-full rounded-md shadow-sm border h-10"
+                                >
+                                    <option value="">Select a City</option>
+                                    {cityOptions.map(city => (
+                                        <option key={city} value={city}>
+                                            {city}
+                                        </option>
+                                    ))}
+                                </select>
                             </div>
                             <div className="col-span-1">
                                 <label className="block text-base font-medium text-gray-700">
