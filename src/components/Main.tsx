@@ -44,9 +44,10 @@ const Main = () => {
   };
 
   const handleSearch = (query: string) => {
+    const city = location.state?.city || localStorage.getItem('location');
     const filtered = RestaurantData.filter(restaurant =>
       restaurant.restaurantName.toLowerCase().startsWith(query.toLowerCase()) &&
-      (!location.state?.city || restaurant.restaurantAddress.city.toLowerCase() === location.state.city.toLowerCase())
+      (!city || restaurant.restaurantAddress.city.toLowerCase() === city.toLowerCase())
     );
     setFilteredRestaurants(filtered);
   };
