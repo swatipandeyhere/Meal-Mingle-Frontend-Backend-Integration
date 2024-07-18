@@ -24,7 +24,7 @@ const Navbar = ({ city, onSearch }: cityProp) => {
     const navigate = useNavigate();
     const [searchQuery, setSearchQuery] = useState('');
     const [location, setLocation] = useState(() => {
-        return localStorage.getItem('location') || city || 'Location';
+        return localStorage.getItem('location') || 'Location';
     });
 
     useEffect(() => {
@@ -41,7 +41,7 @@ const Navbar = ({ city, onSearch }: cityProp) => {
             localStorage.setItem('location', city);
         }
         else {
-            setLocation('Location');
+            setLocation(localStorage.getItem('location') || 'Location');
         }
     }, [city]);
 
