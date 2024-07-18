@@ -40,6 +40,9 @@ const Navbar = ({ city, onSearch }: cityProp) => {
             setLocation(city);
             localStorage.setItem('location', city);
         }
+        else {
+            setLocation('Location');
+        }
     }, [city]);
 
     const logout = async () => {

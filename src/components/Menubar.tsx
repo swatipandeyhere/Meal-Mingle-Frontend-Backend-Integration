@@ -35,6 +35,7 @@ const Menubar: React.FC = () => {
     const navigate = useNavigate();
 
     const handleCategoryClick = (categoryName: string) => {
+        localStorage.setItem('location', 'Location');
         navigate(`/category/${categoryName}`);
     };
 
