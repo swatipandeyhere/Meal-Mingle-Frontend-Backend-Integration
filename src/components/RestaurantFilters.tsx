@@ -24,7 +24,7 @@ const RestaurantFilters: React.FC<RestaurantFiltersProps> = ({ applyRestaurantFi
     const applyRestaurantFiltersAndNavigate = () => {
         const params = new URLSearchParams(location.search);
 
-        const city = location.state?.city;
+        const city = location.state?.city || localStorage.getItem('location');
         if (city) {
             params.set('city', city);
         }
