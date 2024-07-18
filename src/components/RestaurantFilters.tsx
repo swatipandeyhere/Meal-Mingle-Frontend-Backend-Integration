@@ -40,7 +40,7 @@ const RestaurantFilters: React.FC<RestaurantFiltersProps> = ({ applyRestaurantFi
             params.delete('offers');
         }
 
-        navigate(`/restaurants/filter?${params.toString()}`);
+        navigate(`/restaurants/filter?${params.toString()}`, { state: { city } });
         applyRestaurantFilters(params);
     };
 

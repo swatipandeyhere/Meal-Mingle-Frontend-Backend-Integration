@@ -20,23 +20,26 @@ const Main = () => {
 
   const applyRestaurantFilters = (params: URLSearchParams) => {
     let filtered = RestaurantData;
-    let appliedRestaurantFilters = { rating: false, offers: false };
+    const city = params.get('city') || location.state?.city;
+
+    if (city) {
+      filtered = filtered.filter(restaurant => restaurant.restaurantAddress.city.toLowerCase() === city.toLowerCase());
+    }
 
     if (params.get('rating')) {
-      filtered = filtered.filter(restaurant =>
-        restaurant.restaurantRating >= 4.0
-      );
-      appliedRestaurantFilters = { ...appliedRestaurantFilters, rating: true };
+      filtered = filtered.filter(restaurant => restaurant.restaurantRating >= 4.0);
+      setRestaurantFilters(prev => ({ ...prev, rating: true }));
+    } else {
+      setRestaurantFilters(prev => ({ ...prev, rating: false }));
     }
 
     if (params.get('offers')) {
-      filtered = filtered.filter(restaurant =>
-        restaurant.restaurantDiscountPercentage > 0
-      );
-      appliedRestaurantFilters = { ...appliedRestaurantFilters, offers: true };
+      filtered = filtered.filter(restaurant => restaurant.restaurantDiscountPercentage > 0);
+      setRestaurantFilters(prev => ({ ...prev, offers: true }));
+    } else {
+      setRestaurantFilters(prev => ({ ...prev, offers: false }));
     }
 
-    setRestaurantFilters(appliedRestaurantFilters);
     setFilteredRestaurants(filtered);
   };
 

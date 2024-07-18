@@ -23,6 +23,9 @@ const Navbar = ({ city, onSearch }: cityProp) => {
     const { cart, getTotalQuantity, clearCart } = useCart();
     const navigate = useNavigate();
     const [searchQuery, setSearchQuery] = useState('');
+    const [location, setLocation] = useState(() => {
+        return localStorage.getItem('location') || city || 'Location';
+    });
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -31,6 +34,13 @@ const Navbar = ({ city, onSearch }: cityProp) => {
 
         return () => unsubscribe();
     }, []);
+
+    useEffect(() => {
+        if (city) {
+            setLocation(city);
+            localStorage.setItem('location', city);
+        }
+    }, [city]);
 
     const logout = async () => {
         try {
@@ -53,6 +63,12 @@ const Navbar = ({ city, onSearch }: cityProp) => {
         }
     };
 
+    const handleLocationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const newLocation = e.target.value;
+        setLocation(newLocation);
+        localStorage.setItem('location', newLocation);
+    };
+
     return (
         <>
             <ToastContainer />
@@ -60,7 +76,7 @@ const Navbar = ({ city, onSearch }: cityProp) => {
                 <Link to='/'><h1 className='text-3xl font-extrabold italic ml-20'>MealMingle</h1></Link>
                 <div className='ml-6 shadow-lg flex items-center border border-gray-300 w-6/12 rounded-lg p-3 h-12'>
                     <img src={Location} alt='Location Icon' className='w-7 h-7 ml-2' />
-                    <input className="outline-none text-gray-900 text-sm block w-40 p-2.5" placeholder={city ?? 'Location'} required />
+                    <input className="outline-none text-gray-900 text-sm block w-40 p-2.5" placeholder='Location' value={location} onChange={handleLocationChange} required />
                     <img src={DropDownIcon} alt='Drop Down Icon' className='w-5 h-5 ml-5' />
                     <div className='ml-3 text-gray-400'>|</div>
                     <img src={SearchIcon} alt='Search Icon' className='w-6 h-6 ml-5' />
