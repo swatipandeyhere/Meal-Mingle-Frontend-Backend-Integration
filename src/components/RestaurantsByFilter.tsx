@@ -21,33 +21,27 @@ const RestaurantsByFilter = () => {
 
     const applyRestaurantFilters = (params: URLSearchParams) => {
         let filtered = RestaurantData;
-        let shouldRedirect = true;
+        const city = params.get('city') || location.state?.city;
+
+        if (city) {
+            filtered = filtered.filter(restaurant => restaurant.restaurantAddress.city.toLowerCase() === city.toLowerCase());
+        }
 
         if (params.get('rating')) {
-            filtered = filtered.filter(restaurant =>
-                restaurant.restaurantRating >= 4.0
-            );
-            setRestaurantFilters(prevRestaurantFilters => ({ ...prevRestaurantFilters, rating: true }));
-            shouldRedirect = false;
+            filtered = filtered.filter(restaurant => restaurant.restaurantRating >= 4.0);
+            setRestaurantFilters(prev => ({ ...prev, rating: true }));
         } else {
-            setRestaurantFilters(prevRestaurantFilters => ({ ...prevRestaurantFilters, rating: false }));
+            setRestaurantFilters(prev => ({ ...prev, rating: false }));
         }
 
         if (params.get('offers')) {
-            filtered = filtered.filter(restaurant =>
-                restaurant.restaurantDiscountPercentage > 0
-            );
-            setRestaurantFilters(prevRestaurantFilters => ({ ...prevRestaurantFilters, offers: true }));
-            shouldRedirect = false;
+            filtered = filtered.filter(restaurant => restaurant.restaurantDiscountPercentage > 0);
+            setRestaurantFilters(prev => ({ ...prev, offers: true }));
         } else {
-            setRestaurantFilters(prevRestaurantFilters => ({ ...prevRestaurantFilters, offers: false }));
+            setRestaurantFilters(prev => ({ ...prev, offers: false }));
         }
 
         setFilteredRestaurants(filtered);
-
-        if (shouldRedirect && !params.get('rating') && !params.get('offers')) {
-            navigate('/main');
-        }
     };
 
     const handleSearch = (query: string) => {
