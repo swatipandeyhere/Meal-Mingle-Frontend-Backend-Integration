@@ -1,11 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { isAuthenticated } from '../utils/authUtils';
 import { FaBan } from 'react-icons/fa';
 
 interface RestaurantProp {
     restaurant: any,
-    city: any
 }
 
 const isRestaurantOpen = (operationDays: string, operationHours: string) => {
@@ -49,7 +48,14 @@ const getOfferPhrase = (minOrderAmt: number, discountPercentage: number) => {
     return `${discountPercentage}% OFF ABOVE ₹${minOrderAmt}`;
 };
 
-const Restaurant: React.FC<RestaurantProp> = ({ restaurant, city }) => {
+const Restaurant: React.FC<RestaurantProp> = ({ restaurant }) => {
+    const [city, setCity] = useState<string | null>(null);
+
+    useEffect(() => {
+        const storedCity = localStorage.getItem('location');
+        setCity(storedCity);
+    }, []);
+
     return (
         <div className='p-4 pl-20'>
             <div className='font-semibold text-3xl'>

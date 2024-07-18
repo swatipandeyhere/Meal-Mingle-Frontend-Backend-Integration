@@ -8,6 +8,10 @@ import { isAuthenticated } from '../utils/authUtils';
 const Home = () => {
     const restaurants = RestaurantData;
 
+    const handleCitySelection = (city: string) => {
+        localStorage.setItem('location', city);
+    };
+
     return (
         <>
             <div
@@ -57,7 +61,7 @@ const Home = () => {
             </div>
             <div className='grid grid-cols-3 gap-y-6 mt-6'>
                 {restaurants.map((restaurant) => (
-                    <Link key={restaurant.restaurantId} to='/main' state={{ city: restaurant.restaurantAddress?.city }}>
+                    <Link key={restaurant.restaurantId} to='/main' state={{ city: restaurant.restaurantAddress?.city }} onClick={() => handleCitySelection(restaurant.restaurantAddress?.city)}>
                         <div className='flex justify-between items-center border border-spacing-1 shadow-lg w-80 p-5 rounded-lg mx-auto mt-6'>
                             <div className='text-xl'>{restaurant.restaurantAddress?.city}</div>
                             <img src={RightArrowIcon} alt='Right Arrow Icon' className='w-4 h-4' />
