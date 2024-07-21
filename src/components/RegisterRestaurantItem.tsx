@@ -4,6 +4,13 @@ import AdminNavbar from './AdminNavbar';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+interface Address {
+    streetNumber: string;
+    streetName: string;
+    city: string;
+    country: string;
+}
+
 interface RestaurantItem {
     restaurantItemId: string;
     restaurantItemName: string;
@@ -17,7 +24,7 @@ interface RestaurantItem {
 interface Restaurant {
     restaurantId: string;
     restaurantName: string;
-    restaurantAddress: string;
+    restaurantAddress: Address;
     restaurantItems: RestaurantItem[];
 }
 
