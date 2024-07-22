@@ -70,6 +70,10 @@ const AdminLogin = () => {
         }
     };
 
+    const handleClose = () => {
+        navigate('/partner-with-us');
+    };
+
     return (
         <div className="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
             <ToastContainer />
@@ -82,9 +86,27 @@ const AdminLogin = () => {
                                 <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
                                     <div className='flex '>
                                         <h3 className="text-3xl font-semibold leading-6 text-gray-600" id="modal-title">Admin Login</h3>
-                                        <Link to='/partner-with-us'><div className='ml-52'>X</div></Link>
+                                        <button
+                                            onClick={handleClose}
+                                            className="text-gray-500"
+                                        >
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                className="h-6 w-6 ml-56"
+                                                fill="none"
+                                                viewBox="0 0 24 24"
+                                                stroke="currentColor"
+                                            >
+                                                <path
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    strokeWidth="2"
+                                                    d="M6 18L18 6M6 6l12 12"
+                                                />
+                                            </svg>
+                                        </button>
                                     </div>
-                                    <div className='mt-12'>
+                                    <div className='mt-8'>
                                         <PhoneInput
                                             country={'in'}
                                             value={phone}
@@ -103,12 +125,12 @@ const AdminLogin = () => {
                                     {!phone && <div>
                                         <div className='text-center mb-3'>or</div>
                                         <Link to='/admin/emailLogin'><div className='flex items-center text-center border border-spacing-1 rounded-lg p-3'>
-                                            <img src={EmailIcon} alt='Email Icon' className='w-7 h-7 ml-20' />
+                                            <img src={EmailIcon} alt='Email Icon' className='w-7 h-7 ml-24' />
                                             <button className='ml-2'>Continue with Email</button>
                                         </div>
                                         </Link>
                                         <div onClick={googleSignIn} className='mt-5 flex items-center text-center border border-spacing-1 rounded-lg p-3'>
-                                            <img src={GoogleIcon} alt='Google Icon' className='w-7 h-7 ml-20' />
+                                            <img src={GoogleIcon} alt='Google Icon' className='w-7 h-7 ml-24' />
                                             <button className='ml-2'>Continue with Google</button>
                                         </div>
                                     </div>}
@@ -123,6 +145,5 @@ const AdminLogin = () => {
         </div>
     );
 };
-
 
 export default AdminLogin;

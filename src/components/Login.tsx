@@ -70,26 +70,49 @@ const Login = () => {
         }
     };
 
+    const handleClose = () => {
+        navigate('/');
+    };
+
     return (
         <div className="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
             <ToastContainer />
             <div className="fixed inset-0 bg-black bg-opacity-85 transition-opacity"></div>
             <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
                 <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-                    <div className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-96 sm:max-w-lg">
+                    <div className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-97 sm:max-w-lg">
                         <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
                             <div className="sm:flex sm:items-start">
                                 <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
                                     <div className='flex '>
                                         <h3 className="text-3xl font-semibold leading-6 text-gray-600" id="modal-title">Login</h3>
-                                        <Link to='/'><div className='ml-52'>X</div></Link>
+                                        <button
+                                            onClick={handleClose}
+                                            className="text-gray-500"
+                                        >
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                className="h-6 w-6 ml-56"
+                                                fill="none"
+                                                viewBox="0 0 24 24"
+                                                stroke="currentColor"
+                                            >
+                                                <path
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    strokeWidth="2"
+                                                    d="M6 18L18 6M6 6l12 12"
+                                                />
+                                            </svg>
+                                        </button>
                                     </div>
-                                    <div className='mt-12'>
+                                    <div className='mt-8'>
                                         <PhoneInput
                                             country={'in'}
                                             value={phone}
                                             onChange={(phone) => setPhone("+" + phone)}
-                                            buttonStyle={{ backgroundColor: "white" }} />
+                                            buttonStyle={{ backgroundColor: "white" }}
+                                            inputStyle={{ width: "100%" }} />
                                     </div>
                                     <button onClick={sendOtp} className="mt-5 mb-3 bg-rose-500 w-full h-12 text-white py-2 px-4 rounded">
                                         Send One Time Password

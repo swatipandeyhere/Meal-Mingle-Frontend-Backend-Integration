@@ -129,6 +129,10 @@ const AdminSignup = () => {
         }
     };
 
+    const handleClose = () => {
+        navigate('/partner-with-us');
+    };
+
     return (
         <>
             <ToastContainer />
@@ -140,7 +144,25 @@ const AdminSignup = () => {
                             <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
                                 <div className='flex'>
                                     <h3 className="text-3xl font-semibold leading-6 text-gray-600" id="modal-title">Admin Sign Up</h3>
-                                    <Link to='/partner-with-us'><div className='ml-52'>X</div></Link>
+                                    <button
+                                        onClick={handleClose}
+                                        className="text-gray-500"
+                                    >
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            className="h-6 w-6 ml-52"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            stroke="currentColor"
+                                        >
+                                            <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth="2"
+                                                d="M6 18L18 6M6 6l12 12"
+                                            />
+                                        </svg>
+                                    </button>
                                 </div>
                                 {error && <div className="text-red-500 text-sm">{error}</div>}
                                 <input onChange={(e) => setName(e.target.value)} className="mt-8 outline-none border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" placeholder="Enter Name" required />

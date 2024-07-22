@@ -49,6 +49,10 @@ const EmailLogin = () => {
         }
     }
 
+    const handleClose = () => {
+        navigate('/');
+    };
+
     return (
         <div className="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
             <ToastContainer />
@@ -59,7 +63,25 @@ const EmailLogin = () => {
                         <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
                             <div className='flex'>
                                 <h3 className="text-3xl font-semibold leading-6 text-gray-600" id="modal-title">Login</h3>
-                                <Link to='/'><div className='ml-60'>X</div></Link>
+                                <button
+                                    onClick={handleClose}
+                                    className="text-gray-500"
+                                >
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        className="h-6 w-6 ml-60"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth="2"
+                                            d="M6 18L18 6M6 6l12 12"
+                                        />
+                                    </svg>
+                                </button>
                             </div>
                             <img src={EmailInboxIcon} alt='Email Inbox Icon' className='w-24 h-24 mt-5 ml-28' />
                             <input onChange={(e) => setEmail(e.target.value)} className="outline-none border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" placeholder="Enter Email" required />
