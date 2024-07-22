@@ -54,7 +54,13 @@ const RestaurantsByCategory = () => {
     const handleRestaurantClick = (restaurant: any) => {
         if (isRestaurantOpen(restaurant.restaurantOperationDays, restaurant.restaurantOperationHours)) {
             if (isAuthenticated()) {
-                navigate(`/category/${categoryName}/menu`, { state: { data: restaurant, category: categoryName } });
+                if (categoryName) {
+                    localStorage.setItem('restaurant', JSON.stringify(restaurant));
+                    localStorage.setItem('category', categoryName);
+                    navigate(`/category/${categoryName}/menu`);
+                } else {
+                    console.error('Category Name is not Defined!');
+                }
             } else {
                 navigate('/login');
             }

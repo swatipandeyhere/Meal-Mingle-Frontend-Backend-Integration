@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import Navbar from './Navbar';
 import { useCart, CartItem } from '../context/CartContext';
@@ -7,9 +7,26 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const RestaurantsByCategoryMenu = () => {
     const location = useLocation();
-    const { data, category } = location.state;
     const { addToCart } = useCart();
     const [quantities, setQuantities] = useState<{ [key: string]: number }>({});
+    const [data, setData] = useState<any>(null);
+    const [category, setCategory] = useState<string>('');
+
+    useEffect(() => {
+        const storedData = localStorage.getItem('restaurant');
+        const storedCategory = localStorage.getItem('category');
+
+        if (storedData && storedCategory) {
+            setData(JSON.parse(storedData));
+            setCategory(storedCategory);
+        } else {
+            if (location.state) {
+                const { data, category } = location.state;
+                setData(data);
+                setCategory(category);
+            }
+        }
+    }, [location.state]);
 
     const handleAddToCart = (item: CartItem) => {
         const quantity = quantities[item.restaurantItemId] || 1;
@@ -25,6 +42,10 @@ const RestaurantsByCategoryMenu = () => {
             [itemId]: quantity,
         }));
     };
+
+    if (!data) {
+        return <div>No Restaurant Data Available!</div>;
+    }
 
     const categoryItems = data.restaurantItems.filter((item: any) => item.restaurantItemCategory === category);
 
