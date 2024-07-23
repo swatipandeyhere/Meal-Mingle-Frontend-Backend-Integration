@@ -166,7 +166,8 @@ const Payment = () => {
                 city: paymentDetails.city,
                 country: paymentDetails.country
             },
-            orderDate: new Date().toLocaleString()
+            orderDate: new Date().toLocaleString(),
+            orderTimestamp: Date.now(),
         };
 
         const savedOrders = localStorage.getItem('orders');
