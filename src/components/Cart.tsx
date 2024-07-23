@@ -42,13 +42,13 @@ const Cart = () => {
 
     const proceedToPayment = () => {
         if (cart.length > 0 && restaurant) {
-            navigate('/payment', {
-                state: {
-                    items: cart,
-                    restaurant,
-                    totalPrice: discountedPrice
-                }
-            });
+            const paymentState = {
+                items: cart,
+                restaurant,
+                totalPrice: discountedPrice
+            };
+            localStorage.setItem('paymentState', JSON.stringify(paymentState));
+            navigate('/payment');
         }
     };
 

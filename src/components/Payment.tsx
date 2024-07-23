@@ -1,5 +1,5 @@
-import React, { useState, ChangeEvent, FormEvent } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import React, { useState, ChangeEvent, FormEvent, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Navbar from './Navbar';
 import { CartItem, useCart } from '../context/CartContext';
 
@@ -40,13 +40,9 @@ interface PaymentState {
 }
 
 const Payment = () => {
-    const location = useLocation();
     const navigate = useNavigate();
-    const { state } = location;
-    const { items, restaurant, totalPrice, discountedPrice, discountAmount } = state as PaymentState;
     const { cart, placeOrder } = useCart();
-
-    const finalPrice = discountAmount > 0 ? discountedPrice : totalPrice;
+    const [paymentState, setPaymentState] = useState<PaymentState | null>(null);
 
     const [paymentDetails, setPaymentDetails] = useState({
         cardNumber: '',
@@ -57,6 +53,20 @@ const Payment = () => {
         city: '',
         country: 'India'
     });
+
+    useEffect(() => {
+        const storedPaymentState = localStorage.getItem('paymentState');
+        if (storedPaymentState) {
+            setPaymentState(JSON.parse(storedPaymentState));
+        }
+    }, [navigate]);
+
+    if (!paymentState) {
+        return <div>Loading...</div>;
+    }
+
+    const { items, restaurant, totalPrice, discountedPrice, discountAmount } = paymentState;
+    const finalPrice = discountAmount > 0 ? discountedPrice : totalPrice;
 
     const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target;
