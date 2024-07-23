@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import Navbar from './Navbar';
 import { useCart, CartItem } from '../context/CartContext';
@@ -7,9 +7,25 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const Menu = () => {
     const location = useLocation();
-    const { data } = location.state;
+    const [data, setData] = useState<any>(null);
     const { addToCart, checkIfSameRestaurant } = useCart();
     const [quantities, setQuantities] = useState<{ [key: string]: number }>({});
+
+    useEffect(() => {
+        const routeData = location.state?.data;
+
+        if (routeData) {
+            setData(routeData);
+            localStorage.setItem('restaurant', JSON.stringify(routeData));
+        } else {
+            const storedData = localStorage.getItem('restaurant');
+            if (storedData) {
+                setData(JSON.parse(storedData));
+            } else {
+                console.error('No Restaurant Data Available!');
+            }
+        }
+    }, [location.state]);
 
     const handleAddToCart = (item: CartItem) => {
         const quantity = quantities[item.restaurantItemId] || 1;
@@ -25,6 +41,10 @@ const Menu = () => {
             [itemId]: quantity,
         }));
     };
+
+    if (!data) {
+        return <div>No Restaurant Data Available!</div>;
+    }
 
     return (
         <>

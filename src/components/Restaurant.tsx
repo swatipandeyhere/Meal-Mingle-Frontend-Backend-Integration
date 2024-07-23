@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { isAuthenticated } from '../utils/authUtils';
 import { FaBan } from 'react-icons/fa';
 
@@ -50,11 +50,21 @@ const getOfferPhrase = (minOrderAmt: number, discountPercentage: number) => {
 
 const Restaurant: React.FC<RestaurantProp> = ({ restaurant }) => {
     const [city, setCity] = useState<string | null>(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const storedCity = localStorage.getItem('location');
         setCity(storedCity);
     }, []);
+
+    const handleRestaurantClick = (data: any) => {
+        if (isAuthenticated()) {
+            localStorage.setItem('restaurant', JSON.stringify(data));
+            navigate('/menu');
+        } else {
+            navigate('/login');
+        }
+    };
 
     return (
         <div className='p-4 pl-20'>
@@ -69,13 +79,13 @@ const Restaurant: React.FC<RestaurantProp> = ({ restaurant }) => {
                         const offerPhrase = getOfferPhrase(data.restaurantMinimumOrderAmount, data.restaurantDiscountPercentage);
                         return (
                             <div key={data.restaurantId} className="relative max-w-xs rounded-xl overflow-hidden shadow-sm mt-12">
-                                {isOpen ? (
-                                    <Link to={isAuthenticated() ? '/menu' : '/login'} state={{ data: data }}>
+                                <div onClick={() => handleRestaurantClick(data)} className="cursor-pointer">
+                                    {isOpen ? (
                                         <img className={`w-full rounded-2xl h-60`} src={require(`../images/${data.restaurantImageUrl}`)} alt="Restaurant Image" />
-                                    </Link>
-                                ) : (
-                                    <img className={`w-full rounded-2xl h-60 filter grayscale`} src={require(`../images/${data.restaurantImageUrl}`)} alt="Restaurant Image" />
-                                )}
+                                    ) : (
+                                        <img className={`w-full rounded-2xl h-60 filter grayscale`} src={require(`../images/${data.restaurantImageUrl}`)} alt="Restaurant Image" />
+                                    )}
+                                </div>
                                 {data.restaurantDiscountPercentage > 0 && (
                                     <div className="absolute top-2 left-2 bg-blue-500 text-white font-semibold py-1 px-2 rounded-md">
                                         {offerPhrase}
