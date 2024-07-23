@@ -77,7 +77,7 @@ const Navbar = ({ city, onSearch }: cityProp) => {
             <ToastContainer />
             <div className='flex'>
                 <Link to='/'><h1 className='text-3xl font-extrabold italic ml-20'>MealMingle</h1></Link>
-                <div className='ml-6 shadow-lg flex items-center border border-gray-300 w-6/12 rounded-lg p-3 h-12'>
+                {auth.currentUser ? (<div className='ml-6 shadow-lg flex items-center border border-gray-300 w-6/12 rounded-lg p-3 h-12'>
                     <img src={Location} alt='Location Icon' className='w-7 h-7 ml-2' />
                     <input className="outline-none text-gray-900 text-sm block w-40 p-2.5" placeholder='Location' value={location} onChange={handleLocationChange} required />
                     <img src={DropDownIcon} alt='Drop Down Icon' className='w-5 h-5 ml-5' />
@@ -85,7 +85,15 @@ const Navbar = ({ city, onSearch }: cityProp) => {
                     <img src={SearchIcon} alt='Search Icon' className='w-6 h-6 ml-5' />
                     <input className="outline-none text-gray-900 text-sm block w-96 p-2.5" placeholder="Search for Restaurant" value={searchQuery}
                         onChange={handleSearchChange} required />
-                </div>
+                </div>) : (<div className='ml-6 shadow-lg flex items-center border border-gray-300 w-7/12 rounded-lg p-3 h-12'>
+                    <img src={Location} alt='Location Icon' className='w-7 h-7 ml-2' />
+                    <input className="outline-none text-gray-900 text-sm block w-40 p-2.5" placeholder='Location' value={location} onChange={handleLocationChange} required />
+                    <img src={DropDownIcon} alt='Drop Down Icon' className='w-5 h-5 ml-5' />
+                    <div className='ml-3 text-gray-400'>|</div>
+                    <img src={SearchIcon} alt='Search Icon' className='w-6 h-6 ml-5' />
+                    <input className="outline-none text-gray-900 text-sm block w-96 p-2.5" placeholder="Search for Restaurant" value={searchQuery}
+                        onChange={handleSearchChange} required />
+                </div>)}
                 <div className='flex items-center'>
                     {authStore?.photoURL ? (
                         <img src={authStore?.photoURL} alt='User Pic' className='w-12 h-12 ml-5 rounded-full' />
@@ -98,12 +106,18 @@ const Navbar = ({ city, onSearch }: cityProp) => {
                     {authStore?.phoneNumber && <div className="text-gray-600 text-lg">{authStore.phoneNumber}</div>}
                     {!auth.currentUser?.email && !auth.currentUser?.phoneNumber && (
                         <Link to='/login'>
-                            <div className='text-gray-600 text-lg cursor-pointer ml-20'>Login</div>
+                            <button
+                                className={`px-4 py-2 rounded-md border bg-white text-black border-gray-300 shadow-md ml-10 cursor-pointer`}>
+                                Login
+                            </button>
                         </Link>
                     )}
                     {!auth.currentUser?.email && !auth.currentUser?.phoneNumber && (
                         <Link to='/signup'>
-                            <div className='text-gray-600 text-lg ml-5 cursor-pointer'>Sign Up</div>
+                            <button
+                                className={`px-4 py-2 rounded-md border bg-white text-black border-gray-300 shadow-md ml-10 cursor-pointer`}>
+                                Sign Up
+                            </button>
                         </Link>
                     )}
                     {auth.currentUser && (
