@@ -5,14 +5,28 @@ import Menubar from './Menubar';
 import Navbar from './Navbar';
 import RestaurantFilters from './RestaurantFilters';
 import Restaurant from './Restaurant';
+import { toast } from 'react-toastify';
 
 const Main = () => {
   const location = useLocation();
+  const [restaurants, setRestaurants] = useState([]);
   const [filteredRestaurants, setFilteredRestaurants] = useState(RestaurantData);
   const [restaurantFilters, setRestaurantFilters] = useState({
     rating: false,
     offers: false,
   });
+
+  const fetchRestaurants = async () => {
+    const response = await fetch(`http://localhost:8091/api/restaurants/city/${location.state.city}`)
+    const data = await response.json();
+    if (data.error != "") {
+      toast.error(data.message);
+    }
+    setRestaurants(data.data.restaurants);
+  }
+  useEffect(() => {
+    fetchRestaurants();
+  }, [])
 
   useEffect(() => {
     applyRestaurantFilters(new URLSearchParams(location.search));
@@ -57,7 +71,7 @@ const Main = () => {
       <Navbar city={location.state?.city} onSearch={handleSearch} />
       <RestaurantFilters applyRestaurantFilters={applyRestaurantFilters} restaurantFilters={restaurantFilters} />
       <Menubar />
-      <Restaurant restaurant={filteredRestaurants} />
+      <Restaurant restaurant={restaurants} city={location.state?.city} />
     </div>
   );
 };

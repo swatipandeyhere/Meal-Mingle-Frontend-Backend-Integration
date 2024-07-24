@@ -5,6 +5,7 @@ import { FaBan } from 'react-icons/fa';
 
 interface RestaurantProp {
     restaurant: any,
+    city: any
 }
 
 const isRestaurantOpen = (operationDays: string, operationHours: string) => {
