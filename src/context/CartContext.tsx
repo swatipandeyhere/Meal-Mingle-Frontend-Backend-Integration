@@ -8,6 +8,7 @@ export interface CartItem {
     restaurantItemImageUrl: string;
     quantity: number;
     restaurantItemCategory: string;
+    restaurantId: string,
     restaurantMinimumOrderAmount: number;
     restaurantDiscountPercentage: number;
     restaurantName: string;
@@ -20,7 +21,7 @@ interface CartContextType {
     clearCart: () => void;
     updateQuantity: (itemId: string, newQuantity: number) => void;
     getTotalQuantity: () => number;
-    checkIfSameRestaurant: (newRestaurantItemId: string) => boolean;
+    checkIfSameRestaurant: (newRestaurantId: string) => boolean;
     placeOrder: () => void;
 }
 
@@ -37,7 +38,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     }, [cart]);
 
     const addToCart = (item: CartItem, quantity: number): boolean => {
-        if (!checkIfSameRestaurant(item.restaurantItemId)) {
+        if (!checkIfSameRestaurant(item.restaurantId)) {
             const confirmReset = window.confirm(`Your Cart contains items from another restaurant. Would you like to reset your cart for adding items from this restaurant?`);
             if (confirmReset) {
                 clearCart();
@@ -90,17 +91,12 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         return cart.reduce((total, item) => total + item.quantity, 0);
     };
 
-    const checkIfSameRestaurant = (newRestaurantItemId: string) => {
+    const checkIfSameRestaurant = (newRestaurantId: string) => {
         if (cart.length === 0) {
             return true;
         }
 
-        const newRestaurantId = newRestaurantItemId.split('_')[0];
-
-        return cart.every(item => {
-            const currentRestaurantId = item.restaurantItemId.split('_')[0];
-            return currentRestaurantId === newRestaurantId;
-        });
+        return cart[0].restaurantId === newRestaurantId;
     };
 
     const placeOrder = () => {
