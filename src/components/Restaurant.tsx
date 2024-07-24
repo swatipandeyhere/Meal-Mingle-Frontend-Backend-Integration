@@ -82,9 +82,9 @@ const Restaurant: React.FC<RestaurantProp> = ({ restaurant }) => {
                             <div key={data.restaurantId} className="relative max-w-xs rounded-xl overflow-hidden shadow-sm mt-12">
                                 <div onClick={() => handleRestaurantClick(data)} className="cursor-pointer">
                                     {isOpen ? (
-                                        <img className={`w-full rounded-2xl h-60`} src={require(`../images/${data.restaurantImageUrl}`)} alt="Restaurant Image" />
+                                        <img className={`w-full rounded-2xl h-60`} src={data.restaurantImageUrl} alt="Restaurant Image" />
                                     ) : (
-                                        <img className={`w-full rounded-2xl h-60 filter grayscale`} src={require(`../images/${data.restaurantImageUrl}`)} alt="Restaurant Image" />
+                                        <img className={`w-full rounded-2xl h-60 filter grayscale`} src={data.restaurantImageUrl} alt="Restaurant Image" />
                                     )}
                                 </div>
                                 {data.restaurantDiscountPercentage > 0 && (
@@ -96,7 +96,7 @@ const Restaurant: React.FC<RestaurantProp> = ({ restaurant }) => {
                                     <div className='flex justify-between items-center'>
                                         <div className="font-semibold text-xl mb-2">
                                             {data.restaurantName}
-                                            <div className="text-sm text-gray-600">{data.restaurantAddress.streetNumber}, {data.restaurantAddress.streetName}, {data.restaurantAddress.city}</div>
+                                            <div className="text-sm text-gray-600">{data.restaurantAddress.pincode}, {data.restaurantAddress.streetName}, {data.restaurantAddress.city}</div>
                                         </div>
                                         <div className={`text-white font-semibold text-base rounded-md p-1 ${data.restaurantRating < 4.5 ? `bg-green-600` : `bg-green-900`}`}>
                                             {data.restaurantRating}
