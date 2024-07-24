@@ -15,6 +15,18 @@ const Signup = () => {
     const [phone, setPhone] = useState("");
     const [error, setError] = useState<string | null>(null);
 
+    const userSignup = async () => {
+        const response = await fetch('http://localhost:8090/api/users/register/user', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ userName: name, userEmail: email, userPassword: password, userPhone: phone })
+        });
+        const data = await response.json();
+        console.log(data);
+    }
+
     const validateEmail = (email: string) => {
         const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return re.test(String(email).toLowerCase());
@@ -75,6 +87,7 @@ const Signup = () => {
                 return;
             }
 
+            userSignup();
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
 
