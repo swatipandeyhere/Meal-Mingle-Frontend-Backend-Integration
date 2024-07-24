@@ -58,7 +58,7 @@ const RestaurantsByFilter = () => {
             <Navbar city={location.state?.city} onSearch={handleSearch} />
             <RestaurantFilters applyRestaurantFilters={applyRestaurantFilters} restaurantFilters={restaurantFilters} />
             <Menubar />
-            <Restaurant restaurant={filteredRestaurants} />
+            <Restaurant restaurant={filteredRestaurants} city={location.state?.city} />
         </div>
     );
 };
