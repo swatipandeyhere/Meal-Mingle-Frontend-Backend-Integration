@@ -10,6 +10,22 @@ const Menu = () => {
     const [data, setData] = useState<any>(null);
     const { addToCart, checkIfSameRestaurant } = useCart();
     const [quantities, setQuantities] = useState<{ [key: string]: number }>({});
+    const [restaurantItems, setRestaurantItems] = useState<CartItem[]>([]);
+
+    const fetchRestaurantItems = async (restaurantId: string) => {
+        const response = await fetch(`http://localhost:8091/api/restaurant/${restaurantId}/items`)
+        const data = await response.json();
+        if (data.error != "") {
+            toast.error(data.message);
+        }
+        else {
+            console.log(data)
+            setRestaurantItems(data.data.restaurantItems);
+        }
+    }
+    useEffect(() => {
+        fetchRestaurantItems(data.restaurantId);
+    }, [data.restaurantId])
 
     useEffect(() => {
         const routeData = location.state?.data;
@@ -29,6 +45,10 @@ const Menu = () => {
 
     const handleAddToCart = (item: CartItem) => {
         const quantity = quantities[item.restaurantItemId] || 1;
+        item.restaurantMinimumOrderAmount = data.restaurantMinimumOrderAmount;
+        item.restaurantDiscountPercentage = data.restaurantDiscountPercentage;
+        item.restaurantName = data.restaurantName;
+
         const success = addToCart(item, quantity);
         if (success) {
             toast.success(`${item.restaurantItemName} added to Cart!`);
@@ -52,9 +72,9 @@ const Menu = () => {
             <div className='p-4 pl-20'>
                 <h1 className='font-semibold text-3xl mb-4'>Explore the Menu of {data.restaurantName}</h1>
                 <div className='grid grid-cols-3'>
-                    {data.restaurantItems.map((item: CartItem) => (
+                    {restaurantItems.map((item: CartItem) => (
                         <div key={item.restaurantItemId} className='max-w-xs rounded-xl overflow-hidden shadow-sm mt-12'>
-                            <img className='w-full rounded-2xl h-60 object-cover' src={require(`../images/${item.restaurantItemImageUrl}`)} alt={item.restaurantItemName} />
+                            <img className='w-full rounded-2xl h-60 object-cover' src={item.restaurantItemImageUrl} alt={item.restaurantItemName} />
                             <div className='py-4'>
                                 <div className='flex justify-between items-center'>
                                     <div className='font-semibold text-xl mb-2'>{item.restaurantItemName}</div>

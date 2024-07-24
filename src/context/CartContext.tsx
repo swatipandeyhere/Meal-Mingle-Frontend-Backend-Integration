@@ -8,6 +8,9 @@ export interface CartItem {
     restaurantItemImageUrl: string;
     quantity: number;
     restaurantItemCategory: string;
+    restaurantMinimumOrderAmount: number;
+    restaurantDiscountPercentage: number;
+    restaurantName: string;
 }
 
 interface CartContextType {
