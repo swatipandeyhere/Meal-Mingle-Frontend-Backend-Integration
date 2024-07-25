@@ -31,24 +31,38 @@ interface Restaurant {
     }[];
 }
 
+interface ShippingAddress {
+    pincode: string;
+    streetName: string;
+    city: string;
+    country: string;
+}
+
 interface PaymentState {
     items: CartItem[];
-    restaurant: Restaurant;
+    restaurantId: Restaurant;
     totalPrice: number;
-    discountedPrice: number;
-    discountAmount: number;
+    restaurantName: string;
+    shippingAddress: ShippingAddress;
+}
+
+type OrderItem = {
+    orderItemName: string;
+    orderItemQuantity: number;
+    orderItemPrice: number;
 }
 
 const Payment = () => {
     const navigate = useNavigate();
     const { cart, placeOrder } = useCart();
+    const [orders, setOrders] = useState<any[]>([]);
     const [paymentState, setPaymentState] = useState<PaymentState | null>(null);
 
     const [paymentDetails, setPaymentDetails] = useState({
         cardNumber: '',
         expiryDate: '',
         cvv: '',
-        streetNumber: '',
+        pincode: '',
         streetName: '',
         city: '',
         country: 'India'
@@ -65,8 +79,41 @@ const Payment = () => {
         return <div>Loading...</div>;
     }
 
-    const { items, restaurant, totalPrice, discountedPrice, discountAmount } = paymentState;
-    const finalPrice = discountAmount > 0 ? discountedPrice : totalPrice;
+    const { items, restaurantId, totalPrice, restaurantName, shippingAddress } = paymentState;
+
+    const payNow = async () => {
+        window.location.href = 'http://localhost:8089';
+
+        const token = localStorage.getItem('token');
+
+        const orderItems: OrderItem[] = [];
+
+        items.forEach((orderItem, i) => {
+            orderItems.push({
+                orderItemName: orderItem.restaurantItemName,
+                orderItemPrice: orderItem.restaurantItemPrice,
+                orderItemQuantity: orderItem.quantity
+            })
+        });
+
+        const orderData = {
+            orderItems: orderItems,
+            orderTotalPrice: totalPrice,
+            shippingAddress: shippingAddress,
+            restaurantName: restaurantName
+        }
+        console.log(orderData);
+        const response = await fetch('http://localhost:8093/api/orders', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(orderData)
+        })
+        const data = await response.json();
+        setOrders(data);
+    }
 
     const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target;
@@ -119,11 +166,11 @@ const Payment = () => {
         }
 
         // Street Number
-        if (!paymentDetails.streetNumber.trim()) {
+        if (!paymentDetails.pincode.trim()) {
             alert('Street Number is Required.');
             return;
         }
-        else if (isNaN(Number(paymentDetails.streetNumber))) {
+        else if (isNaN(Number(paymentDetails.pincode))) {
             alert('Street Number must be a Number, not a String.');
             return;
         }
@@ -159,9 +206,9 @@ const Payment = () => {
         const order = {
             id: Date.now().toString(),
             items,
-            totalAmount: finalPrice,
+            totalAmount: totalPrice,
             shippingAddress: {
-                streetNumber: paymentDetails.streetNumber,
+                streetNumber: paymentDetails.pincode,
                 streetName: paymentDetails.streetName,
                 city: paymentDetails.city,
                 country: paymentDetails.country
@@ -183,13 +230,13 @@ const Payment = () => {
 
     return (
         <>
-            <Navbar city={restaurant?.restaurantAddress.city} />
+            <Navbar />
             <div className='p-4 pl-20'>
                 <h1 className='font-semibold text-3xl mb-4'>Payment Details</h1>
                 <div className='grid grid-cols-3 gap-4'>
                     {items.map((item, index) => (
                         <div key={index} className='max-w-xs rounded-xl overflow-hidden shadow-sm'>
-                            <img className='w-full rounded-2xl h-60 object-cover' src={require(`../images/${item.restaurantItemImageUrl}`)} alt={item.restaurantItemName} />
+                            <img className='w-full rounded-2xl h-60 object-cover' src={item.restaurantItemImageUrl} alt={item.restaurantItemName} />
                             <div className='py-4'>
                                 <div className='flex justify-between'>
                                     <div className='font-semibold text-xl mb-2'>{item.restaurantItemName}</div>
@@ -204,7 +251,7 @@ const Payment = () => {
                     ))}
                 </div>
                 <div className='font-semibold text-base p-1 mt-4'>
-                    Final Price: ₹{finalPrice}
+                    Final Price: ₹{totalPrice}
                 </div>
                 <form onSubmit={handleSubmit} className='mt-4'>
                     <label className='block mb-2 mr-10'>
@@ -221,7 +268,7 @@ const Payment = () => {
                     </label>
                     <label className='block mb-2 mr-10'>
                         Street Number:
-                        <input type='text' name='streetNumber' value={paymentDetails.streetNumber} onChange={handleInputChange} className='w-full mt-1 p-2 border border-gray-300 rounded' />
+                        <input type='text' name='streetNumber' value={paymentDetails.pincode} onChange={handleInputChange} className='w-full mt-1 p-2 border border-gray-300 rounded' />
                     </label>
                     <label className='block mb-2 mr-10'>
                         Street Name:
@@ -235,7 +282,7 @@ const Payment = () => {
                         Country:
                         <input type='text' name='country' value={paymentDetails.country} className='w-full mt-1 p-2 border border-gray-300 rounded' disabled />
                     </label>
-                    <button type='submit' className='px-4 py-2 bg-blue-500 text-white rounded'>Pay Now</button>
+                    <button type='submit' onClick={payNow} className='px-4 py-2 bg-blue-500 text-white rounded'>Pay Now</button>
                 </form>
             </div>
         </>
