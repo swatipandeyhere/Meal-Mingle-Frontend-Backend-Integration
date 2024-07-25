@@ -15,6 +15,26 @@ const AdminSignup = () => {
     const [phone, setPhone] = useState("");
     const [error, setError] = useState<string | null>(null);
 
+    const adminData = { userEmail: email, userName: name, userPassword: password, userPhone: phone };
+
+    const addAdminToThePortal = async () => {
+        const response = await fetch('http://localhost:8090/api/users/register/admin', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(adminData)
+        })
+        const data = await response.json();
+        if (data.error != "") {
+            toast.error(data.message);
+        }
+        else {
+            toast.success(data.message);
+        }
+        console.log(data);
+    }
+
     const validateEmail = (email: string) => {
         const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return re.test(String(email).toLowerCase());
@@ -75,6 +95,7 @@ const AdminSignup = () => {
                 return;
             }
 
+            addAdminToThePortal();
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
 
@@ -86,33 +107,6 @@ const AdminSignup = () => {
                 }
             });
 
-            // Simulate backend API call since backend is not running
-            // Commented out the actual fetch call
-            // const response = await fetch('YOUR_BACKEND_API_ENDPOINT/admin/signup', {
-            //     method: 'POST',
-            //     headers: {
-            //         'Content-Type': 'application/json'
-            //     },
-            //     body: JSON.stringify({
-            //         name,
-            //         email,
-            //         password,
-            //         phone,
-            //         role: 'admin'
-            //     })
-            // });
-
-            // if (!response.ok) {
-            //     const errorData = await response.json();
-            //     throw new Error(errorData.message || 'Failed to Sign Up');
-            // }
-
-            // const data = await response.json();
-            // const { token } = data;
-
-            // localStorage.setItem('token', token);
-            const simulatedToken = "jwt-token-from-backend-upon-admin-email-sign-up";
-            localStorage.setItem('token', simulatedToken);
             setTimeout(() => {
                 navigate('/admin/login');
             }, 3000);
