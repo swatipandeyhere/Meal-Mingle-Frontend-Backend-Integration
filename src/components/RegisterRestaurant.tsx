@@ -11,16 +11,6 @@ interface Address {
     country: string;
 }
 
-interface RestaurantItem {
-    restaurantItemId: string;
-    restaurantItemName: string;
-    restaurantItemPrice: number;
-    restaurantItemCategory: string;
-    restaurantItemImageUrl: string;
-    restaurantItemCuisineType: string;
-    restaurantItemVeg: boolean;
-}
-
 interface RestaurantData {
     restaurantId: string;
     restaurantName: string;
@@ -33,7 +23,7 @@ interface RestaurantData {
     restaurantOperationDays: string;
     restaurantOperationHours: string;
     restaurantPhoneNumber: string;
-    restaurantItems: RestaurantItem[];
+    restaurantOwnerMail: string;
 }
 
 interface RegisterRestaurantProps {
@@ -50,7 +40,7 @@ const RegisterRestaurant: React.FC<RegisterRestaurantProps> = ({ onSubmit }) => 
             city: '',
             country: 'India',
         },
-        restaurantRating: 0,
+        restaurantRating: 1,
         restaurantMinimumOrderAmount: 0,
         restaurantDiscountPercentage: 0,
         restaurantAvailability: true,
@@ -58,12 +48,50 @@ const RegisterRestaurant: React.FC<RegisterRestaurantProps> = ({ onSubmit }) => 
         restaurantOperationDays: '',
         restaurantOperationHours: '',
         restaurantPhoneNumber: '',
-        restaurantItems: [],
+        restaurantOwnerMail: '',
     };
 
     const [restaurantData, setRestaurantData] = useState<RestaurantData>(initialRestaurantData);
     const [errors, setErrors] = useState<string[]>([]);
     const navigate = useNavigate();
+
+    async function saveRestaurantData() {
+        const postRestaurantData = {
+            restaurant: {
+                restaurantName: restaurantData.restaurantName,
+                restaurantAddress: {
+                    pincode: restaurantData.restaurantAddress.streetNumber,
+                    streetName: restaurantData.restaurantAddress.streetName,
+                    city: restaurantData.restaurantAddress.city,
+                    country: restaurantData.restaurantAddress.country
+                },
+                restaurantRating: 1,
+                restaurantMinimumOrderAmount: restaurantData.restaurantMinimumOrderAmount,
+                restaurantDiscountPercentage: 10,
+                restaurantAvailability: restaurantData.restaurantAvailability ? "Open" : "Closed",
+                restaurantImageUrl: restaurantData.restaurantImageUrl,
+                restaurantOperationDays: restaurantData.restaurantOperationDays,
+                restaurantOperationHours: restaurantData.restaurantOperationHours,
+                restaurantPhoneNumber: restaurantData.restaurantPhoneNumber,
+            }
+        }
+        const response = await fetch('http://localhost:8091/api/restaurants', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            },
+            body: JSON.stringify(postRestaurantData)
+        })
+        const data = await response.json();
+        if (data.error === "") {
+            toast.success(data.message);
+            setRestaurantData(data.data.restaurant);
+        }
+        else {
+            toast.error(data.message);
+        }
+    }
 
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
@@ -98,17 +126,6 @@ const RegisterRestaurant: React.FC<RegisterRestaurantProps> = ({ onSubmit }) => 
             return;
         }
 
-        const newRestaurantData: RestaurantData = {
-            ...restaurantData,
-            restaurantId: Math.floor(10 + Math.random() * 90).toString(),
-        };
-
-        const storedRestaurants = JSON.parse(localStorage.getItem('restaurants') || '[]');
-        const updatedRestaurantData = [...storedRestaurants, newRestaurantData];
-
-        localStorage.setItem('restaurants', JSON.stringify(updatedRestaurantData));
-
-        setRestaurantData(initialRestaurantData);
         if (onSubmit) onSubmit();
         toast.success('Restaurant Added Successfully!');
         setTimeout(() => {
@@ -268,6 +285,10 @@ const RegisterRestaurant: React.FC<RegisterRestaurantProps> = ({ onSubmit }) => 
         setErrors(errors);
         if (errors.length > 0) {
             toast.error(errors[0]);
+        }
+
+        if (isValid) {
+            saveRestaurantData();
         }
 
         return isValid;
