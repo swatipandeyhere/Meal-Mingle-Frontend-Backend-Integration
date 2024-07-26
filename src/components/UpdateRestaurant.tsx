@@ -22,7 +22,7 @@ interface RestaurantItem {
 }
 
 interface RestaurantData {
-    restaurantId: string;
+    restaurantId: string | undefined;
     restaurantName: string;
     restaurantAddress: Address;
     restaurantRating: number;
@@ -40,7 +40,7 @@ const UpdateRestaurant: React.FC = () => {
     const navigate = useNavigate();
 
     const initialRestaurantData: RestaurantData = {
-        restaurantId: '',
+        restaurantId: id,
         restaurantName: '',
         restaurantAddress: {
             streetNumber: '',
@@ -48,7 +48,7 @@ const UpdateRestaurant: React.FC = () => {
             city: '',
             country: 'India',
         },
-        restaurantRating: 0,
+        restaurantRating: 1,
         restaurantMinimumOrderAmount: 0,
         restaurantDiscountPercentage: 0,
         restaurantImageUrl: '',
@@ -60,15 +60,6 @@ const UpdateRestaurant: React.FC = () => {
 
     const [restaurantData, setRestaurantData] = useState<RestaurantData>(initialRestaurantData);
     const [errors, setErrors] = useState<string[]>([]);
-
-    useEffect(() => {
-        const storedRestaurants = JSON.parse(localStorage.getItem('restaurants') || '[]');
-        const foundRestaurant = storedRestaurants.find((restaurant: RestaurantData) => restaurant.restaurantId === id);
-
-        if (foundRestaurant) {
-            setRestaurantData(foundRestaurant);
-        }
-    }, [id, navigate]);
 
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -93,6 +84,51 @@ const UpdateRestaurant: React.FC = () => {
         }
     };
 
+    const updateRestaurant = async () => {
+        const modifiedRestaurantData = {
+            restaurant: {
+                restaurantId: id,
+                restaurantName: restaurantData.restaurantName,
+                restaurantAddress: {
+                    pincode: restaurantData.restaurantAddress.streetNumber,
+                    streetName: restaurantData.restaurantAddress.streetName,
+                    city: restaurantData.restaurantAddress.city,
+                    country: restaurantData.restaurantAddress.country,
+                },
+                restaurantRating: restaurantData.restaurantRating,
+                restaurantMinimumOrderAmount: restaurantData.restaurantMinimumOrderAmount,
+                restaurantDiscountPercentage: restaurantData.restaurantDiscountPercentage,
+                restaurantImageUrl: restaurantData.restaurantImageUrl,
+                restaurantOperationDays: restaurantData.restaurantOperationDays,
+                restaurantOperationHours: restaurantData.restaurantOperationHours,
+                restaurantPhoneNumber: restaurantData.restaurantPhoneNumber,
+                restaurantItems: restaurantData.restaurantItems,
+                restaurantAvailability: "Open",
+            }
+        }
+
+        const response = await fetch('http://localhost:8091/api/restaurants/update', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`,
+            },
+            body: JSON.stringify(modifiedRestaurantData),
+        });
+
+        const data = await response.json();
+        if (data.error === "") {
+            toast.success('Restaurant Updated Successfully!');
+            console.log(data);
+            setTimeout(() => {
+                navigate('/view-admin-restaurants');
+            }, 2000);
+        }
+        else {
+            toast.error(data.error);
+        }
+    }
+
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
@@ -101,16 +137,7 @@ const UpdateRestaurant: React.FC = () => {
             return;
         }
 
-        const storedRestaurants = JSON.parse(localStorage.getItem('restaurants') || '[]');
-        const updatedRestaurants = storedRestaurants.map((restaurant: RestaurantData) =>
-            restaurant.restaurantId === restaurantData.restaurantId ? restaurantData : restaurant
-        );
-
-        localStorage.setItem('restaurants', JSON.stringify(updatedRestaurants));
-        toast.success('Restaurant Updated Successfully!');
-        setTimeout(() => {
-            navigate('/view-admin-restaurants');
-        }, 2000);
+        updateRestaurant();
     };
 
     const handleClose = () => {
