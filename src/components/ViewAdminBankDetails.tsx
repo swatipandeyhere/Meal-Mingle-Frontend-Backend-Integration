@@ -7,10 +7,21 @@ const ViewAdminBankDetails = () => {
     const [bankDetails, setBankDetails] = useState<any>(null);
 
     useEffect(() => {
-        const storedBankDetails = localStorage.getItem('bankDetails');
-        if (storedBankDetails) {
-            setBankDetails(JSON.parse(storedBankDetails));
+        async function fetchBankDetails() {
+            const response = await fetch('http://localhost:8090/api/users/details', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+            const data = await response.json();
+            if (data.error == "" && data.data != null) {
+                console.log(data.data);
+                setBankDetails(data.data);
+            }
         }
+        fetchBankDetails();
     }, []);
 
     const handleUpdate = () => {
