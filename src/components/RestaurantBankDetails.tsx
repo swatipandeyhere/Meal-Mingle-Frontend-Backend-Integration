@@ -38,6 +38,38 @@ const RestaurantBankDetails: React.FC = () => {
         setBankDetails({ ...bankDetails, [name]: value });
     };
 
+    async function addRestaurantOwnerBankDetails() {
+        const bankDetailsData = {
+            accountNumber: bankDetails.accountNumber,
+            bankName: bankDetails.bankName,
+            branchName: bankDetails.branchName,
+            ifscCode: bankDetails.ifscCode,
+            panNumber: bankDetails.panNumber,
+            adharNumber: bankDetails.aadhaarNumber,
+            gstNumber: bankDetails.gstNumber
+        }
+
+        const response = await fetch('http://localhost:8090/api/users/details', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            },
+            body: JSON.stringify(bankDetailsData)
+        });
+        console.log(bankDetailsData);
+        const data = await response.json();
+        if (data.error == "") {
+            toast.success('Bank Details Added Successfully!');
+            setTimeout(() => {
+                navigate(nextPage);
+            }, 2000);
+        }
+        else {
+            toast.error(data.error);
+        }
+    }
+
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
@@ -46,12 +78,7 @@ const RestaurantBankDetails: React.FC = () => {
             return;
         }
 
-        localStorage.setItem('bankDetails', JSON.stringify(bankDetails));
-
-        toast.success('Bank Details Saved Successfully!');
-        setTimeout(() => {
-            navigate(nextPage);
-        }, 2000);
+        addRestaurantOwnerBankDetails();
     };
 
     const handleClose = () => {
@@ -130,7 +157,7 @@ const RestaurantBankDetails: React.FC = () => {
             toast.error(errors[0]);
         }
 
-        return isValid;
+        return true;
     };
 
     return (
