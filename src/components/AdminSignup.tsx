@@ -50,21 +50,19 @@ const AdminSignup = () => {
     };
 
     const checkPhoneNumberExists = async (phone: string) => {
-        // Simulate check since backend is not running
-        // Replace this with actual backend API call
-        // const response = await fetch('YOUR_BACKEND_API_ENDPOINT/checkPhoneNumber', {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json'
-        //     },
-        //     body: JSON.stringify({ phone })
-        // });
-
-        // const data = await response.json();
-        // return data.exists;
-
-        // For simulation purposes
-        return false;
+        try {
+            const response = await fetch(`http://localhost:8090/api/users/phone/verify?phone=${phone}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            const data = await response.json();
+            return data.exists;
+        } catch (error) {
+            console.error(error);
+            return false;
+        }
     };
 
     const emailSignUp = async () => {

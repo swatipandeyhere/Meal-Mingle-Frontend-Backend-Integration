@@ -42,21 +42,19 @@ const Signup = () => {
     };
 
     const checkPhoneNumberExists = async (phone: string) => {
-        // Simulate check since backend is not running
-        // Replace this with actual backend API call
-        // const response = await fetch('YOUR_BACKEND_API_ENDPOINT/checkPhoneNumber', {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json'
-        //     },
-        //     body: JSON.stringify({ phone })
-        // });
-
-        // const data = await response.json();
-        // return data.exists;
-
-        // For simulation purposes
-        return false;
+        try {
+            const response = await fetch(`http://localhost:8090/api/users/phone/verify?phone=${phone}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            const data = await response.json();
+            return data.exists;
+        } catch (error) {
+            console.error(error);
+            return false;
+        }
     };
 
     const emailSignUp = async () => {
@@ -99,32 +97,6 @@ const Signup = () => {
                 }
             });
 
-            // Simulate backend API call since backend is not running
-            // Commented out the actual fetch call
-            // const response = await fetch('YOUR_BACKEND_API_ENDPOINT/signup', {
-            //     method: 'POST',
-            //     headers: {
-            //         'Content-Type': 'application/json'
-            //     },
-            //     body: JSON.stringify({
-            //         name,
-            //         email,
-            //         password,
-            //         phone
-            //     })
-            // });
-
-            // if (!response.ok) {
-            //     const errorData = await response.json();
-            //     throw new Error(errorData.message || 'Failed to Sign Up');
-            // }
-
-            // const data = await response.json();
-            // const { token } = data;
-
-            // localStorage.setItem('token', token);
-            const simulatedToken = "jwt-token-from-backend-upon-email-sign-up";
-            localStorage.setItem('token', simulatedToken);
             setTimeout(() => {
                 navigate('/login');
             }, 3000);
