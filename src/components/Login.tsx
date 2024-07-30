@@ -15,10 +15,32 @@ const Login = () => {
     const [phone, setPhone] = useState("");
     const [otp, setOtp] = useState("");
     const [confirmationResult, setConfirmationResult] = useState<any>(null);
-    const [error, setError] = useState<string | null>(null);
+
+    const verifyPhoneNumber = async (phone: string) => {
+        try {
+            const response = await fetch(`http://localhost:8090/api/users/phone/verify?phone=${phone}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            const data = await response.json();
+            return data.exists;
+        } catch (error) {
+            console.error('Failed to verify phone number:', error);
+            return false;
+        }
+    };
 
     const sendOtp = async () => {
         try {
+            const phoneExists = await verifyPhoneNumber(phone);
+
+            if (!phoneExists) {
+                toast.error('Failed to Verify Phone Number!');
+                return;
+            }
+
             const recaptcha = new RecaptchaVerifier(auth, "recaptcha", {});
             const confirmationResult = await signInWithPhoneNumber(auth, phone, recaptcha);
             setConfirmationResult(confirmationResult);
